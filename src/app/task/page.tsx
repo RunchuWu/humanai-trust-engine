@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import DebugPanel from "@/app/task/components/DebugPanel";
 import { getOrCreateAssignment, type Assignment } from "@/lib/conditions";
@@ -10,6 +11,8 @@ import type {
   TaskShownEvent,
 } from "@/lib/schema";
 import { TRIALS } from "@/lib/trials";
+
+import styles from "./task.module.css";
 
 const TOTAL_TRIALS = TRIALS.length;
 const TASK_SHOWN_MARKER_PREFIX = "humanai_task_shown";
@@ -120,6 +123,9 @@ function clearAssignmentAndReload(): void {
 }
 
 export default function TaskPage() {
+  const searchParams = useSearchParams();
+  const showDebugPanel = searchParams.get("debug") === "1";
+
   const [assignment, setAssignment] = useState<Assignment | null>(null);
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -250,103 +256,176 @@ export default function TaskPage() {
   }
 
   const cue = assignment ? CUE_BY_CONDITION[assignment.conditionId] : null;
+  const trialDisplayIndex = Math.min(currentTrialIndex + 1, TOTAL_TRIALS);
+  const progressPercent = Math.max(
+    0,
+    Math.min(100, (trialDisplayIndex / TOTAL_TRIALS) * 100),
+  );
+
+  const recommendationBadgeClass =
+    currentTrial?.ai_reco === "proceed"
+      ? styles.recommendationProceed
+      : styles.recommendationReject;
 
   return (
-    <main style={{ maxWidth: 880, margin: "40px auto", padding: "0 16px 80px" }}>
-      <DebugPanel
-        assignment={assignment}
-        currentTrialIndex={currentTrialIndex}
-        totalTrials={TOTAL_TRIALS}
-        onReset={clearAssignmentAndReload}
-      />
+    <main className={styles.page}>
+      {showDebugPanel ? (
+        <DebugPanel
+          assignment={assignment}
+          currentTrialIndex={currentTrialIndex}
+          totalTrials={TOTAL_TRIALS}
+          onReset={clearAssignmentAndReload}
+        />
+      ) : null}
 
-      <h1>Job Screening Recommendation Task</h1>
-      <p>
-        Review each AI recommendation and choose whether to <strong>Accept</strong>
-        {" "}or <strong>Override</strong> it.
-      </p>
+      <header className={styles.headerCard}>
+        <h1 className={styles.title}>Job Screening Study</h1>
+        <p className={styles.subtitle}>
+          You will review a candidate, then review an AI recommendation, then
+          choose Accept (follow AI) or Override.
+        </p>
+        <div className={styles.progressWrap}>
+          <div className={styles.progressMeta}>
+            <span className={styles.progressLabel}>Progress</span>
+            <span className={styles.progressValue}>Trial {trialDisplayIndex} / 10</span>
+          </div>
+          <div
+            className={styles.progressTrack}
+            role="progressbar"
+            aria-valuenow={trialDisplayIndex}
+            aria-valuemin={1}
+            aria-valuemax={TOTAL_TRIALS}
+            aria-label="Trial progress"
+          >
+            <div
+              className={styles.progressFill}
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
+      </header>
 
-      {errorMessage ? <p style={{ color: "crimson" }}>Error: {errorMessage}</p> : null}
+      <section className={styles.instructionsCard}>
+        <h2 className={styles.sectionTitle}>Instructions</h2>
+        <ul className={styles.instructionsList}>
+          <li>
+            Read the role, requirements, and candidate summary on the left.
+          </li>
+          <li>
+            Focus on the AI recommendation area first, then decide whether to
+            Accept or Override.
+          </li>
+          <li>
+            We record your decision and response time (latency) for each trial.
+          </li>
+        </ul>
+      </section>
 
-      {!assignment ? <p>Loading assignment...</p> : null}
+      {errorMessage ? <p className={styles.errorText}>Error: {errorMessage}</p> : null}
+
+      {!assignment ? <p className={styles.infoText}>Initializing assignment...</p> : null}
 
       {assignment && isFinished ? (
-        <section style={{ border: "1px solid #ddd", borderRadius: 8, padding: 16 }}>
-          <h2>Task Complete</h2>
-          <p>You have finished all {TOTAL_TRIALS} trials.</p>
-          <p>
-            Export events:
-            {" "}
-            <a href="/api/export?format=json" target="_blank" rel="noreferrer">
-              JSON
-            </a>
-            {" "}|{" "}
-            <a href="/api/export?format=csv" target="_blank" rel="noreferrer">
-              CSV
-            </a>
+        <section className={styles.completionCard}>
+          <h2 className={styles.completionTitle}>Study Complete</h2>
+          <p className={styles.completionText}>
+            Thank you. You have finished all {TOTAL_TRIALS} trials.
           </p>
+          <div className={styles.completionActions}>
+            <a
+              className={styles.secondaryAction}
+              href="/api/export?format=json"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Download JSON
+            </a>
+            <a
+              className={styles.secondaryAction}
+              href="/api/export?format=csv"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Download CSV
+            </a>
+            <button
+              type="button"
+              className={styles.primaryAction}
+              onClick={clearAssignmentAndReload}
+            >
+              Restart Study
+            </button>
+          </div>
         </section>
       ) : null}
 
       {assignment && currentTrial ? (
-        <section style={{ border: "1px solid #ddd", borderRadius: 8, padding: 16 }}>
-          <p style={{ marginTop: 0 }}>
-            <strong>Trial:</strong> {currentTrialIndex + 1}/{TOTAL_TRIALS}
-          </p>
+        <section className={styles.taskGrid}>
+          <article className={styles.leftColumn}>
+            <div className={styles.card}>
+              <h2 className={styles.sectionTitle}>Role</h2>
+              <p className={styles.jobTitle}>{currentTrial.job_title}</p>
+            </div>
 
-          <h2 style={{ marginBottom: 8 }}>{currentTrial.job_title}</h2>
-          <p>
-            <strong>Requirements:</strong> {currentTrial.requirements.join(", ")}
-          </p>
-          <p>
-            <strong>Candidate Summary:</strong> {currentTrial.candidate_summary}
-          </p>
+            <div className={styles.card}>
+              <h2 className={styles.sectionTitle}>Requirements</h2>
+              <ul className={styles.requirementsList}>
+                {currentTrial.requirements.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
 
-          <div
-            style={{
-              marginTop: 16,
-              background: "#f9fafb",
-              borderRadius: 8,
-              padding: 12,
-              border: "1px solid #e5e7eb",
-            }}
-          >
-            <p style={{ marginTop: 0, marginBottom: 8 }}>
-              <strong>AI Agent:</strong> {cue?.agentName} ({cue?.tone})
-            </p>
-            <p style={{ margin: "8px 0" }}>
-              <strong>Recommendation:</strong> {currentTrial.ai_reco}
-            </p>
-            <p style={{ marginBottom: 0 }}>
-              <strong>Rationale:</strong>{" "}
-              {assignment.conditionId === "A"
-                ? currentTrial.rationale_A
-                : currentTrial.rationale_B}
-            </p>
-          </div>
+            <div className={styles.card}>
+              <h2 className={styles.sectionTitle}>Candidate Summary</h2>
+              <p className={styles.bodyText}>{currentTrial.candidate_summary}</p>
+            </div>
+          </article>
 
-          <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
-            <button
-              type="button"
-              onClick={() => {
-                void handleDecision("accept");
-              }}
-              disabled={isSubmitting}
-            >
-              Accept
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                void handleDecision("override");
-              }}
-              disabled={isSubmitting}
-            >
-              Override
-            </button>
-          </div>
+          <article className={styles.aiCard}>
+            <header className={styles.aiHeader}>
+              <div>
+                <p className={styles.aiLabel}>AI Recommendation</p>
+                <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
+                <p className={styles.aiTone}>Tone: {cue?.tone}</p>
+              </div>
+              <span className={`${styles.recommendationBadge} ${recommendationBadgeClass}`}>
+                {currentTrial.ai_reco === "proceed" ? "Proceed" : "Reject"}
+              </span>
+            </header>
 
-          {isSubmitting ? <p>Submitting decision...</p> : null}
+            <div className={styles.aiBody}>
+              <h3 className={styles.rationaleTitle}>Rationale</h3>
+              <p className={styles.bodyText}>
+                {assignment.conditionId === "A"
+                  ? currentTrial.rationale_A
+                  : currentTrial.rationale_B}
+              </p>
+            </div>
+
+            <footer className={styles.aiActions}>
+              <button
+                type="button"
+                className={styles.primaryAction}
+                onClick={() => {
+                  void handleDecision("accept");
+                }}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Accept"}
+              </button>
+              <button
+                type="button"
+                className={styles.secondaryActionButton}
+                onClick={() => {
+                  void handleDecision("override");
+                }}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Override"}
+              </button>
+            </footer>
+          </article>
         </section>
       ) : null}
     </main>

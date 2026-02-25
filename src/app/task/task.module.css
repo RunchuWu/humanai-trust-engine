@@ -1,0 +1,333 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 20px 72px;
+  color: #1f2937;
+  background: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.headerCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #111827;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  max-width: 760px;
+  color: #4b5563;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.progressWrap {
+  margin-top: 18px;
+}
+
+.progressMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.progressLabel {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.progressValue {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #eef2f7;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #0f6efd 0%, #1d4ed8 100%);
+  transition: width 220ms ease;
+}
+
+.instructionsCard {
+  margin-top: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 16px;
+  color: #111827;
+}
+
+.instructionsList {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: #374151;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.taskGrid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: 16px;
+}
+
+.leftColumn {
+  display: grid;
+  gap: 12px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.jobTitle {
+  margin: 8px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.requirementsList {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: #374151;
+  line-height: 1.55;
+}
+
+.bodyText {
+  margin: 10px 0 0;
+  color: #374151;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.aiCard {
+  background: #ffffff;
+  border: 1px solid #cfd8e3;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aiHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.aiLabel {
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.aiAgentName {
+  margin: 4px 0 0;
+  font-size: 22px;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.aiTone {
+  margin: 4px 0 0;
+  color: #475569;
+  font-size: 13px;
+}
+
+.recommendationBadge {
+  flex-shrink: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.recommendationProceed {
+  background: #e7f8ef;
+  color: #0f7a41;
+  border: 1px solid #b8e7cb;
+}
+
+.recommendationReject {
+  background: #fdecec;
+  color: #ad1e1e;
+  border: 1px solid #f5c2c2;
+}
+
+.aiBody {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.rationaleTitle {
+  margin: 0;
+  font-size: 13px;
+  color: #111827;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.aiActions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.primaryAction,
+.secondaryActionButton,
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.primaryAction {
+  background: #0f6efd;
+  color: #ffffff;
+  border-color: #0f6efd;
+}
+
+.primaryAction:hover:not(:disabled) {
+  background: #0b5bd3;
+  border-color: #0b5bd3;
+}
+
+.secondaryActionButton {
+  background: #ffffff;
+  color: #1f2937;
+  border-color: #cbd5e1;
+}
+
+.secondaryActionButton:hover:not(:disabled),
+.secondaryAction:hover {
+  background: #f3f4f6;
+  border-color: #94a3b8;
+}
+
+.primaryAction:disabled,
+.secondaryActionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.infoText {
+  margin-top: 14px;
+  color: #475569;
+}
+
+.errorText {
+  margin-top: 12px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.completionCard {
+  margin-top: 18px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+.completionTitle {
+  margin: 0;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.completionText {
+  margin: 10px 0 0;
+  color: #334155;
+}
+
+.completionActions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.secondaryAction {
+  background: #ffffff;
+  color: #1f2937;
+  border-color: #cbd5e1;
+}
+
+@media (max-width: 920px) {
+  .page {
+    padding: 20px 14px 56px;
+  }
+
+  .taskGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .aiActions {
+    flex-direction: column;
+  }
+
+  .primaryAction,
+  .secondaryActionButton,
+  .secondaryAction {
+    width: 100%;
+  }
+}
