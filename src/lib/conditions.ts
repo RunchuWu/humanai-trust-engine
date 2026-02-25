@@ -74,14 +74,6 @@ function setLocalStorageItem(key: string, value: string): void {
   }
 }
 
-function getSessionStorageItem(key: string): string | null {
-  try {
-    return window.sessionStorage.getItem(key);
-  } catch {
-    return null;
-  }
-}
-
 function setSessionStorageItem(key: string, value: string): void {
   try {
     window.sessionStorage.setItem(key, value);
@@ -122,16 +114,17 @@ function persistAssignmentIdentity(
   }
 }
 
+let currentPageSessionId: string | null = null;
+
 function getOrCreateSessionId(): string {
-  const existing = getSessionStorageItem(SESSION_ID_KEY);
-  if (existing) {
-    return existing;
+  if (currentPageSessionId) {
+    return currentPageSessionId;
   }
 
-  const next = createUuid();
-  setSessionStorageItem(SESSION_ID_KEY, next);
+  currentPageSessionId = createUuid();
+  setSessionStorageItem(SESSION_ID_KEY, currentPageSessionId);
 
-  return next;
+  return currentPageSessionId;
 }
 
 export function getOrCreateAssignment(): Assignment {
