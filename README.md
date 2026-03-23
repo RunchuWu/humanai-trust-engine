@@ -1,27 +1,65 @@
 # HumanAI Trust Calibration Engine (GSoC Screening MVP)
 
-A minimal Next.js (App Router) prototype for Human-AI trust calibration in a job-screening setting. The experiment uses **A/B condition manipulation** with only one cue dimension changed: **agent name + tone**.
+Minimal Next.js (App Router) prototype for a trust-calibration experiment in job screening.
+The experiment manipulates one cue dimension across A/B conditions: **agent name + tone style**.
 
-Participants complete a **10-trial job screening recommendation task**. On each trial, the UI shows AI recommendation and rationale, the participant chooses **Accept** or **Override**, and behavioral events are instrumented for downstream analysis.
+## What This Repo Does
+
+- Runs a 10-trial job-screening task at `/task`
+- Logs behavioral events (`task_shown`, `decision`) to local JSONL
+- Exports event-level data as JSON or CSV
+- Separates participant-facing UI from researcher/debug utilities
+
+## Interface Modes
+
+### Participant-Facing Interface (`/task`)
+
+Default participant mode is clean and task-focused:
+
+- Instruction gate before trials
+- Trial screen with:
+  - `Role & Requirements`
+  - `Candidate Summary`
+  - Agent panel (name + clear position + rationale)
+  - Decision actions: `Accept` / `Override`
+- Completion screen without researcher tooling
+
+Participant-specific UX rules:
+
+- Participants can go back to previous trials and revise answers
+- After completing all 10 trials, they can choose **Review Last Trial** to revise
+- Researcher export controls are **hidden** in participant mode
+
+### Researcher Debug Mode (`/task?debug=1`)
+
+Debug mode shows researcher utilities without changing experiment logic:
+
+- Debug panel with `participantId`, `conditionId`, `sessionId`, `current trial_index`
+- `Reset` action
+- Export tools available at any time (including before task completion):
+  - `Export JSON`
+  - `Export CSV`
+
+This supports quick exploratory checks without forcing a full run each time.
 
 ## Condition Logic
 
-The runtime assignment includes three IDs:
+Runtime assignment includes:
 
 - `participant_id` (UUID)
 - `condition_id` (`"A" | "B"`)
 - `session_id` (UUID)
 
-Generation and persistence strategy:
+Persistence strategy:
 
-- `participant_id`: generated once, persisted in cookie (fallback: `localStorage`)
-- `condition_id`: random 50/50 assignment via `Math.random()`, persisted in cookie (fallback: `localStorage`)
-- `session_id`: generated per page-entry session and stored in `sessionStorage`
+- `participant_id`: cookie first, fallback `localStorage`
+- `condition_id`: 50/50 random (`Math.random()`), cookie first, fallback `localStorage`
+- `session_id`: generated per page-entry session (`sessionStorage`)
 
 Behavioral implication:
 
-- Refreshing `/task` keeps `participant_id` and `condition_id` stable
-- Opening a new private/incognito window may produce a different condition
+- Refresh keeps `participant_id` + `condition_id` stable
+- New private/incognito window may receive a different condition
 
 ## Logging Implementation
 
@@ -32,26 +70,20 @@ Behavioral implication:
 
 ### Storage
 
-Events are append-only and written to:
+Append-only JSON Lines file:
 
 - `data/events.jsonl`
+- one event per line (`JSON.stringify(event) + "\n"`)
 
-Format is JSON Lines:
-
-- one event per line
-- each line is `JSON.stringify(event) + "\n"`
-
-### Required Fields (core)
-
-At minimum, logs include:
+### Core Fields (minimum)
 
 - `participant_id`
-- `condition_id` (condition)
+- `condition_id`
 - `decision` (for `decision` events)
-- `timestamp_ms` (timestamp)
+- `timestamp_ms`
 - `latency_ms` (for `decision` events)
 
-Common event envelope also includes:
+Common envelope also includes:
 
 - `event_id`, `session_id`, `event_type`, `trial_id`, `trial_index`
 
@@ -62,12 +94,20 @@ Event-level export endpoints:
 - `GET /api/export?format=json`
 - `GET /api/export?format=csv`
 
-Notes:
+Both are sorted by `timestamp_ms` ascending.
 
-- output is **event-level** (not aggregated per participant)
-- events are sorted by `timestamp_ms` ascending
+## Repository Navigation
 
-## How To Run Locally
+- `src/app/task/page.tsx`: main experiment flow and participant UI
+- `src/app/task/task.module.css`: task UI styles
+- `src/app/task/components/DebugPanel.tsx`: researcher debug panel
+- `src/app/api/log/route.ts`: event ingestion API
+- `src/app/api/export/route.ts`: event export API
+- `src/lib/conditions.ts`: assignment/persistence logic
+- `src/lib/trials.ts`: 10-trial dataset
+- `src/lib/schema.ts`: event typing + validation
+
+## Run Locally
 
 ```bash
 npm install
@@ -76,9 +116,10 @@ npm run dev
 
 Open:
 
-- `http://localhost:3000/task`
+- Participant mode: `http://localhost:3000/task`
+- Researcher mode: `http://localhost:3000/task?debug=1`
 
-## Sample Output (decision event)
+## Sample Decision Event
 
 ```json
 {
