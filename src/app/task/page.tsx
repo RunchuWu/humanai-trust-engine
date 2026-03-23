@@ -143,6 +143,9 @@ export default function TaskPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pendingRetryDecision, setPendingRetryDecision] =
     useState<DecisionType | null>(null);
+  const [latestDecisionByTrial, setLatestDecisionByTrial] = useState<
+    Record<number, DecisionType>
+  >({});
 
   const trialShownAtMsRef = useRef<number | null>(null);
   const decisionLockRef = useRef(false);
@@ -265,6 +268,10 @@ export default function TaskPage() {
       await postLogEvent(decisionEvent);
       trialShownAtMsRef.current = null;
       setPendingRetryDecision(null);
+      setLatestDecisionByTrial((previous) => ({
+        ...previous,
+        [currentTrialIndex]: decision,
+      }));
       setCurrentTrialIndex((prev) => prev + 1);
     } catch (error) {
       const message =
@@ -277,6 +284,25 @@ export default function TaskPage() {
     }
   }
 
+  function handleGoBackTrial() {
+    if (isSubmitting || currentTrialIndex <= 0 || !hasStarted) {
+      return;
+    }
+
+    setErrorMessage(null);
+    setPendingRetryDecision(null);
+    trialShownAtMsRef.current = null;
+    setCurrentTrialIndex((prev) => Math.max(0, prev - 1));
+  }
+
+  function handleReviewLastTrial() {
+    setHasStarted(true);
+    setErrorMessage(null);
+    setPendingRetryDecision(null);
+    trialShownAtMsRef.current = null;
+    setCurrentTrialIndex(Math.max(0, TOTAL_TRIALS - 1));
+  }
+
   const cue = assignment ? CUE_BY_CONDITION[assignment.conditionId] : null;
   const participantIdShort = assignment
     ? shortenId(assignment.participantId)
@@ -285,6 +311,7 @@ export default function TaskPage() {
   const trialDisplayIndex = hasStarted
     ? Math.min(currentTrialIndex + 1, TOTAL_TRIALS)
     : 0;
+  const currentTrialSavedDecision = latestDecisionByTrial[currentTrialIndex];
   const canStartTask = ackDecisionMeaning && ackLatencyLogging;
   const progressPercent = Math.max(
     0,
@@ -405,9 +432,21 @@ export default function TaskPage() {
             Thank you. You have finished all {TOTAL_TRIALS} trials.
           </p>
           {!showDebugPanel ? (
-            <p className={styles.completionParticipantNote}>
-              Your responses have been recorded. You can now close this page.
-            </p>
+            <>
+              <p className={styles.completionParticipantNote}>
+                Your responses have been recorded. You can close this page, or
+                review the last trial to revise an answer.
+              </p>
+              <div className={styles.completionParticipantActions}>
+                <button
+                  type="button"
+                  className={styles.secondaryActionButton}
+                  onClick={handleReviewLastTrial}
+                >
+                  Review Last Trial
+                </button>
+              </div>
+            </>
           ) : null}
 
           <div className={styles.completionStats}>
@@ -525,6 +564,13 @@ export default function TaskPage() {
             </div>
 
             <footer className={styles.aiActions}>
+              {currentTrialSavedDecision ? (
+                <p className={styles.savedDecisionHint}>
+                  Latest saved decision for this trial:{" "}
+                  <strong>{currentTrialSavedDecision}</strong>. Submit again to
+                  update it.
+                </p>
+              ) : null}
               <div className={styles.decisionButtons}>
                 <button
                   type="button"
@@ -548,6 +594,18 @@ export default function TaskPage() {
                 </button>
               </div>
             </footer>
+            {currentTrialIndex > 0 ? (
+              <div className={styles.backRow}>
+                <button
+                  type="button"
+                  className={styles.backButton}
+                  onClick={handleGoBackTrial}
+                  disabled={isSubmitting}
+                >
+                  Back to Previous Trial
+                </button>
+              </div>
+            ) : null}
             <p className={styles.decisionHint}>
               Accept follows the AI recommendation. Override chooses differently.
             </p>

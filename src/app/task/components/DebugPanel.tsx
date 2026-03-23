@@ -62,6 +62,25 @@ export default function DebugPanel({
         <strong>progress:</strong> {Math.min(currentTrialIndex + 1, totalTrials)}/
         {totalTrials}
       </p>
+
+      <div
+        style={{
+          marginTop: 10,
+          paddingTop: 10,
+          borderTop: "1px solid #e5e7eb",
+        }}
+      >
+        <p style={{ margin: "0 0 6px", fontWeight: 600 }}>Researcher Tools</p>
+        <p style={{ margin: "4px 0" }}>
+          <a href="/api/export?format=json" target="_blank" rel="noreferrer">
+            Export JSON
+          </a>
+          {" | "}
+          <a href="/api/export?format=csv" target="_blank" rel="noreferrer">
+            Export CSV
+          </a>
+        </p>
+      </div>
     </aside>
   );
 }
