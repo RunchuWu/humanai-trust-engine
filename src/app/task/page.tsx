@@ -141,6 +141,8 @@ export default function TaskPage() {
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingRetryDecision, setPendingRetryDecision] =
+    useState<DecisionType | null>(null);
 
   const trialShownAtMsRef = useRef<number | null>(null);
   const decisionLockRef = useRef(false);
@@ -236,6 +238,7 @@ export default function TaskPage() {
     decisionLockRef.current = true;
     setIsSubmitting(true);
     setErrorMessage(null);
+    setPendingRetryDecision(null);
 
     const decidedAt = Date.now();
     const shownAt = trialShownAtMsRef.current ?? decidedAt;
@@ -261,10 +264,12 @@ export default function TaskPage() {
     try {
       await postLogEvent(decisionEvent);
       trialShownAtMsRef.current = null;
+      setPendingRetryDecision(null);
       setCurrentTrialIndex((prev) => prev + 1);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to log decision.";
+      setPendingRetryDecision(decision);
       setErrorMessage(message);
     } finally {
       decisionLockRef.current = false;
@@ -338,11 +343,10 @@ export default function TaskPage() {
           <h2 className={styles.sectionTitle}>Instructions</h2>
           <ul className={styles.instructionsList}>
             <li>
-              You will complete 10 trials and make one decision per trial.
+              Complete 10 trials and make one decision per trial.
             </li>
             <li>
-              In each trial, first review role and candidate details, then focus on
-              the AI recommendation section before deciding.
+              Read role/candidate context first, then focus on AI recommendation.
             </li>
             <li>
               We log your decision and response time for research analysis.
@@ -385,6 +389,7 @@ export default function TaskPage() {
               onClick={() => {
                 setHasStarted(true);
                 setErrorMessage(null);
+                setPendingRetryDecision(null);
               }}
             >
               Start Task
@@ -473,9 +478,9 @@ export default function TaskPage() {
             Trial {currentTrialIndex + 1} of {TOTAL_TRIALS}
           </p>
           <div className={styles.flowBanner}>
-            <span className={styles.flowPill}>Step 1: Read Context</span>
-            <span className={styles.flowPill}>Step 2: Review AI Recommendation</span>
-            <span className={styles.flowPill}>Step 3: Choose Accept or Override</span>
+            <span className={styles.flowPill}>Step 1: Context</span>
+            <span className={styles.flowPill}>Step 2: AI Recommendation</span>
+            <span className={styles.flowPill}>Step 3: Decision</span>
           </div>
 
           <div className={styles.contextGrid}>
@@ -547,6 +552,23 @@ export default function TaskPage() {
             <p className={styles.decisionHint}>
               Accept follows the AI recommendation. Override chooses differently.
             </p>
+            {pendingRetryDecision ? (
+              <div className={styles.retryNotice}>
+                <p className={styles.retryText}>
+                  Submission failed. Retry the same decision.
+                </p>
+                <button
+                  type="button"
+                  className={styles.retryButton}
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    void handleDecision(pendingRetryDecision);
+                  }}
+                >
+                  Retry {pendingRetryDecision === "accept" ? "Accept" : "Override"}
+                </button>
+              </div>
+            ) : null}
           </article>
         </section>
       ) : null}
