@@ -128,6 +128,8 @@ export default function TaskPage() {
 
   const [assignment, setAssignment] = useState<Assignment | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [ackDecisionMeaning, setAckDecisionMeaning] = useState(false);
+  const [ackLatencyLogging, setAckLatencyLogging] = useState(false);
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -266,6 +268,7 @@ export default function TaskPage() {
   const trialDisplayIndex = hasStarted
     ? Math.min(currentTrialIndex + 1, TOTAL_TRIALS)
     : 0;
+  const canStartTask = ackDecisionMeaning && ackLatencyLogging;
   const progressPercent = Math.max(
     0,
     Math.min(100, (trialDisplayIndex / TOTAL_TRIALS) * 100),
@@ -333,10 +336,40 @@ export default function TaskPage() {
               We log your decision and response time for research analysis.
             </li>
           </ul>
+          <div className={styles.readinessCard}>
+            <label className={styles.readinessItem}>
+              <input
+                className={styles.readinessCheckbox}
+                type="checkbox"
+                checked={ackDecisionMeaning}
+                onChange={(event) => {
+                  setAckDecisionMeaning(event.target.checked);
+                }}
+              />
+              <span>
+                I understand: <strong>Accept</strong> means follow AI,{" "}
+                <strong>Override</strong> means choose differently.
+              </span>
+            </label>
+            <label className={styles.readinessItem}>
+              <input
+                className={styles.readinessCheckbox}
+                type="checkbox"
+                checked={ackLatencyLogging}
+                onChange={(event) => {
+                  setAckLatencyLogging(event.target.checked);
+                }}
+              />
+              <span>
+                I understand each trial logs my decision and response time.
+              </span>
+            </label>
+          </div>
           <div className={styles.instructionsActions}>
             <button
               type="button"
               className={styles.primaryAction}
+              disabled={!canStartTask}
               onClick={() => {
                 setHasStarted(true);
                 setErrorMessage(null);
@@ -344,6 +377,11 @@ export default function TaskPage() {
             >
               Start Task
             </button>
+            {!canStartTask ? (
+              <p className={styles.startHint}>
+                Please check both items before starting.
+              </p>
+            ) : null}
           </div>
         </section>
       ) : null}
@@ -444,6 +482,9 @@ export default function TaskPage() {
                 {isSubmitting ? "Submitting..." : "Override"}
               </button>
             </footer>
+            <p className={styles.decisionHint}>
+              Accept follows the AI recommendation. Override chooses differently.
+            </p>
           </article>
         </section>
       ) : null}

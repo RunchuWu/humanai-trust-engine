@@ -92,6 +92,35 @@
   margin-top: 14px;
 }
 
+.readinessCard {
+  margin-top: 12px;
+  border: 1px solid #dbe3ee;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.readinessItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #374151;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.readinessCheckbox {
+  margin-top: 2px;
+}
+
+.startHint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
 .trialLayout {
   margin-top: 18px;
   display: grid;
@@ -215,6 +244,12 @@
   display: flex;
   gap: 10px;
   margin-top: 2px;
+}
+
+.decisionHint {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #64748b;
 }
 
 .primaryAction,
