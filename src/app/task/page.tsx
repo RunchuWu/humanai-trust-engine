@@ -127,6 +127,7 @@ export default function TaskPage() {
   const showDebugPanel = searchParams.get("debug") === "1";
 
   const [assignment, setAssignment] = useState<Assignment | null>(null);
+  const [hasStarted, setHasStarted] = useState(false);
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -172,7 +173,7 @@ export default function TaskPage() {
   const isFinished = currentTrialIndex >= TOTAL_TRIALS;
 
   useEffect(() => {
-    if (!assignment || !currentTrial || isFinished) {
+    if (!assignment || !hasStarted || !currentTrial || isFinished) {
       return;
     }
 
@@ -209,10 +210,16 @@ export default function TaskPage() {
         error instanceof Error ? error.message : "Failed to log task_shown.";
       setErrorMessage(message);
     });
-  }, [assignment, currentTrial, currentTrialIndex, isFinished]);
+  }, [assignment, hasStarted, currentTrial, currentTrialIndex, isFinished]);
 
   async function handleDecision(decision: DecisionType) {
-    if (!assignment || !currentTrial || isFinished || decisionLockRef.current) {
+    if (
+      !assignment ||
+      !hasStarted ||
+      !currentTrial ||
+      isFinished ||
+      decisionLockRef.current
+    ) {
       return;
     }
 
@@ -256,7 +263,9 @@ export default function TaskPage() {
   }
 
   const cue = assignment ? CUE_BY_CONDITION[assignment.conditionId] : null;
-  const trialDisplayIndex = Math.min(currentTrialIndex + 1, TOTAL_TRIALS);
+  const trialDisplayIndex = hasStarted
+    ? Math.min(currentTrialIndex + 1, TOTAL_TRIALS)
+    : 0;
   const progressPercent = Math.max(
     0,
     Math.min(100, (trialDisplayIndex / TOTAL_TRIALS) * 100),
@@ -293,7 +302,7 @@ export default function TaskPage() {
             className={styles.progressTrack}
             role="progressbar"
             aria-valuenow={trialDisplayIndex}
-            aria-valuemin={1}
+            aria-valuemin={0}
             aria-valuemax={TOTAL_TRIALS}
             aria-label="Trial progress"
           >
@@ -305,25 +314,39 @@ export default function TaskPage() {
         </div>
       </header>
 
-      <section className={styles.instructionsCard}>
-        <h2 className={styles.sectionTitle}>Instructions</h2>
-        <ul className={styles.instructionsList}>
-          <li>
-            Read the role, requirements, and candidate summary on the left.
-          </li>
-          <li>
-            Focus on the AI recommendation area first, then decide whether to
-            Accept or Override.
-          </li>
-          <li>
-            We record your decision and response time (latency) for each trial.
-          </li>
-        </ul>
-      </section>
-
       {errorMessage ? <p className={styles.errorText}>Error: {errorMessage}</p> : null}
 
       {!assignment ? <p className={styles.infoText}>Initializing assignment...</p> : null}
+
+      {assignment && !hasStarted && !isFinished ? (
+        <section className={styles.instructionsCard}>
+          <h2 className={styles.sectionTitle}>Instructions</h2>
+          <ul className={styles.instructionsList}>
+            <li>
+              You will complete 10 trials and make one decision per trial.
+            </li>
+            <li>
+              In each trial, first review role and candidate details, then focus on
+              the AI recommendation section before deciding.
+            </li>
+            <li>
+              We log your decision and response time for research analysis.
+            </li>
+          </ul>
+          <div className={styles.instructionsActions}>
+            <button
+              type="button"
+              className={styles.primaryAction}
+              onClick={() => {
+                setHasStarted(true);
+                setErrorMessage(null);
+              }}
+            >
+              Start Task
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       {assignment && isFinished ? (
         <section className={styles.completionCard}>
@@ -359,28 +382,24 @@ export default function TaskPage() {
         </section>
       ) : null}
 
-      {assignment && currentTrial ? (
-        <section className={styles.taskGrid}>
-          <article className={styles.leftColumn}>
-            <div className={styles.card}>
-              <h2 className={styles.sectionTitle}>Role</h2>
+      {assignment && hasStarted && currentTrial ? (
+        <section className={styles.trialLayout}>
+          <div className={styles.contextGrid}>
+            <article className={styles.card}>
+              <h2 className={styles.sectionTitle}>Role & Requirements</h2>
               <p className={styles.jobTitle}>{currentTrial.job_title}</p>
-            </div>
-
-            <div className={styles.card}>
-              <h2 className={styles.sectionTitle}>Requirements</h2>
               <ul className={styles.requirementsList}>
                 {currentTrial.requirements.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-            </div>
+            </article>
 
-            <div className={styles.card}>
+            <article className={styles.card}>
               <h2 className={styles.sectionTitle}>Candidate Summary</h2>
               <p className={styles.bodyText}>{currentTrial.candidate_summary}</p>
-            </div>
-          </article>
+            </article>
+          </div>
 
           <article className={styles.aiCard}>
             <header className={styles.aiHeader}>
