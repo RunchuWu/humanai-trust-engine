@@ -291,11 +291,6 @@ export default function TaskPage() {
     Math.min(100, (trialDisplayIndex / TOTAL_TRIALS) * 100),
   );
 
-  const recommendationBadgeClass =
-    currentTrial?.ai_reco === "proceed"
-      ? styles.recommendationProceed
-      : styles.recommendationReject;
-
   return (
     <main className={styles.page}>
       {showDebugPanel ? (
@@ -487,18 +482,8 @@ export default function TaskPage() {
 
       {assignment && hasStarted && currentTrial ? (
         <section className={styles.trialLayout}>
-          <p className={styles.trialMeta}>
-            Trial {currentTrialIndex + 1} of {TOTAL_TRIALS}
-          </p>
-          <div className={styles.flowBanner}>
-            <span className={styles.flowPill}>Step 1: Context</span>
-            <span className={styles.flowPill}>Step 2: AI Recommendation</span>
-            <span className={styles.flowPill}>Step 3: Decision</span>
-          </div>
-
           <div className={styles.contextGrid}>
             <article className={styles.card}>
-              <p className={styles.stepKicker}>Step 1</p>
               <h2 className={styles.sectionTitle}>Role & Requirements</h2>
               <p className={styles.jobTitle}>{currentTrial.job_title}</p>
               <ul className={styles.requirementsList}>
@@ -509,7 +494,6 @@ export default function TaskPage() {
             </article>
 
             <article className={styles.card}>
-              <p className={styles.stepKicker}>Step 1</p>
               <h2 className={styles.sectionTitle}>Candidate Summary</h2>
               <p className={styles.bodyText}>{currentTrial.candidate_summary}</p>
             </article>
@@ -517,20 +501,23 @@ export default function TaskPage() {
 
           <article className={styles.aiCard}>
             <header className={styles.aiHeader}>
-              <div>
-                <p className={styles.stepKicker}>Step 2</p>
-                <p className={styles.aiLabel}>AI Recommendation</p>
-                <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
-                <p className={styles.aiTone}>Tone: {cue?.tone}</p>
-              </div>
-              <span className={`${styles.recommendationBadge} ${recommendationBadgeClass}`}>
-                {currentTrial.ai_reco === "proceed" ? "Proceed" : "Reject"}
-              </span>
+              <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
+              <p
+                className={`${styles.aiPosition} ${
+                  currentTrial.ai_reco === "proceed"
+                    ? styles.aiPositionProceed
+                    : styles.aiPositionReject
+                }`}
+              >
+                {currentTrial.ai_reco === "proceed"
+                  ? "Position: Proceed"
+                  : "Position: Reject"}
+              </p>
             </header>
 
             <div className={styles.aiBody}>
-              <h3 className={styles.rationaleTitle}>Rationale</h3>
-              <p className={styles.bodyText}>
+              <p className={styles.aiMessageLead}>{cue?.agentName} says:</p>
+              <p className={styles.aiQuote}>
                 {assignment.conditionId === "A"
                   ? currentTrial.rationale_A
                   : currentTrial.rationale_B}
@@ -538,7 +525,6 @@ export default function TaskPage() {
             </div>
 
             <footer className={styles.aiActions}>
-              <p className={styles.stepKicker}>Step 3</p>
               <div className={styles.decisionButtons}>
                 <button
                   type="button"
