@@ -416,10 +416,16 @@
   color: #334155;
 }
 
+.completionParticipantNote {
+  margin: 10px 0 0;
+  color: #475569;
+  font-size: 14px;
+}
+
 .completionStats {
   margin-top: 14px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 10px;
 }
 

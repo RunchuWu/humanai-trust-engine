@@ -409,6 +409,11 @@ export default function TaskPage() {
           <p className={styles.completionText}>
             Thank you. You have finished all {TOTAL_TRIALS} trials.
           </p>
+          {!showDebugPanel ? (
+            <p className={styles.completionParticipantNote}>
+              Your responses have been recorded. You can now close this page.
+            </p>
+          ) : null}
 
           <div className={styles.completionStats}>
             <div className={styles.statChip}>
@@ -417,58 +422,66 @@ export default function TaskPage() {
                 {TOTAL_TRIALS}/{TOTAL_TRIALS}
               </p>
             </div>
-            <div className={styles.statChip}>
-              <p className={styles.statLabel}>Participant</p>
-              <p className={styles.statValue}>{participantIdShort}</p>
-            </div>
-            <div className={styles.statChip}>
-              <p className={styles.statLabel}>Session</p>
-              <p className={styles.statValue}>{sessionIdShort}</p>
-            </div>
+            {showDebugPanel ? (
+              <div className={styles.statChip}>
+                <p className={styles.statLabel}>Participant</p>
+                <p className={styles.statValue}>{participantIdShort}</p>
+              </div>
+            ) : null}
+            {showDebugPanel ? (
+              <div className={styles.statChip}>
+                <p className={styles.statLabel}>Session</p>
+                <p className={styles.statValue}>{sessionIdShort}</p>
+              </div>
+            ) : null}
           </div>
 
-          <div className={styles.exportGrid}>
-            <article className={styles.exportCard}>
-              <h3 className={styles.exportTitle}>JSON Export</h3>
-              <p className={styles.exportText}>
-                Event-level JSON array (`task_shown` + `decision`), sorted by
-                `timestamp_ms`.
-              </p>
-              <a
-                className={styles.secondaryAction}
-                href="/api/export?format=json"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Download JSON
-              </a>
-            </article>
-            <article className={styles.exportCard}>
-              <h3 className={styles.exportTitle}>CSV Export</h3>
-              <p className={styles.exportText}>
-                Event-level CSV rows with one event per row, sorted by
-                `timestamp_ms`.
-              </p>
-              <a
-                className={styles.secondaryAction}
-                href="/api/export?format=csv"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Download CSV
-              </a>
-            </article>
-          </div>
+          {showDebugPanel ? (
+            <div className={styles.exportGrid}>
+              <article className={styles.exportCard}>
+                <h3 className={styles.exportTitle}>JSON Export</h3>
+                <p className={styles.exportText}>
+                  Event-level JSON array (`task_shown` + `decision`), sorted by
+                  `timestamp_ms`.
+                </p>
+                <a
+                  className={styles.secondaryAction}
+                  href="/api/export?format=json"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Download JSON
+                </a>
+              </article>
+              <article className={styles.exportCard}>
+                <h3 className={styles.exportTitle}>CSV Export</h3>
+                <p className={styles.exportText}>
+                  Event-level CSV rows with one event per row, sorted by
+                  `timestamp_ms`.
+                </p>
+                <a
+                  className={styles.secondaryAction}
+                  href="/api/export?format=csv"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Download CSV
+                </a>
+              </article>
+            </div>
+          ) : null}
 
-          <div className={styles.completionActions}>
-            <button
-              type="button"
-              className={styles.primaryAction}
-              onClick={clearAssignmentAndReload}
-            >
-              Restart Study
-            </button>
-          </div>
+          {showDebugPanel ? (
+            <div className={styles.completionActions}>
+              <button
+                type="button"
+                className={styles.primaryAction}
+                onClick={clearAssignmentAndReload}
+              >
+                Restart Study
+              </button>
+            </div>
+          ) : null}
         </section>
       ) : null}
 
