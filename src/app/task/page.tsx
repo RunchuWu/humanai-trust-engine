@@ -422,8 +422,18 @@ export default function TaskPage() {
 
       {assignment && hasStarted && currentTrial ? (
         <section className={styles.trialLayout}>
+          <p className={styles.trialMeta}>
+            Trial {currentTrialIndex + 1} of {TOTAL_TRIALS}
+          </p>
+          <div className={styles.flowBanner}>
+            <span className={styles.flowPill}>Step 1: Read Context</span>
+            <span className={styles.flowPill}>Step 2: Review AI Recommendation</span>
+            <span className={styles.flowPill}>Step 3: Choose Accept or Override</span>
+          </div>
+
           <div className={styles.contextGrid}>
             <article className={styles.card}>
+              <p className={styles.stepKicker}>Step 1</p>
               <h2 className={styles.sectionTitle}>Role & Requirements</h2>
               <p className={styles.jobTitle}>{currentTrial.job_title}</p>
               <ul className={styles.requirementsList}>
@@ -434,6 +444,7 @@ export default function TaskPage() {
             </article>
 
             <article className={styles.card}>
+              <p className={styles.stepKicker}>Step 1</p>
               <h2 className={styles.sectionTitle}>Candidate Summary</h2>
               <p className={styles.bodyText}>{currentTrial.candidate_summary}</p>
             </article>
@@ -442,6 +453,7 @@ export default function TaskPage() {
           <article className={styles.aiCard}>
             <header className={styles.aiHeader}>
               <div>
+                <p className={styles.stepKicker}>Step 2</p>
                 <p className={styles.aiLabel}>AI Recommendation</p>
                 <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
                 <p className={styles.aiTone}>Tone: {cue?.tone}</p>
@@ -461,26 +473,29 @@ export default function TaskPage() {
             </div>
 
             <footer className={styles.aiActions}>
-              <button
-                type="button"
-                className={styles.primaryAction}
-                onClick={() => {
-                  void handleDecision("accept");
-                }}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Submitting..." : "Accept"}
-              </button>
-              <button
-                type="button"
-                className={styles.secondaryActionButton}
-                onClick={() => {
-                  void handleDecision("override");
-                }}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Submitting..." : "Override"}
-              </button>
+              <p className={styles.stepKicker}>Step 3</p>
+              <div className={styles.decisionButtons}>
+                <button
+                  type="button"
+                  className={styles.primaryAction}
+                  onClick={() => {
+                    void handleDecision("accept");
+                  }}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Submitting..." : "Accept"}
+                </button>
+                <button
+                  type="button"
+                  className={styles.secondaryActionButton}
+                  onClick={() => {
+                    void handleDecision("override");
+                  }}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Submitting..." : "Override"}
+                </button>
+              </div>
             </footer>
             <p className={styles.decisionHint}>
               Accept follows the AI recommendation. Override chooses differently.

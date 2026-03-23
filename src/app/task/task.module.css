@@ -127,6 +127,42 @@
   gap: 14px;
 }
 
+.trialMeta {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.flowBanner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.flowPill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ee;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.stepKicker {
+  margin: 0 0 6px;
+  color: #64748b;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
 .contextGrid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -241,9 +277,14 @@
 }
 
 .aiActions {
+  display: grid;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.decisionButtons {
   display: flex;
   gap: 10px;
-  margin-top: 2px;
 }
 
 .decisionHint {
@@ -360,7 +401,7 @@
     grid-template-columns: 1fr;
   }
 
-  .aiActions {
+  .decisionButtons {
     flex-direction: column;
   }
 
