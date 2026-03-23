@@ -32,6 +32,14 @@ const CUE_BY_CONDITION = {
   },
 } as const;
 
+function shortenId(id: string): string {
+  if (id.length <= 14) {
+    return id;
+  }
+
+  return `${id.slice(0, 8)}...${id.slice(-4)}`;
+}
+
 function createUuid(): string {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
@@ -265,6 +273,10 @@ export default function TaskPage() {
   }
 
   const cue = assignment ? CUE_BY_CONDITION[assignment.conditionId] : null;
+  const participantIdShort = assignment
+    ? shortenId(assignment.participantId)
+    : "-";
+  const sessionIdShort = assignment ? shortenId(assignment.sessionId) : "-";
   const trialDisplayIndex = hasStarted
     ? Math.min(currentTrialIndex + 1, TOTAL_TRIALS)
     : 0;
@@ -392,23 +404,58 @@ export default function TaskPage() {
           <p className={styles.completionText}>
             Thank you. You have finished all {TOTAL_TRIALS} trials.
           </p>
+
+          <div className={styles.completionStats}>
+            <div className={styles.statChip}>
+              <p className={styles.statLabel}>Trials Completed</p>
+              <p className={styles.statValue}>
+                {TOTAL_TRIALS}/{TOTAL_TRIALS}
+              </p>
+            </div>
+            <div className={styles.statChip}>
+              <p className={styles.statLabel}>Participant</p>
+              <p className={styles.statValue}>{participantIdShort}</p>
+            </div>
+            <div className={styles.statChip}>
+              <p className={styles.statLabel}>Session</p>
+              <p className={styles.statValue}>{sessionIdShort}</p>
+            </div>
+          </div>
+
+          <div className={styles.exportGrid}>
+            <article className={styles.exportCard}>
+              <h3 className={styles.exportTitle}>JSON Export</h3>
+              <p className={styles.exportText}>
+                Event-level JSON array (`task_shown` + `decision`), sorted by
+                `timestamp_ms`.
+              </p>
+              <a
+                className={styles.secondaryAction}
+                href="/api/export?format=json"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Download JSON
+              </a>
+            </article>
+            <article className={styles.exportCard}>
+              <h3 className={styles.exportTitle}>CSV Export</h3>
+              <p className={styles.exportText}>
+                Event-level CSV rows with one event per row, sorted by
+                `timestamp_ms`.
+              </p>
+              <a
+                className={styles.secondaryAction}
+                href="/api/export?format=csv"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Download CSV
+              </a>
+            </article>
+          </div>
+
           <div className={styles.completionActions}>
-            <a
-              className={styles.secondaryAction}
-              href="/api/export?format=json"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Download JSON
-            </a>
-            <a
-              className={styles.secondaryAction}
-              href="/api/export?format=csv"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Download CSV
-            </a>
             <button
               type="button"
               className={styles.primaryAction}

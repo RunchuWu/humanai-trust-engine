@@ -375,6 +375,62 @@
   color: #334155;
 }
 
+.completionStats {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.statChip {
+  border: 1px solid #dbe3ee;
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 10px 12px;
+}
+
+.statLabel {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.statValue {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.exportGrid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.exportCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px;
+  background: #ffffff;
+}
+
+.exportTitle {
+  margin: 0;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.exportText {
+  margin: 8px 0 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #475569;
+}
+
 .completionActions {
   margin-top: 14px;
   display: flex;
@@ -398,6 +454,14 @@
   }
 
   .contextGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .completionStats {
+    grid-template-columns: 1fr;
+  }
+
+  .exportGrid {
     grid-template-columns: 1fr;
   }
 
