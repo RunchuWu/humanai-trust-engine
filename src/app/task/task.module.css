@@ -121,10 +121,36 @@
   color: #64748b;
 }
 
+.questionGroup {
+  margin: 12px 0 0;
+  border: 1px solid #dbe3ee;
+  border-radius: 10px;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.questionTitle {
+  padding: 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
 .trialLayout {
   margin-top: 18px;
   display: grid;
   gap: 14px;
+}
+
+.practiceBanner {
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .contextGrid {

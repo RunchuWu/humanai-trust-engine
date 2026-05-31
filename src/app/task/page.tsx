@@ -17,9 +17,42 @@ import styles from "./task.module.css";
 const TOTAL_TRIALS = TRIALS.length;
 const TASK_SHOWN_MARKER_PREFIX = "humanai_task_shown";
 
+type ExperimentScreen =
+  | "welcome"
+  | "consent"
+  | "instructions"
+  | "comprehension_check"
+  | "practice_trial"
+  | "main_task"
+  | "debrief";
+
+const SCREEN_SEQUENCE: ExperimentScreen[] = [
+  "welcome",
+  "consent",
+  "instructions",
+  "comprehension_check",
+  "practice_trial",
+  "main_task",
+  "debrief",
+];
+
 const PARTICIPANT_ID_KEY = "humanai_participant_id";
 const CONDITION_ID_KEY = "humanai_condition_id";
 const SESSION_ID_KEY = "humanai_session_id";
+
+const PRACTICE_TRIAL = {
+  job_title: "Operations Coordinator",
+  requirements: [
+    "Calendar coordination",
+    "Vendor communication",
+    "Process documentation",
+  ],
+  candidate_summary:
+    "2 years coordinating internal schedules, handling vendor messages, and maintaining team process notes.",
+  ai_reco: "proceed",
+  rationale:
+    "The candidate has direct experience with the coordination and documentation tasks listed for the role.",
+} as const;
 
 const CUE_BY_CONDITION = {
   A: {
@@ -135,9 +168,17 @@ export default function TaskPage() {
   const showDebugPanel = searchParams.get("debug") === "1";
 
   const [assignment, setAssignment] = useState<Assignment | null>(null);
-  const [hasStarted, setHasStarted] = useState(false);
-  const [ackDecisionMeaning, setAckDecisionMeaning] = useState(false);
-  const [ackLatencyLogging, setAckLatencyLogging] = useState(false);
+  const [screen, setScreen] = useState<ExperimentScreen>("welcome");
+  const [consentAccepted, setConsentAccepted] = useState(false);
+  const [comprehensionDecisionAnswer, setComprehensionDecisionAnswer] =
+    useState("");
+  const [comprehensionLoggingAnswer, setComprehensionLoggingAnswer] =
+    useState("");
+  const [showComprehensionFeedback, setShowComprehensionFeedback] =
+    useState(false);
+  const [practiceDecision, setPracticeDecision] = useState<DecisionType | null>(
+    null,
+  );
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -188,7 +229,7 @@ export default function TaskPage() {
   const isFinished = currentTrialIndex >= TOTAL_TRIALS;
 
   useEffect(() => {
-    if (!assignment || !hasStarted || !currentTrial || isFinished) {
+    if (!assignment || screen !== "main_task" || !currentTrial || isFinished) {
       return;
     }
 
@@ -225,12 +266,12 @@ export default function TaskPage() {
         error instanceof Error ? error.message : "Failed to log task_shown.";
       setErrorMessage(message);
     });
-  }, [assignment, hasStarted, currentTrial, currentTrialIndex, isFinished]);
+  }, [assignment, screen, currentTrial, currentTrialIndex, isFinished]);
 
   async function handleDecision(decision: DecisionType) {
     if (
       !assignment ||
-      !hasStarted ||
+      screen !== "main_task" ||
       !currentTrial ||
       isFinished ||
       decisionLockRef.current
@@ -272,7 +313,12 @@ export default function TaskPage() {
         ...previous,
         [currentTrialIndex]: decision,
       }));
-      setCurrentTrialIndex((prev) => prev + 1);
+      if (currentTrialIndex + 1 >= TOTAL_TRIALS) {
+        setCurrentTrialIndex(TOTAL_TRIALS);
+        setScreen("debrief");
+      } else {
+        setCurrentTrialIndex((prev) => prev + 1);
+      }
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to log decision.";
@@ -285,7 +331,7 @@ export default function TaskPage() {
   }
 
   function handleGoBackTrial() {
-    if (isSubmitting || currentTrialIndex <= 0 || !hasStarted) {
+    if (isSubmitting || currentTrialIndex <= 0 || screen !== "main_task") {
       return;
     }
 
@@ -296,11 +342,39 @@ export default function TaskPage() {
   }
 
   function handleReviewLastTrial() {
-    setHasStarted(true);
+    setScreen("main_task");
     setErrorMessage(null);
     setPendingRetryDecision(null);
     trialShownAtMsRef.current = null;
     setCurrentTrialIndex(Math.max(0, TOTAL_TRIALS - 1));
+  }
+
+  function moveToScreen(nextScreen: ExperimentScreen) {
+    setScreen(nextScreen);
+    setErrorMessage(null);
+    setPendingRetryDecision(null);
+  }
+
+  function handleComprehensionContinue() {
+    const answersAreCorrect =
+      comprehensionDecisionAnswer === "accept_follows_ai" &&
+      comprehensionLoggingAnswer === "decision_and_time";
+
+    setShowComprehensionFeedback(!answersAreCorrect);
+
+    if (answersAreCorrect) {
+      moveToScreen("practice_trial");
+    }
+  }
+
+  function handlePracticeDecision(decision: DecisionType) {
+    setPracticeDecision(decision);
+  }
+
+  function handleStartMainTask() {
+    setCurrentTrialIndex(0);
+    trialShownAtMsRef.current = null;
+    moveToScreen("main_task");
   }
 
   const cue = assignment ? CUE_BY_CONDITION[assignment.conditionId] : null;
@@ -308,15 +382,25 @@ export default function TaskPage() {
     ? shortenId(assignment.participantId)
     : "-";
   const sessionIdShort = assignment ? shortenId(assignment.sessionId) : "-";
-  const trialDisplayIndex = hasStarted
-    ? Math.min(currentTrialIndex + 1, TOTAL_TRIALS)
-    : 0;
+  const currentScreenIndex = SCREEN_SEQUENCE.indexOf(screen);
+  const trialDisplayIndex =
+    screen === "main_task" || screen === "debrief"
+      ? Math.min(currentTrialIndex + 1, TOTAL_TRIALS)
+      : 0;
   const currentTrialSavedDecision = latestDecisionByTrial[currentTrialIndex];
-  const canStartTask = ackDecisionMeaning && ackLatencyLogging;
-  const progressPercent = Math.max(
-    0,
-    Math.min(100, (trialDisplayIndex / TOTAL_TRIALS) * 100),
-  );
+  const progressValue =
+    screen === "main_task"
+      ? `Trial ${trialDisplayIndex} / ${TOTAL_TRIALS}`
+      : `Step ${currentScreenIndex + 1} / ${SCREEN_SEQUENCE.length}`;
+  const progressNow =
+    screen === "main_task"
+      ? trialDisplayIndex
+      : Math.max(0, currentScreenIndex + 1);
+  const progressMax =
+    screen === "main_task" ? TOTAL_TRIALS : SCREEN_SEQUENCE.length;
+  const progressPercent = Math.max(0, Math.min(100, (progressNow / progressMax) * 100));
+  const canContinueConsent = consentAccepted;
+  const canContinuePractice = practiceDecision !== null;
 
   return (
     <main className={styles.page}>
@@ -338,15 +422,15 @@ export default function TaskPage() {
         <div className={styles.progressWrap}>
           <div className={styles.progressMeta}>
             <span className={styles.progressLabel}>Progress</span>
-            <span className={styles.progressValue}>Trial {trialDisplayIndex} / 10</span>
+            <span className={styles.progressValue}>{progressValue}</span>
           </div>
           <div
             className={styles.progressTrack}
             role="progressbar"
-            aria-valuenow={trialDisplayIndex}
-            aria-valuemin={0}
-            aria-valuemax={TOTAL_TRIALS}
-            aria-label="Trial progress"
+            aria-valuenow={progressNow}
+            aria-valuemin={1}
+            aria-valuemax={progressMax}
+            aria-label="Study progress"
           >
             <div
               className={styles.progressFill}
@@ -360,7 +444,64 @@ export default function TaskPage() {
 
       {!assignment ? <p className={styles.infoText}>Initializing assignment...</p> : null}
 
-      {assignment && !hasStarted && !isFinished ? (
+      {assignment && screen === "welcome" ? (
+        <section className={styles.instructionsCard}>
+          <h2 className={styles.sectionTitle}>Welcome</h2>
+          <p className={styles.bodyText}>
+            This study asks you to review job-screening recommendations and make
+            a decision on each case.
+          </p>
+          <div className={styles.instructionsActions}>
+            <button
+              type="button"
+              className={styles.primaryAction}
+              onClick={() => {
+                moveToScreen("consent");
+              }}
+            >
+              Continue
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {assignment && screen === "consent" ? (
+        <section className={styles.instructionsCard}>
+          <h2 className={styles.sectionTitle}>Consent</h2>
+          <p className={styles.bodyText}>
+            Your responses, response times, assigned condition, and trial
+            metadata will be recorded for research analysis. Do not enter any
+            personal information into the task.
+          </p>
+          <div className={styles.readinessCard}>
+            <label className={styles.readinessItem}>
+              <input
+                className={styles.readinessCheckbox}
+                type="checkbox"
+                checked={consentAccepted}
+                onChange={(event) => {
+                  setConsentAccepted(event.target.checked);
+                }}
+              />
+              <span>I understand and agree to continue.</span>
+            </label>
+          </div>
+          <div className={styles.instructionsActions}>
+            <button
+              type="button"
+              className={styles.primaryAction}
+              disabled={!canContinueConsent}
+              onClick={() => {
+                moveToScreen("instructions");
+              }}
+            >
+              Continue
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {assignment && screen === "instructions" ? (
         <section className={styles.instructionsCard}>
           <h2 className={styles.sectionTitle}>Instructions</h2>
           <ul className={styles.instructionsList}>
@@ -374,58 +515,179 @@ export default function TaskPage() {
               We log your decision and response time for research analysis.
             </li>
           </ul>
-          <div className={styles.readinessCard}>
-            <label className={styles.readinessItem}>
-              <input
-                className={styles.readinessCheckbox}
-                type="checkbox"
-                checked={ackDecisionMeaning}
-                onChange={(event) => {
-                  setAckDecisionMeaning(event.target.checked);
-                }}
-              />
-              <span>
-                I understand: <strong>Accept</strong> means follow AI,{" "}
-                <strong>Override</strong> means choose differently.
-              </span>
-            </label>
-            <label className={styles.readinessItem}>
-              <input
-                className={styles.readinessCheckbox}
-                type="checkbox"
-                checked={ackLatencyLogging}
-                onChange={(event) => {
-                  setAckLatencyLogging(event.target.checked);
-                }}
-              />
-              <span>
-                I understand each trial logs my decision and response time.
-              </span>
-            </label>
-          </div>
           <div className={styles.instructionsActions}>
             <button
               type="button"
               className={styles.primaryAction}
-              disabled={!canStartTask}
               onClick={() => {
-                setHasStarted(true);
-                setErrorMessage(null);
-                setPendingRetryDecision(null);
+                moveToScreen("comprehension_check");
               }}
             >
-              Start Task
+              Continue
             </button>
-            {!canStartTask ? (
-              <p className={styles.startHint}>
-                Please check both items before starting.
-              </p>
-            ) : null}
           </div>
         </section>
       ) : null}
 
-      {assignment && isFinished ? (
+      {assignment && screen === "comprehension_check" ? (
+        <section className={styles.instructionsCard}>
+          <h2 className={styles.sectionTitle}>Comprehension Check</h2>
+          <fieldset className={styles.questionGroup}>
+            <legend className={styles.questionTitle}>
+              What does Accept mean?
+            </legend>
+            <label className={styles.readinessItem}>
+              <input
+                type="radio"
+                name="decisionMeaning"
+                value="accept_follows_ai"
+                checked={comprehensionDecisionAnswer === "accept_follows_ai"}
+                onChange={(event) => {
+                  setComprehensionDecisionAnswer(event.target.value);
+                }}
+              />
+              <span>Accept means follow the AI recommendation.</span>
+            </label>
+            <label className={styles.readinessItem}>
+              <input
+                type="radio"
+                name="decisionMeaning"
+                value="accept_disagrees"
+                checked={comprehensionDecisionAnswer === "accept_disagrees"}
+                onChange={(event) => {
+                  setComprehensionDecisionAnswer(event.target.value);
+                }}
+              />
+              <span>Accept means choose differently from the AI.</span>
+            </label>
+          </fieldset>
+          <fieldset className={styles.questionGroup}>
+            <legend className={styles.questionTitle}>
+              What is recorded during the main task?
+            </legend>
+            <label className={styles.readinessItem}>
+              <input
+                type="radio"
+                name="loggingMeaning"
+                value="decision_and_time"
+                checked={comprehensionLoggingAnswer === "decision_and_time"}
+                onChange={(event) => {
+                  setComprehensionLoggingAnswer(event.target.value);
+                }}
+              />
+              <span>My decision and response time for each trial.</span>
+            </label>
+            <label className={styles.readinessItem}>
+              <input
+                type="radio"
+                name="loggingMeaning"
+                value="personal_notes"
+                checked={comprehensionLoggingAnswer === "personal_notes"}
+                onChange={(event) => {
+                  setComprehensionLoggingAnswer(event.target.value);
+                }}
+              />
+              <span>Personal notes I type into the page.</span>
+            </label>
+          </fieldset>
+          {showComprehensionFeedback ? (
+            <p className={styles.startHint}>
+              Please review the instructions and select the correct answers to
+              continue.
+            </p>
+          ) : null}
+          <div className={styles.instructionsActions}>
+            <button
+              type="button"
+              className={styles.primaryAction}
+              onClick={handleComprehensionContinue}
+            >
+              Continue
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {assignment && screen === "practice_trial" ? (
+        <section className={styles.trialLayout}>
+          <div className={styles.practiceBanner}>
+            Practice trial. This screen helps you learn the decision controls
+            before the main task begins.
+          </div>
+          <div className={styles.contextGrid}>
+            <article className={styles.card}>
+              <h2 className={styles.sectionTitle}>Role & Requirements</h2>
+              <p className={styles.jobTitle}>{PRACTICE_TRIAL.job_title}</p>
+              <ul className={styles.requirementsList}>
+                {PRACTICE_TRIAL.requirements.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
+
+            <article className={styles.card}>
+              <h2 className={styles.sectionTitle}>Candidate Summary</h2>
+              <p className={styles.bodyText}>{PRACTICE_TRIAL.candidate_summary}</p>
+            </article>
+          </div>
+
+          <article className={styles.aiCard}>
+            <header className={styles.aiHeader}>
+              <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
+              <p className={`${styles.aiPosition} ${styles.aiPositionProceed}`}>
+                Position: Proceed
+              </p>
+            </header>
+            <div className={styles.aiBody}>
+              <p className={styles.aiMessageLead}>{cue?.agentName} says:</p>
+              <p className={styles.aiQuote}>{PRACTICE_TRIAL.rationale}</p>
+            </div>
+            <footer className={styles.aiActions}>
+              {practiceDecision ? (
+                <p className={styles.savedDecisionHint}>
+                  Practice decision selected: <strong>{practiceDecision}</strong>.
+                </p>
+              ) : null}
+              <div className={styles.decisionButtons}>
+                <button
+                  type="button"
+                  className={styles.primaryAction}
+                  onClick={() => {
+                    handlePracticeDecision("accept");
+                  }}
+                >
+                  Accept
+                </button>
+                <button
+                  type="button"
+                  className={styles.secondaryActionButton}
+                  onClick={() => {
+                    handlePracticeDecision("override");
+                  }}
+                >
+                  Override
+                </button>
+              </div>
+            </footer>
+            <p className={styles.decisionHint}>
+              Accept follows the AI recommendation. Override chooses differently.
+            </p>
+          </article>
+
+          <div className={styles.instructionsActions}>
+            <button
+              type="button"
+              className={styles.primaryAction}
+              disabled={!canContinuePractice}
+              onClick={handleStartMainTask}
+            >
+              Start Main Task
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {assignment && screen === "debrief" ? (
         <section className={styles.completionCard}>
           <h2 className={styles.completionTitle}>Study Complete</h2>
           <p className={styles.completionText}>
@@ -519,7 +781,7 @@ export default function TaskPage() {
         </section>
       ) : null}
 
-      {assignment && hasStarted && currentTrial ? (
+      {assignment && screen === "main_task" && currentTrial ? (
         <section className={styles.trialLayout}>
           <div className={styles.contextGrid}>
             <article className={styles.card}>
