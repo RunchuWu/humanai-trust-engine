@@ -4,6 +4,7 @@ import type { Assignment } from "@/lib/conditions";
 
 interface DebugPanelProps {
   assignment: Assignment | null;
+  currentScreen: string;
   currentTrialIndex: number;
   totalTrials: number;
   onReset: () => void;
@@ -11,6 +12,7 @@ interface DebugPanelProps {
 
 export default function DebugPanel({
   assignment,
+  currentScreen,
   currentTrialIndex,
   totalTrials,
   onReset,
@@ -54,6 +56,9 @@ export default function DebugPanel({
       </p>
       <p style={{ margin: "4px 0" }}>
         <strong>sessionId:</strong> {assignment?.sessionId ?? "-"}
+      </p>
+      <p style={{ margin: "4px 0" }}>
+        <strong>current screen:</strong> {currentScreen}
       </p>
       <p style={{ margin: "4px 0" }}>
         <strong>current trial_index:</strong> {currentTrialIndex}

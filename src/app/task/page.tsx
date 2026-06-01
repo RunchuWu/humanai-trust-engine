@@ -17,6 +17,9 @@ import styles from "./task.module.css";
 const TOTAL_TRIALS = TRIALS.length;
 const TASK_SHOWN_MARKER_PREFIX = "humanai_task_shown";
 
+type Recommendation = "proceed" | "reject";
+type RevealStage = "job" | "candidate" | "ai";
+
 type ExperimentScreen =
   | "welcome"
   | "consent"
@@ -64,6 +67,16 @@ const CUE_BY_CONDITION = {
     tone: "conversational",
   },
 } as const;
+
+function formatRecommendation(recommendation: Recommendation): string {
+  return recommendation === "proceed"
+    ? "Proceed with this candidate"
+    : "Reject this candidate";
+}
+
+function formatRecommendationShort(recommendation: Recommendation): string {
+  return recommendation === "proceed" ? "Proceed" : "Reject";
+}
 
 function shortenId(id: string): string {
   if (id.length <= 14) {
@@ -179,6 +192,9 @@ export default function TaskPage() {
   const [practiceDecision, setPracticeDecision] = useState<DecisionType | null>(
     null,
   );
+  const [practiceRevealStage, setPracticeRevealStage] =
+    useState<RevealStage>("job");
+  const [mainRevealStage, setMainRevealStage] = useState<RevealStage>("job");
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -227,6 +243,18 @@ export default function TaskPage() {
   }, [currentTrialIndex]);
 
   const isFinished = currentTrialIndex >= TOTAL_TRIALS;
+
+  useEffect(() => {
+    if (screen === "practice_trial") {
+      setPracticeRevealStage("job");
+    }
+  }, [screen]);
+
+  useEffect(() => {
+    if (screen === "main_task") {
+      setMainRevealStage("job");
+    }
+  }, [screen, currentTrialIndex]);
 
   useEffect(() => {
     if (!assignment || screen !== "main_task" || !currentTrial || isFinished) {
@@ -371,6 +399,18 @@ export default function TaskPage() {
     setPracticeDecision(decision);
   }
 
+  function advancePracticeReveal() {
+    setPracticeRevealStage((previous) =>
+      previous === "job" ? "candidate" : "ai",
+    );
+  }
+
+  function advanceMainReveal() {
+    setMainRevealStage((previous) =>
+      previous === "job" ? "candidate" : "ai",
+    );
+  }
+
   function handleStartMainTask() {
     setCurrentTrialIndex(0);
     trialShownAtMsRef.current = null;
@@ -407,6 +447,7 @@ export default function TaskPage() {
       {showDebugPanel ? (
         <DebugPanel
           assignment={assignment}
+          currentScreen={screen}
           currentTrialIndex={currentTrialIndex}
           totalTrials={TOTAL_TRIALS}
           onReset={clearAssignmentAndReload}
@@ -614,8 +655,10 @@ export default function TaskPage() {
             Practice trial. This screen helps you learn the decision controls
             before the main task begins.
           </div>
-          <div className={styles.contextGrid}>
-            <article className={styles.card}>
+
+          <div className={styles.revealStack}>
+            <article className={`${styles.card} ${styles.revealCard}`}>
+              <p className={styles.revealEyebrow}>Step 1</p>
               <h2 className={styles.sectionTitle}>Role & Requirements</h2>
               <p className={styles.jobTitle}>{PRACTICE_TRIAL.job_title}</p>
               <ul className={styles.requirementsList}>
@@ -625,64 +668,98 @@ export default function TaskPage() {
               </ul>
             </article>
 
-            <article className={styles.card}>
-              <h2 className={styles.sectionTitle}>Candidate Summary</h2>
-              <p className={styles.bodyText}>{PRACTICE_TRIAL.candidate_summary}</p>
-            </article>
-          </div>
-
-          <article className={styles.aiCard}>
-            <header className={styles.aiHeader}>
-              <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
-              <p className={`${styles.aiPosition} ${styles.aiPositionProceed}`}>
-                Position: Proceed
-              </p>
-            </header>
-            <div className={styles.aiBody}>
-              <p className={styles.aiMessageLead}>{cue?.agentName} says:</p>
-              <p className={styles.aiQuote}>{PRACTICE_TRIAL.rationale}</p>
-            </div>
-            <footer className={styles.aiActions}>
-              {practiceDecision ? (
-                <p className={styles.savedDecisionHint}>
-                  Practice decision selected: <strong>{practiceDecision}</strong>.
+            {(practiceRevealStage === "candidate" ||
+              practiceRevealStage === "ai") ? (
+              <article className={`${styles.card} ${styles.revealCard}`}>
+                <p className={styles.revealEyebrow}>Step 2</p>
+                <h2 className={styles.sectionTitle}>Candidate Summary</h2>
+                <p className={styles.bodyText}>
+                  {PRACTICE_TRIAL.candidate_summary}
                 </p>
-              ) : null}
-              <div className={styles.decisionButtons}>
+              </article>
+            ) : null}
+
+            {practiceRevealStage === "ai" ? (
+              <article className={styles.aiRecommendationCard}>
+                <p className={styles.revealEyebrow}>Step 3</p>
+                <div className={styles.aiRecommendationHeader}>
+                  <div>
+                    <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
+                    <p className={styles.aiMessageLead}>AI recommendation</p>
+                  </div>
+                  <p
+                    className={`${styles.aiRecommendationBadge} ${styles.aiPositionProceed}`}
+                  >
+                    {formatRecommendation(PRACTICE_TRIAL.ai_reco)}
+                  </p>
+                </div>
+                <div className={styles.aiBody}>
+                  <p className={styles.aiQuote}>{PRACTICE_TRIAL.rationale}</p>
+                </div>
+
+                <footer className={styles.aiActions}>
+                  {practiceDecision ? (
+                    <p className={styles.savedDecisionHint}>
+                      Practice decision selected:{" "}
+                      <strong>{practiceDecision}</strong>.
+                    </p>
+                  ) : null}
+                  <p className={styles.decisionPrompt}>
+                    Your choice below is about whether to follow this AI
+                    recommendation.
+                  </p>
+                  <div className={styles.decisionButtons}>
+                    <button
+                      type="button"
+                      className={styles.decisionActionButton}
+                      onClick={() => {
+                        handlePracticeDecision("accept");
+                      }}
+                    >
+                      Accept AI Recommendation:{" "}
+                      {formatRecommendationShort(PRACTICE_TRIAL.ai_reco)}
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.decisionActionButton}
+                      onClick={() => {
+                        handlePracticeDecision("override");
+                      }}
+                    >
+                      Override AI Recommendation
+                    </button>
+                  </div>
+                </footer>
+                <p className={styles.decisionHint}>
+                  Accept means follow the AI choice:{" "}
+                  <strong>{formatRecommendationShort(PRACTICE_TRIAL.ai_reco)}</strong>.
+                  Override means choose the other screening outcome.
+                </p>
+              </article>
+            ) : null}
+
+            <div className={styles.revealActions}>
+              {practiceRevealStage !== "ai" ? (
                 <button
                   type="button"
                   className={styles.primaryAction}
-                  onClick={() => {
-                    handlePracticeDecision("accept");
-                  }}
+                  onClick={advancePracticeReveal}
                 >
-                  Accept
+                  {practiceRevealStage === "job"
+                    ? "Show Candidate Summary"
+                    : "Show AI Recommendation"}
                 </button>
+              ) : (
                 <button
                   type="button"
-                  className={styles.secondaryActionButton}
-                  onClick={() => {
-                    handlePracticeDecision("override");
-                  }}
+                  className={styles.primaryAction}
+                  disabled={!canContinuePractice}
+                  onClick={handleStartMainTask}
                 >
-                  Override
+                  Start Main Task
                 </button>
-              </div>
-            </footer>
-            <p className={styles.decisionHint}>
-              Accept follows the AI recommendation. Override chooses differently.
-            </p>
-          </article>
-
-          <div className={styles.instructionsActions}>
-            <button
-              type="button"
-              className={styles.primaryAction}
-              disabled={!canContinuePractice}
-              onClick={handleStartMainTask}
-            >
-              Start Main Task
-            </button>
+              )}
+            </div>
           </div>
         </section>
       ) : null}
@@ -783,8 +860,9 @@ export default function TaskPage() {
 
       {assignment && screen === "main_task" && currentTrial ? (
         <section className={styles.trialLayout}>
-          <div className={styles.contextGrid}>
-            <article className={styles.card}>
+          <div className={styles.revealStack}>
+            <article className={`${styles.card} ${styles.revealCard}`}>
+              <p className={styles.revealEyebrow}>Step 1</p>
               <h2 className={styles.sectionTitle}>Role & Requirements</h2>
               <p className={styles.jobTitle}>{currentTrial.job_title}</p>
               <ul className={styles.requirementsList}>
@@ -794,68 +872,104 @@ export default function TaskPage() {
               </ul>
             </article>
 
-            <article className={styles.card}>
-              <h2 className={styles.sectionTitle}>Candidate Summary</h2>
-              <p className={styles.bodyText}>{currentTrial.candidate_summary}</p>
-            </article>
-          </div>
+            {(mainRevealStage === "candidate" || mainRevealStage === "ai") ? (
+              <article className={`${styles.card} ${styles.revealCard}`}>
+                <p className={styles.revealEyebrow}>Step 2</p>
+                <h2 className={styles.sectionTitle}>Candidate Summary</h2>
+                <p className={styles.bodyText}>{currentTrial.candidate_summary}</p>
+              </article>
+            ) : null}
 
-          <article className={styles.aiCard}>
-            <header className={styles.aiHeader}>
-              <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
-              <p
-                className={`${styles.aiPosition} ${
-                  currentTrial.ai_reco === "proceed"
-                    ? styles.aiPositionProceed
-                    : styles.aiPositionReject
-                }`}
-              >
-                {currentTrial.ai_reco === "proceed"
-                  ? "Position: Proceed"
-                  : "Position: Reject"}
-              </p>
-            </header>
+            {mainRevealStage === "ai" ? (
+              <article className={styles.aiRecommendationCard}>
+                <p className={styles.revealEyebrow}>Step 3</p>
+                <div className={styles.aiRecommendationHeader}>
+                  <div>
+                    <h2 className={styles.aiAgentName}>{cue?.agentName}</h2>
+                    <p className={styles.aiMessageLead}>AI recommendation</p>
+                  </div>
+                  <p
+                    className={`${styles.aiRecommendationBadge} ${
+                      currentTrial.ai_reco === "proceed"
+                        ? styles.aiPositionProceed
+                        : styles.aiPositionReject
+                    }`}
+                  >
+                    {formatRecommendation(currentTrial.ai_reco)}
+                  </p>
+                </div>
 
-            <div className={styles.aiBody}>
-              <p className={styles.aiMessageLead}>{cue?.agentName} says:</p>
-              <p className={styles.aiQuote}>
-                {assignment.conditionId === "A"
-                  ? currentTrial.rationale_A
-                  : currentTrial.rationale_B}
-              </p>
-            </div>
+                <div className={styles.aiBody}>
+                  <p className={styles.aiQuote}>
+                    {assignment.conditionId === "A"
+                      ? currentTrial.rationale_A
+                      : currentTrial.rationale_B}
+                  </p>
+                </div>
 
-            <footer className={styles.aiActions}>
-              {currentTrialSavedDecision ? (
-                <p className={styles.savedDecisionHint}>
-                  Latest saved decision for this trial:{" "}
-                  <strong>{currentTrialSavedDecision}</strong>. Submit again to
-                  update it.
+                <footer className={styles.aiActions}>
+                  {currentTrialSavedDecision ? (
+                    <p className={styles.savedDecisionHint}>
+                      Latest saved decision for this trial:{" "}
+                      <strong>{currentTrialSavedDecision}</strong>. Submit again
+                      to update it.
+                    </p>
+                  ) : null}
+                  <p className={styles.decisionPrompt}>
+                    Your choice below is about whether to follow this AI
+                    recommendation.
+                  </p>
+                  <div className={styles.decisionButtons}>
+                    <button
+                      type="button"
+                      className={styles.decisionActionButton}
+                      onClick={() => {
+                        void handleDecision("accept");
+                      }}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting
+                        ? "Submitting..."
+                        : `Accept AI Recommendation: ${formatRecommendationShort(
+                            currentTrial.ai_reco,
+                          )}`}
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.decisionActionButton}
+                      onClick={() => {
+                        void handleDecision("override");
+                      }}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting
+                        ? "Submitting..."
+                        : "Override AI Recommendation"}
+                    </button>
+                  </div>
+                </footer>
+                <p className={styles.decisionHint}>
+                  Accept means follow the AI choice:{" "}
+                  <strong>{formatRecommendationShort(currentTrial.ai_reco)}</strong>.
+                  Override means choose the other screening outcome.
                 </p>
-              ) : null}
-              <div className={styles.decisionButtons}>
+              </article>
+            ) : null}
+
+            <div className={styles.revealActions}>
+              {mainRevealStage !== "ai" ? (
                 <button
                   type="button"
                   className={styles.primaryAction}
-                  onClick={() => {
-                    void handleDecision("accept");
-                  }}
-                  disabled={isSubmitting}
+                  onClick={advanceMainReveal}
                 >
-                  {isSubmitting ? "Submitting..." : "Accept"}
+                  {mainRevealStage === "job"
+                    ? "Show Candidate Summary"
+                    : "Show AI Recommendation"}
                 </button>
-                <button
-                  type="button"
-                  className={styles.secondaryActionButton}
-                  onClick={() => {
-                    void handleDecision("override");
-                  }}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Submitting..." : "Override"}
-                </button>
-              </div>
-            </footer>
+              ) : null}
+            </div>
+
             {currentTrialIndex > 0 ? (
               <div className={styles.backRow}>
                 <button
@@ -868,9 +982,6 @@ export default function TaskPage() {
                 </button>
               </div>
             ) : null}
-            <p className={styles.decisionHint}>
-              Accept follows the AI recommendation. Override chooses differently.
-            </p>
             {pendingRetryDecision ? (
               <div className={styles.retryNotice}>
                 <p className={styles.retryText}>
@@ -888,7 +999,7 @@ export default function TaskPage() {
                 </button>
               </div>
             ) : null}
-          </article>
+          </div>
         </section>
       ) : null}
     </main>

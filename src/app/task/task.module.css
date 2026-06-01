@@ -143,6 +143,30 @@
   gap: 14px;
 }
 
+.revealStack {
+  display: grid;
+  gap: 14px;
+}
+
+.revealCard,
+.aiRecommendationCard {
+  animation: revealIn 360ms ease both;
+}
+
+.revealEyebrow {
+  margin: 0 0 8px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.revealActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .practiceBanner {
   border: 1px solid #bfdbfe;
   border-radius: 10px;
@@ -188,6 +212,16 @@
   font-size: 14px;
 }
 
+.aiRecommendationCard {
+  background: #ffffff;
+  border: 2px solid #94a3b8;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+  display: grid;
+  gap: 16px;
+}
+
 .aiCard {
   background: #ffffff;
   border: 1px solid #cfd8e3;
@@ -208,6 +242,13 @@
   padding-bottom: 12px;
 }
 
+.aiRecommendationHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+
 .aiAgentName {
   margin: 0;
   font-size: 24px;
@@ -221,6 +262,16 @@
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 700;
+}
+
+.aiRecommendationBadge {
+  margin: 0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .aiPositionProceed {
@@ -265,8 +316,47 @@
 }
 
 .decisionButtons {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
+}
+
+.decisionPrompt {
+  margin: 0;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.decisionActionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border-radius: 10px;
+  border: 1px solid #94a3b8;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.decisionActionButton:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #475569;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.decisionActionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
 }
 
 .savedDecisionHint {
@@ -510,6 +600,18 @@
   border-color: #cbd5e1;
 }
 
+@keyframes revealIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 920px) {
   .page {
     padding: 20px 14px 56px;
@@ -531,8 +633,16 @@
     grid-template-columns: 1fr;
   }
 
+  .aiRecommendationHeader {
+    grid-template-columns: 1fr;
+  }
+
+  .aiRecommendationBadge {
+    font-size: 18px;
+  }
+
   .decisionButtons {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .backButton {
@@ -548,5 +658,12 @@
   .secondaryActionButton,
   .secondaryAction {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revealCard,
+  .aiRecommendationCard {
+    animation: none;
   }
 }
