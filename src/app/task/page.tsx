@@ -388,6 +388,31 @@ export default function TaskPage() {
     }
   }
 
+  function handleDebugScreenJump(nextScreen: ExperimentScreen) {
+    setScreen(nextScreen);
+    setErrorMessage(null);
+    setPendingRetryDecision(null);
+    trialShownAtMsRef.current = null;
+
+    if (nextScreen === "main_task") {
+      setCurrentTrialIndex((previous) =>
+        previous >= TOTAL_TRIALS ? 0 : Math.max(0, previous),
+      );
+      setMainRevealStage("job");
+      return;
+    }
+
+    if (nextScreen === "debrief") {
+      setCurrentTrialIndex(TOTAL_TRIALS);
+      return;
+    }
+
+    setCurrentTrialIndex(0);
+    setPracticeDecision(null);
+    setPracticeRevealStage("job");
+    setMainRevealStage("job");
+  }
+
   const cue = assignment ? CONDITION_CUES[assignment.conditionId] : null;
   const participantIdShort = assignment
     ? shortenId(assignment.participantId)
@@ -421,7 +446,9 @@ export default function TaskPage() {
           currentScreen={screen}
           currentTrialIndex={currentTrialIndex}
           totalTrials={TOTAL_TRIALS}
+          screens={SCREEN_SEQUENCE}
           onForceCondition={handleForceCondition}
+          onJumpToScreen={handleDebugScreenJump}
           onReset={clearAssignmentAndReload}
         />
       ) : null}

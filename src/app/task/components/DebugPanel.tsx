@@ -1,13 +1,16 @@
 "use client";
 
 import type { Assignment, ConditionId } from "@/lib/conditions";
+import type { ExperimentScreen } from "@/lib/experiment-config";
 
 interface DebugPanelProps {
   assignment: Assignment | null;
   currentScreen: string;
   currentTrialIndex: number;
   totalTrials: number;
+  screens: ExperimentScreen[];
   onForceCondition: (conditionId: ConditionId) => void;
+  onJumpToScreen: (screen: ExperimentScreen) => void;
   onReset: () => void;
 }
 
@@ -16,7 +19,9 @@ export default function DebugPanel({
   currentScreen,
   currentTrialIndex,
   totalTrials,
+  screens,
   onForceCondition,
+  onJumpToScreen,
   onReset,
 }: DebugPanelProps) {
   return (
@@ -78,6 +83,32 @@ export default function DebugPanel({
         }}
       >
         <p style={{ margin: "0 0 6px", fontWeight: 600 }}>Researcher Tools</p>
+        <p style={{ margin: "0 0 6px", fontWeight: 600 }}>Jump to screen</p>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 6,
+            marginBottom: 10,
+          }}
+        >
+          {screens.map((screen) => (
+            <button
+              key={screen}
+              type="button"
+              onClick={() => {
+                onJumpToScreen(screen);
+              }}
+              style={{
+                fontSize: 11,
+                fontWeight: currentScreen === screen ? 700 : 400,
+              }}
+            >
+              {screen}
+            </button>
+          ))}
+        </div>
+        <p style={{ margin: "0 0 6px", fontWeight: 600 }}>Assignment</p>
         <div
           style={{
             display: "flex",
