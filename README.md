@@ -16,12 +16,19 @@ The experiment manipulates one cue dimension across A/B conditions: **agent name
 
 Default participant mode is clean and task-focused:
 
-- Instruction gate before trials
-- Trial screen with:
+- Deliberate screen sequence:
+  - Welcome
+  - Consent
+  - Instructions
+  - Comprehension check
+  - Practice trial
+  - Main task
+  - Debrief
+- Staged trial reveal:
   - `Role & Requirements`
   - `Candidate Summary`
-  - Agent panel (name + clear position + rationale)
-  - Decision actions: `Accept` / `Override`
+  - enlarged AI recommendation
+  - equal-weight decision actions: `Accept AI Recommendation` / `Override AI Recommendation`
 - Completion screen without researcher tooling
 
 Participant-specific UX rules:
@@ -34,8 +41,10 @@ Participant-specific UX rules:
 
 Debug mode shows researcher utilities without changing experiment logic:
 
-- Debug panel with `participantId`, `conditionId`, `sessionId`, `current trial_index`
+- Debug panel with `participantId`, `conditionId`, `sessionId`, `current screen`, `current trial_index`
 - `Reset` action
+- Force condition A/B for researcher review
+- Jump to any experiment screen
 - Export tools available at any time (including before task completion):
   - `Export JSON`
   - `Export CSV`
@@ -104,8 +113,12 @@ Both are sorted by `timestamp_ms` ascending.
 - `src/app/api/log/route.ts`: event ingestion API
 - `src/app/api/export/route.ts`: event export API
 - `src/lib/conditions.ts`: assignment/persistence logic
+- `src/lib/experiment-config.ts`: screen sequence, practice trial, condition cues
 - `src/lib/trials.ts`: 10-trial dataset
 - `src/lib/schema.ts`: event typing + validation
+- `docs/week-1-2-plan.md`: Week 1-2 implementation plan and acceptance criteria
+- `docs/how-to-run.md`: setup, local URLs, and debug-mode guide
+- `docs/event-schema.md`: event schema and export reference
 
 ## Run Locally
 
