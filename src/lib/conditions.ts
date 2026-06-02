@@ -58,6 +58,10 @@ function setCookie(name: string, value: string): void {
   document.cookie = `${encodedName}=${encodedValue}; Path=/; Max-Age=${COOKIE_MAX_AGE_SECONDS}; SameSite=Lax`;
 }
 
+function expireCookie(name: string): void {
+  document.cookie = `${encodeURIComponent(name)}=; Path=/; Max-Age=0; SameSite=Lax`;
+}
+
 function getLocalStorageItem(key: string): string | null {
   try {
     return window.localStorage.getItem(key);
@@ -127,6 +131,13 @@ function getOrCreateSessionId(): string {
   return currentPageSessionId;
 }
 
+function createNewSessionId(): string {
+  currentPageSessionId = createUuid();
+  setSessionStorageItem(SESSION_ID_KEY, currentPageSessionId);
+
+  return currentPageSessionId;
+}
+
 export function getOrCreateAssignment(): Assignment {
   assertBrowserContext();
 
@@ -139,5 +150,40 @@ export function getOrCreateAssignment(): Assignment {
     participantId,
     conditionId,
     sessionId: getOrCreateSessionId(),
+  };
+}
+
+export function clearStoredAssignment(): void {
+  assertBrowserContext();
+
+  expireCookie(PARTICIPANT_ID_KEY);
+  expireCookie(CONDITION_ID_KEY);
+
+  try {
+    window.localStorage.removeItem(PARTICIPANT_ID_KEY);
+    window.localStorage.removeItem(CONDITION_ID_KEY);
+  } catch {
+    // Ignore localStorage errors.
+  }
+
+  try {
+    window.sessionStorage.removeItem(SESSION_ID_KEY);
+  } catch {
+    // Ignore sessionStorage errors.
+  }
+
+  currentPageSessionId = null;
+}
+
+export function forceConditionAssignment(conditionId: ConditionId): Assignment {
+  assertBrowserContext();
+
+  const participantId = readPersistentParticipantId() ?? createUuid();
+  persistAssignmentIdentity(participantId, conditionId);
+
+  return {
+    participantId,
+    conditionId,
+    sessionId: createNewSessionId(),
   };
 }

@@ -1,12 +1,13 @@
 "use client";
 
-import type { Assignment } from "@/lib/conditions";
+import type { Assignment, ConditionId } from "@/lib/conditions";
 
 interface DebugPanelProps {
   assignment: Assignment | null;
   currentScreen: string;
   currentTrialIndex: number;
   totalTrials: number;
+  onForceCondition: (conditionId: ConditionId) => void;
   onReset: () => void;
 }
 
@@ -15,6 +16,7 @@ export default function DebugPanel({
   currentScreen,
   currentTrialIndex,
   totalTrials,
+  onForceCondition,
   onReset,
 }: DebugPanelProps) {
   return (
@@ -76,6 +78,32 @@ export default function DebugPanel({
         }}
       >
         <p style={{ margin: "0 0 6px", fontWeight: 600 }}>Researcher Tools</p>
+        <div
+          style={{
+            display: "flex",
+            gap: 6,
+            marginBottom: 8,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => {
+              onForceCondition("A");
+            }}
+            style={{ fontSize: 12 }}
+          >
+            Force A
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              onForceCondition("B");
+            }}
+            style={{ fontSize: 12 }}
+          >
+            Force B
+          </button>
+        </div>
         <p style={{ margin: "4px 0" }}>
           <a href="/api/export?format=json" target="_blank" rel="noreferrer">
             Export JSON

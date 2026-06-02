@@ -4,7 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import DebugPanel from "@/app/task/components/DebugPanel";
-import { getOrCreateAssignment, type Assignment } from "@/lib/conditions";
+import {
+  clearStoredAssignment,
+  forceConditionAssignment,
+  getOrCreateAssignment,
+  type Assignment,
+  type ConditionId,
+} from "@/lib/conditions";
 import {
   CONDITION_CUES,
   formatRecommendation,
@@ -25,10 +31,6 @@ import styles from "./task.module.css";
 
 const TOTAL_TRIALS = TRIALS.length;
 const TASK_SHOWN_MARKER_PREFIX = "humanai_task_shown";
-
-const PARTICIPANT_ID_KEY = "humanai_participant_id";
-const CONDITION_ID_KEY = "humanai_condition_id";
-const SESSION_ID_KEY = "humanai_session_id";
 
 function shortenId(id: string): string {
   if (id.length <= 14) {
@@ -97,24 +99,8 @@ function removeSessionFlag(key: string): void {
   }
 }
 
-function expireCookie(name: string): void {
-  document.cookie = `${encodeURIComponent(name)}=; Path=/; Max-Age=0; SameSite=Lax`;
-}
-
-function clearAssignmentAndReload(): void {
-  expireCookie(PARTICIPANT_ID_KEY);
-  expireCookie(CONDITION_ID_KEY);
-
+function clearTaskShownMarkers(): void {
   try {
-    window.localStorage.removeItem(PARTICIPANT_ID_KEY);
-    window.localStorage.removeItem(CONDITION_ID_KEY);
-  } catch {
-    // Ignore localStorage errors.
-  }
-
-  try {
-    window.sessionStorage.removeItem(SESSION_ID_KEY);
-
     for (let index = window.sessionStorage.length - 1; index >= 0; index -= 1) {
       const key = window.sessionStorage.key(index);
       if (key && key.startsWith(`${TASK_SHOWN_MARKER_PREFIX}:`)) {
@@ -124,6 +110,11 @@ function clearAssignmentAndReload(): void {
   } catch {
     // Ignore sessionStorage errors.
   }
+}
+
+function clearAssignmentAndReload(): void {
+  clearStoredAssignment();
+  clearTaskShownMarkers();
 
   window.location.reload();
 }
@@ -369,6 +360,34 @@ export default function TaskPage() {
     moveToScreen("main_task");
   }
 
+  function resetFlowForDebug(nextAssignment: Assignment) {
+    clearTaskShownMarkers();
+    setAssignment(nextAssignment);
+    setScreen("welcome");
+    setConsentAccepted(false);
+    setComprehensionDecisionAnswer("");
+    setComprehensionLoggingAnswer("");
+    setShowComprehensionFeedback(false);
+    setPracticeDecision(null);
+    setPracticeRevealStage("job");
+    setMainRevealStage("job");
+    setCurrentTrialIndex(0);
+    setLatestDecisionByTrial({});
+    setErrorMessage(null);
+    setPendingRetryDecision(null);
+    trialShownAtMsRef.current = null;
+  }
+
+  function handleForceCondition(conditionId: ConditionId) {
+    try {
+      resetFlowForDebug(forceConditionAssignment(conditionId));
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to force condition.";
+      setErrorMessage(message);
+    }
+  }
+
   const cue = assignment ? CONDITION_CUES[assignment.conditionId] : null;
   const participantIdShort = assignment
     ? shortenId(assignment.participantId)
@@ -402,6 +421,7 @@ export default function TaskPage() {
           currentScreen={screen}
           currentTrialIndex={currentTrialIndex}
           totalTrials={TOTAL_TRIALS}
+          onForceCondition={handleForceCondition}
           onReset={clearAssignmentAndReload}
         />
       ) : null}
