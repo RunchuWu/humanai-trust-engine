@@ -765,15 +765,28 @@ function TaskPageContent() {
 
       {assignment && screen === "debrief" ? (
         <section className={styles.completionCard}>
-          <h2 className={styles.completionTitle}>Study Complete</h2>
+          <div className={styles.completionHeader}>
+            <div className={styles.completionMark} aria-hidden="true">
+              ✓
+            </div>
+            <div>
+              <p className={styles.completionEyebrow}>End of Study</p>
+              <h2 className={styles.completionTitle}>Study Complete</h2>
+            </div>
+          </div>
           <p className={styles.completionText}>
-            Thank you. You have finished all {TOTAL_TRIALS} trials.
+            Thank you. You have finished all {TOTAL_TRIALS} trials, and your
+            responses have been recorded.
           </p>
           {!showDebugPanel ? (
             <>
               <p className={styles.completionParticipantNote}>
-                Your responses have been recorded. You can close this page, or
-                review the last trial to revise an answer.
+                There is no further action required. You may now close this
+                page.
+              </p>
+              <p className={styles.completionReviewNote}>
+                If you need to correct only your final answer, you can review
+                the last trial below.
               </p>
               <div className={styles.completionParticipantActions}>
                 <button

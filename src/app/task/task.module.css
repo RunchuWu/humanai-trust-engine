@@ -504,27 +504,65 @@
 .completionCard {
   margin-top: 18px;
   background: #ffffff;
-  border: 1px solid #d1d5db;
+  border: 1px solid #bbf7d0;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  padding: 24px;
+  box-shadow: 0 10px 24px rgba(22, 101, 52, 0.08);
+}
+
+.completionHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.completionMark {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.completionEyebrow {
+  margin: 0 0 4px;
+  color: #166534;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 .completionTitle {
   margin: 0;
-  font-size: 22px;
+  font-size: 26px;
   color: #0f172a;
 }
 
 .completionText {
-  margin: 10px 0 0;
+  margin: 16px 0 0;
   color: #334155;
+  font-size: 16px;
+  line-height: 1.55;
 }
 
 .completionParticipantNote {
   margin: 10px 0 0;
-  color: #475569;
+  color: #166534;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.completionReviewNote {
+  margin: 14px 0 0;
+  color: #64748b;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .completionParticipantActions {
