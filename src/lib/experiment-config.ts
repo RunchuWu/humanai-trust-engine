@@ -69,3 +69,9 @@ export function formatRecommendation(recommendation: Recommendation): string {
 export function formatRecommendationShort(recommendation: Recommendation): string {
   return recommendation === "proceed" ? "Proceed" : "Reject";
 }
+
+export function formatOppositeRecommendationShort(
+  recommendation: Recommendation,
+): string {
+  return recommendation === "proceed" ? "Reject" : "Proceed";
+}
