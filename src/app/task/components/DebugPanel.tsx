@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import type { Assignment, ConditionId } from "@/lib/conditions";
 import type { ExperimentScreen } from "@/lib/experiment-config";
 
@@ -24,6 +26,36 @@ export default function DebugPanel({
   onJumpToScreen,
   onReset,
 }: DebugPanelProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  if (!isOpen) {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          setIsOpen(true);
+        }}
+        style={{
+          position: "fixed",
+          top: 12,
+          right: 12,
+          border: "1px solid #cbd5e1",
+          borderRadius: 8,
+          background: "#fff",
+          color: "#0f172a",
+          padding: "8px 10px",
+          fontSize: 12,
+          fontWeight: 700,
+          boxShadow: "0 4px 12px rgba(15, 23, 42, 0.08)",
+          cursor: "pointer",
+          zIndex: 50,
+        }}
+      >
+        Researcher Tools
+      </button>
+    );
+  }
+
   return (
     <aside
       style={{
@@ -49,10 +81,21 @@ export default function DebugPanel({
           marginBottom: 8,
         }}
       >
-        <strong>Debug Panel</strong>
-        <button type="button" onClick={onReset} style={{ fontSize: 12 }}>
-          Reset
-        </button>
+        <strong>Researcher Tools</strong>
+        <div style={{ display: "flex", gap: 6 }}>
+          <button
+            type="button"
+            onClick={() => {
+              setIsOpen(false);
+            }}
+            style={{ fontSize: 12 }}
+          >
+            Collapse
+          </button>
+          <button type="button" onClick={onReset} style={{ fontSize: 12 }}>
+            Reset
+          </button>
+        </div>
       </div>
 
       <p style={{ margin: "4px 0" }}>
@@ -82,7 +125,6 @@ export default function DebugPanel({
           borderTop: "1px solid #e5e7eb",
         }}
       >
-        <p style={{ margin: "0 0 6px", fontWeight: 600 }}>Researcher Tools</p>
         <p style={{ margin: "0 0 6px", fontWeight: 600 }}>Jump to screen</p>
         <div
           style={{
