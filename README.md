@@ -1,14 +1,21 @@
-# HumanAI Trust Calibration Engine (GSoC Screening MVP)
+# HumanAI Trust Calibration Engine
 
-Minimal Next.js (App Router) prototype for a trust-calibration experiment in job screening.
-The experiment manipulates one cue dimension across A/B conditions: **agent name + tone style**.
+Official Google Summer of Code 2026 project for ISSR / Human-AI Organization.
 
-## What This Repo Does
+This repository contains a modular web-based experimentation platform for studying trust calibration in AI-assisted decision-making. The current task domain is job screening: participants review a role, candidate summary, and AI recommendation, then decide whether to follow or override the AI. The platform is designed to support controlled manipulation of humanlike and authority-signaling AI interface cues, behavioral event logging, and reproducible export for downstream analysis.
 
-- Runs a 10-trial job-screening task at `/task`
+The project has moved beyond the initial screening prototype. The current codebase is the working GSoC project foundation for the Week 1-2 milestone: deliberate participant flow, stable participant/condition assignment, staged trial presentation, and researcher debug tooling.
+
+## Current Capabilities
+
+- Runs a 10-trial AI-assisted job-screening task at `/task`
+- Guides participants through welcome, consent, instructions, comprehension check, practice, main task, and debrief
+- Uses staged trial reveal so participants see role requirements, candidate details, and AI recommendation in sequence
+- Randomly assigns participants to condition A or B and persists assignment identity
 - Logs behavioral events (`task_shown`, `decision`) to local JSONL
 - Exports event-level data as JSON or CSV
 - Separates participant-facing UI from researcher/debug utilities
+- Provides debug tools for condition forcing, screen jumping, reset, and export
 
 ## Interface Modes
 
@@ -49,7 +56,35 @@ Debug mode shows researcher utilities without changing experiment logic:
   - `Export JSON`
   - `Export CSV`
 
-This supports quick exploratory checks without forcing a full run each time.
+This supports quick exploratory checks and mentor review without forcing a full run each time.
+
+## GSoC Timeline Status
+
+### Completed: Weeks 1-2
+
+The Week 1-2 milestone was to rebuild the experiment shell with deliberate screen sequencing and implement participant ID assignment plus randomized condition assignment.
+
+Completed work:
+
+- Explicit experiment flow: `welcome -> consent -> instructions -> comprehension_check -> practice_trial -> main_task -> debrief`
+- Practice trial before the main task
+- Staged reveal inside trials: role requirements first, candidate summary second, AI recommendation last
+- Enlarged AI recommendation display
+- Equal-weight decision controls that explicitly accept or override the AI recommendation
+- Persistent participant ID and randomized condition assignment
+- Debug tools for forcing condition A/B and jumping to any experiment screen
+- Centralized experiment configuration in `src/lib/experiment-config.ts`
+- Centralized assignment logic in `src/lib/conditions.ts`
+- Week 1-2 planning, run, and event-schema documentation
+
+### Upcoming: Weeks 3-5
+
+The next planned phase is the configuration-driven cue manipulation framework:
+
+- expand condition config for agent name, tone, and confidence framing
+- make cue rendering more modular
+- keep task logic independent from condition configuration
+- prepare the UI neutrality controls for mentor review
 
 ## Condition Logic
 
@@ -117,6 +152,7 @@ Both are sorted by `timestamp_ms` ascending.
 - `src/lib/trials.ts`: 10-trial dataset
 - `src/lib/schema.ts`: event typing + validation
 - `docs/week-1-2-plan.md`: Week 1-2 implementation plan and acceptance criteria
+- `docs/week-1-2-mentor-report.md`: mentor-facing Week 1-2 progress report
 - `docs/how-to-run.md`: setup, local URLs, and debug-mode guide
 - `docs/event-schema.md`: event schema and export reference
 
@@ -131,6 +167,21 @@ Open:
 
 - Participant mode: `http://localhost:3000/task`
 - Researcher mode: `http://localhost:3000/task?debug=1`
+
+## Verification
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
+
+Local route smoke checks:
+
+```bash
+curl -I http://localhost:3000/task
+curl -I 'http://localhost:3000/task?debug=1'
+```
 
 ## Sample Decision Event
 
