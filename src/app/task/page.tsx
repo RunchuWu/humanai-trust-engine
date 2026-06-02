@@ -5,6 +5,15 @@ import { useSearchParams } from "next/navigation";
 
 import DebugPanel from "@/app/task/components/DebugPanel";
 import { getOrCreateAssignment, type Assignment } from "@/lib/conditions";
+import {
+  CONDITION_CUES,
+  formatRecommendation,
+  formatRecommendationShort,
+  PRACTICE_TRIAL,
+  SCREEN_SEQUENCE,
+  type ExperimentScreen,
+  type RevealStage,
+} from "@/lib/experiment-config";
 import type {
   DecisionEvent,
   DecisionType,
@@ -17,66 +26,9 @@ import styles from "./task.module.css";
 const TOTAL_TRIALS = TRIALS.length;
 const TASK_SHOWN_MARKER_PREFIX = "humanai_task_shown";
 
-type Recommendation = "proceed" | "reject";
-type RevealStage = "job" | "candidate" | "ai";
-
-type ExperimentScreen =
-  | "welcome"
-  | "consent"
-  | "instructions"
-  | "comprehension_check"
-  | "practice_trial"
-  | "main_task"
-  | "debrief";
-
-const SCREEN_SEQUENCE: ExperimentScreen[] = [
-  "welcome",
-  "consent",
-  "instructions",
-  "comprehension_check",
-  "practice_trial",
-  "main_task",
-  "debrief",
-];
-
 const PARTICIPANT_ID_KEY = "humanai_participant_id";
 const CONDITION_ID_KEY = "humanai_condition_id";
 const SESSION_ID_KEY = "humanai_session_id";
-
-const PRACTICE_TRIAL = {
-  job_title: "Operations Coordinator",
-  requirements: [
-    "Calendar coordination",
-    "Vendor communication",
-    "Process documentation",
-  ],
-  candidate_summary:
-    "2 years coordinating internal schedules, handling vendor messages, and maintaining team process notes.",
-  ai_reco: "proceed",
-  rationale:
-    "The candidate has direct experience with the coordination and documentation tasks listed for the role.",
-} as const;
-
-const CUE_BY_CONDITION = {
-  A: {
-    agentName: "Assistant",
-    tone: "formal",
-  },
-  B: {
-    agentName: "Mia",
-    tone: "conversational",
-  },
-} as const;
-
-function formatRecommendation(recommendation: Recommendation): string {
-  return recommendation === "proceed"
-    ? "Proceed with this candidate"
-    : "Reject this candidate";
-}
-
-function formatRecommendationShort(recommendation: Recommendation): string {
-  return recommendation === "proceed" ? "Proceed" : "Reject";
-}
 
 function shortenId(id: string): string {
   if (id.length <= 14) {
@@ -417,7 +369,7 @@ export default function TaskPage() {
     moveToScreen("main_task");
   }
 
-  const cue = assignment ? CUE_BY_CONDITION[assignment.conditionId] : null;
+  const cue = assignment ? CONDITION_CUES[assignment.conditionId] : null;
   const participantIdShort = assignment
     ? shortenId(assignment.participantId)
     : "-";
