@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import DebugPanel from "@/app/task/components/DebugPanel";
@@ -119,7 +119,7 @@ function clearAssignmentAndReload(): void {
   window.location.reload();
 }
 
-export default function TaskPage() {
+function TaskPageContent() {
   const searchParams = useSearchParams();
   const showDebugPanel = searchParams.get("debug") === "1";
 
@@ -1002,5 +1002,13 @@ export default function TaskPage() {
         </section>
       ) : null}
     </main>
+  );
+}
+
+export default function TaskPage() {
+  return (
+    <Suspense fallback={<main className={styles.page}>Loading study...</main>}>
+      <TaskPageContent />
+    </Suspense>
   );
 }
