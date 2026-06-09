@@ -3,6 +3,11 @@
 import { useState } from "react";
 
 import type { Assignment, ConditionId } from "@/lib/conditions";
+import {
+  CONDITION_IDS,
+  getConditionConfig,
+  getCueModuleSummary,
+} from "@/lib/cue-config";
 import type { ExperimentScreen } from "@/lib/experiment-config";
 
 interface DebugPanelProps {
@@ -27,6 +32,9 @@ export default function DebugPanel({
   onReset,
 }: DebugPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const conditionConfig = assignment
+    ? getConditionConfig(assignment.conditionId)
+    : null;
 
   if (!isOpen) {
     return (
@@ -105,6 +113,13 @@ export default function DebugPanel({
         <strong>conditionId:</strong> {assignment?.conditionId ?? "-"}
       </p>
       <p style={{ margin: "4px 0" }}>
+        <strong>cue source:</strong> {conditionConfig?.cueSource ?? "-"}
+      </p>
+      <p style={{ margin: "4px 0" }}>
+        <strong>cue modules:</strong>{" "}
+        {conditionConfig ? getCueModuleSummary(conditionConfig) : "-"}
+      </p>
+      <p style={{ margin: "4px 0" }}>
         <strong>sessionId:</strong> {assignment?.sessionId ?? "-"}
       </p>
       <p style={{ margin: "4px 0" }}>
@@ -158,24 +173,21 @@ export default function DebugPanel({
             marginBottom: 8,
           }}
         >
-          <button
-            type="button"
-            onClick={() => {
-              onForceCondition("A");
-            }}
-            style={{ fontSize: 12 }}
-          >
-            Force A
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              onForceCondition("B");
-            }}
-            style={{ fontSize: 12 }}
-          >
-            Force B
-          </button>
+          {CONDITION_IDS.map((conditionId) => (
+            <button
+              key={conditionId}
+              type="button"
+              onClick={() => {
+                onForceCondition(conditionId);
+              }}
+              style={{
+                fontSize: 12,
+                fontWeight: assignment?.conditionId === conditionId ? 700 : 400,
+              }}
+            >
+              Force {conditionId}
+            </button>
+          ))}
         </div>
         <p style={{ margin: "4px 0" }}>
           <a href="/api/export?format=json" target="_blank" rel="noreferrer">

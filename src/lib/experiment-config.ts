@@ -1,5 +1,3 @@
-import type { ConditionId } from "@/lib/conditions";
-
 export type Recommendation = "proceed" | "reject";
 export type RevealStage = "situation" | "evidence" | "ai";
 
@@ -20,11 +18,6 @@ export interface PracticeTrial {
   opposite_action_label: string;
   ai_reco: Recommendation;
   rationale: string;
-}
-
-export interface ConditionCue {
-  agentName: string;
-  tone: "formal" | "conversational";
 }
 
 export const SCREEN_SEQUENCE: ExperimentScreen[] = [
@@ -51,17 +44,6 @@ export const PRACTICE_TRIAL: PracticeTrial = {
   ai_reco: "proceed",
   rationale:
     "The route remains within normal weather and battery operating limits.",
-};
-
-export const CONDITION_CUES: Record<ConditionId, ConditionCue> = {
-  A: {
-    agentName: "Assistant",
-    tone: "formal",
-  },
-  B: {
-    agentName: "Mia",
-    tone: "conversational",
-  },
 };
 
 interface RecommendationLabels {

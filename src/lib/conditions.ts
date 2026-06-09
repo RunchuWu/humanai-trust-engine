@@ -1,4 +1,4 @@
-export type ConditionId = "A" | "B";
+export type ConditionId = "control" | "industry_set" | "user_set";
 
 export interface Assignment {
   participantId: string;
@@ -10,6 +10,7 @@ const PARTICIPANT_ID_KEY = "humanai_participant_id";
 const CONDITION_ID_KEY = "humanai_condition_id";
 const SESSION_ID_KEY = "humanai_session_id";
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
+const CONDITION_IDS: ConditionId[] = ["control", "industry_set", "user_set"];
 
 function assertBrowserContext(): void {
   if (typeof window === "undefined" || typeof document === "undefined") {
@@ -18,7 +19,7 @@ function assertBrowserContext(): void {
 }
 
 function parseConditionId(value: string | null): ConditionId | null {
-  if (value === "A" || value === "B") {
+  if (value === "control" || value === "industry_set" || value === "user_set") {
     return value;
   }
 
@@ -35,7 +36,7 @@ function createUuid(): string {
 }
 
 function assignConditionId(): ConditionId {
-  return Math.random() < 0.5 ? "A" : "B";
+  return CONDITION_IDS[Math.floor(Math.random() * CONDITION_IDS.length)];
 }
 
 function getCookie(name: string): string | null {

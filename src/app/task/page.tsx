@@ -12,6 +12,10 @@ import {
   type ConditionId,
 } from "@/lib/conditions";
 import {
+  getConditionConfig,
+  getRationaleForCondition,
+} from "@/lib/cue-config";
+import {
   formatOppositeRecommendationShort,
   formatRecommendationShort,
   PRACTICE_TRIAL,
@@ -411,6 +415,9 @@ function TaskPageContent() {
       ? Math.min(currentTrialIndex + 1, TOTAL_TRIALS)
       : 0;
   const currentTrialSavedDecision = latestDecisionByTrial[currentTrialIndex];
+  const activeCondition = assignment
+    ? getConditionConfig(assignment.conditionId)
+    : null;
   const progressValue =
     screen === "main_task"
       ? `Trial ${trialDisplayIndex} / ${TOTAL_TRIALS}`
@@ -861,9 +868,9 @@ function TaskPageContent() {
                 <div className={styles.aiBody}>
                   <p className={styles.reasonLabel}>Reason</p>
                   <p className={styles.aiQuote}>
-                    {assignment.conditionId === "A"
-                      ? currentTrial.rationale_control
-                      : currentTrial.rationale_warm}
+                    {activeCondition
+                      ? getRationaleForCondition(currentTrial, activeCondition)
+                      : currentTrial.rationale_control}
                   </p>
                 </div>
 

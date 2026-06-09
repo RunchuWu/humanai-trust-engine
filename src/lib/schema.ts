@@ -1,4 +1,9 @@
-export type ConditionId = "A" | "B";
+export type ConditionId =
+  | "control"
+  | "industry_set"
+  | "user_set"
+  | "A"
+  | "B";
 export type EventType = "task_shown" | "decision";
 export type DecisionType = "accept" | "override";
 export type Recommendation = "proceed" | "reject";
@@ -61,7 +66,13 @@ function isInteger(value: unknown): value is number {
 }
 
 function isConditionId(value: unknown): value is ConditionId {
-  return value === "A" || value === "B";
+  return (
+    value === "control" ||
+    value === "industry_set" ||
+    value === "user_set" ||
+    value === "A" ||
+    value === "B"
+  );
 }
 
 function isDecisionType(value: unknown): value is DecisionType {
@@ -82,7 +93,11 @@ function validateBaseFields(e: Record<string, unknown>): ValidationResult {
   }
 
   if (!isConditionId(e.condition_id)) {
-    return { ok: false, error: "condition_id must be 'A' or 'B'" };
+    return {
+      ok: false,
+      error:
+        "condition_id must be 'control', 'industry_set', 'user_set', or legacy 'A'/'B'",
+    };
   }
 
   if (!isUuid(e.session_id)) {
