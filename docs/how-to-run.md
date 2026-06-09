@@ -19,21 +19,42 @@ Open:
 
 ## Participant Flow
 
-The Week 1-2 participant flow is:
+The participant flow is:
 
 1. Welcome
 2. Consent
 3. Instructions
 4. Comprehension check
-5. Practice trial
-6. Main task
-7. Debrief
+5. Agent setup for `user_set` participants
+6. Practice trial
+7. Main task
+8. Debrief
 
 Main task trials use staged reveal:
 
-1. Role and requirements
-2. Candidate summary
+1. Operational situation
+2. Sensor / context evidence
 3. AI recommendation and decision controls
+
+The current task domain is transportation/drone operations. Participants act as
+human operators supervising AI recommendations and choose whether to follow or
+override each recommendation.
+
+## Cue Conditions
+
+Runtime assignment uses three cue-source conditions:
+
+- `control`: plain system text, no humanlike cues.
+- `industry_set`: fixed manufacturer-provided cues.
+- `user_set`: participant configures the agent before practice.
+
+Cue modules are configured independently:
+
+- agent name
+- tone/warmth
+- avatar/face
+- personality framing
+- confidence/explanation style
 
 ## Debug Mode
 
@@ -41,7 +62,8 @@ Main task trials use staged reveal:
 
 - current participant, condition, session, screen, and trial index
 - reset assignment
-- force condition A or B
+- force `control`, `industry_set`, or `user_set`
+- inspect cue source and enabled cue modules
 - jump to any experiment screen
 - export JSON or CSV
 

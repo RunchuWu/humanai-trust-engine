@@ -8,7 +8,7 @@ Events are stored as JSON Lines in `data/events.jsonl`.
 | --- | --- | --- |
 | `event_id` | UUID string | Unique event identifier |
 | `participant_id` | UUID string | Persistent participant identifier |
-| `condition_id` | `"A"` or `"B"` | Assigned condition |
+| `condition_id` | `"control"`, `"industry_set"`, or `"user_set"` | Assigned cue-source condition |
 | `session_id` | UUID string | Page-entry session identifier |
 | `event_type` | `"task_shown"` or `"decision"` | Event kind |
 | `timestamp_ms` | number | Unix timestamp in milliseconds |
@@ -37,6 +37,19 @@ Required fields:
 | `ground_truth` | `"proceed"` or `"reject"` | Trial ground-truth label |
 | `follow_ai` | boolean | `true` when decision is `accept` |
 | `ai_correct` | boolean | `true` when `ai_reco === ground_truth` |
+
+Optional cue metadata fields:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `cue_source` | `"control"`, `"industry_set"`, or `"user_set"` | Cue-source factor for the participant's assigned condition |
+| `cue_modules` | array | Enabled cue modules for this condition |
+| `agent_name` | string | Rendered agent name, when a name cue is active |
+| `agent_tone` | `"neutral"` or `"warm"` | Rendered tone/warmth setting, when available |
+| `agent_personality` | `"precise"`, `"supportive"`, or `"calm"` | Rendered personality framing, when available |
+| `agent_avatar_label` | string | Rendered avatar label, when an avatar cue is active |
+
+Legacy local rows with `condition_id` values `"A"` or `"B"` are still accepted by validation so older Week 1-2 exports remain readable.
 
 ## Export
 
