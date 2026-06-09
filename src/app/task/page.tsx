@@ -22,6 +22,8 @@ import {
   getConditionConfig,
   getPersonalityLabel,
   getRationaleForCondition,
+  getResolvedAgentConfig,
+  hasCue,
 } from "@/lib/cue-config";
 import {
   formatOppositeRecommendationShort,
@@ -534,6 +536,9 @@ function TaskPageContent() {
   const currentTrialSavedDecision = latestDecisionByTrial[currentTrialIndex];
   const activeCondition = assignment
     ? getConditionConfig(assignment.conditionId)
+    : null;
+  const activeAgent = activeCondition
+    ? getResolvedAgentConfig(activeCondition, userAgentConfig)
     : null;
   const agentSetupConfig = userAgentConfig ?? getConditionConfig("user_set").agent;
   const progressValue =
@@ -1082,8 +1087,38 @@ function TaskPageContent() {
             {mainRevealStage === "ai" ? (
               <article className={styles.focusCard}>
                 <p className={styles.revealEyebrow}>AI Recommendation</p>
+                {activeCondition &&
+                activeAgent &&
+                activeCondition.cueSource !== "control" ? (
+                  <div className={styles.agentCueHeader}>
+                    {hasCue(activeCondition, "avatar") ? (
+                      <span className={styles.avatarBadge}>
+                        {activeAgent.avatarLabel}
+                      </span>
+                    ) : null}
+                    <div>
+                      {hasCue(activeCondition, "agent_name") ? (
+                        <p className={styles.agentPreviewName}>
+                          {activeAgent.name}
+                        </p>
+                      ) : null}
+                      {hasCue(activeCondition, "personality") ? (
+                        <p className={styles.agentPreviewMeta}>
+                          {getPersonalityLabel(activeAgent.personality)}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
                 <div className={styles.aiRecommendationBlock}>
-                  <p className={styles.aiMessageLead}>AI recommends</p>
+                  <p className={styles.aiMessageLead}>
+                    {activeCondition &&
+                    activeAgent &&
+                    activeCondition.cueSource !== "control" &&
+                    hasCue(activeCondition, "agent_name")
+                      ? `${activeAgent.name} recommends`
+                      : "AI recommends"}
+                  </p>
                   <p
                     className={`${styles.aiRecommendationBadge} ${
                       currentTrial.ai_reco === "proceed"
@@ -1099,9 +1134,19 @@ function TaskPageContent() {
                   <p className={styles.reasonLabel}>Reason</p>
                   <p className={styles.aiQuote}>
                     {activeCondition
-                      ? getRationaleForCondition(currentTrial, activeCondition)
+                      ? getRationaleForCondition(
+                          currentTrial,
+                          activeCondition,
+                          activeAgent,
+                        )
                       : currentTrial.rationale_control}
                   </p>
+                  {activeCondition &&
+                  hasCue(activeCondition, "confidence_explanation") ? (
+                    <p className={styles.confidenceLine}>
+                      Confidence: {currentTrial.confidence}%
+                    </p>
+                  ) : null}
                 </div>
 
                 <footer className={styles.aiActions}>

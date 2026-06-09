@@ -269,6 +269,12 @@
   gap: 8px;
 }
 
+.agentCueHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .jobTitle {
   margin: 8px 0 0;
   font-size: 18px;
@@ -384,6 +390,13 @@
   color: #1f2937;
   line-height: 1.6;
   font-size: 14px;
+}
+
+.confidenceLine {
+  margin: 10px 0 0;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .reasonLabel {
