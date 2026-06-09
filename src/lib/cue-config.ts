@@ -29,6 +29,14 @@ export interface ConditionConfig {
   agent: AgentCueConfig;
 }
 
+export const AGENT_NAME_OPTIONS = ["Atlas", "Nova", "Scout"] as const;
+export const AGENT_TONE_OPTIONS: AgentTone[] = ["neutral", "warm"];
+export const AGENT_PERSONALITY_OPTIONS: AgentPersonality[] = [
+  "precise",
+  "supportive",
+  "calm",
+];
+
 export const CONDITION_CONFIGS: Record<ConditionId, ConditionConfig> = {
   control: {
     conditionId: "control",
@@ -101,11 +109,39 @@ export function getCueModuleSummary(condition: ConditionConfig): string {
   return condition.enabledCues.join(", ");
 }
 
+export function getResolvedAgentConfig(
+  condition: ConditionConfig,
+  userAgentConfig: AgentCueConfig | null,
+): AgentCueConfig {
+  if (condition.cueSource === "user_set" && userAgentConfig) {
+    return userAgentConfig;
+  }
+
+  return condition.agent;
+}
+
+export function getPersonalityLabel(personality: AgentPersonality): string {
+  if (personality === "supportive") {
+    return "Supportive operator assistant";
+  }
+
+  if (personality === "calm") {
+    return "Calm risk monitor";
+  }
+
+  return "Precise system analyst";
+}
+
 export function getRationaleForCondition(
   trial: Trial,
   condition: ConditionConfig,
+  agent: AgentCueConfig | null = null,
 ): string {
   if (condition.cueSource === "control") {
+    return trial.rationale_control;
+  }
+
+  if (hasCue(condition, "tone_warmth") && agent?.tone === "neutral") {
     return trial.rationale_control;
   }
 
