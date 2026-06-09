@@ -6,6 +6,7 @@ export type ExperimentScreen =
   | "consent"
   | "instructions"
   | "comprehension_check"
+  | "agent_setup"
   | "practice_trial"
   | "main_task"
   | "debrief";
@@ -25,6 +26,7 @@ export const SCREEN_SEQUENCE: ExperimentScreen[] = [
   "consent",
   "instructions",
   "comprehension_check",
+  "agent_setup",
   "practice_trial",
   "main_task",
   "debrief",

@@ -37,6 +37,19 @@ export const AGENT_PERSONALITY_OPTIONS: AgentPersonality[] = [
   "calm",
 ];
 
+export function createAgentCueConfig(
+  name: string,
+  tone: AgentTone,
+  personality: AgentPersonality,
+): AgentCueConfig {
+  return {
+    name,
+    tone,
+    personality,
+    avatarLabel: name.slice(0, 2).toUpperCase(),
+  };
+}
+
 export const CONDITION_CONFIGS: Record<ConditionId, ConditionConfig> = {
   control: {
     conditionId: "control",

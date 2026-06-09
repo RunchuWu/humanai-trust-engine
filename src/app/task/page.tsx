@@ -12,7 +12,15 @@ import {
   type ConditionId,
 } from "@/lib/conditions";
 import {
+  AGENT_NAME_OPTIONS,
+  AGENT_PERSONALITY_OPTIONS,
+  AGENT_TONE_OPTIONS,
+  createAgentCueConfig,
+  type AgentCueConfig,
+  type AgentPersonality,
+  type AgentTone,
   getConditionConfig,
+  getPersonalityLabel,
   getRationaleForCondition,
 } from "@/lib/cue-config";
 import {
@@ -38,6 +46,7 @@ import styles from "./task.module.css";
 
 const TOTAL_TRIALS = TRIALS.length;
 const TASK_SHOWN_MARKER_PREFIX = "humanai_task_shown";
+const USER_AGENT_CONFIG_KEY = "humanai_user_agent_config";
 
 function shortenId(id: string): string {
   if (id.length <= 14) {
@@ -119,9 +128,69 @@ function clearTaskShownMarkers(): void {
   }
 }
 
+function isKnownAgentName(value: unknown): value is string {
+  return (
+    typeof value === "string" &&
+    (AGENT_NAME_OPTIONS as readonly string[]).includes(value)
+  );
+}
+
+function isAgentTone(value: unknown): value is AgentTone {
+  return (
+    typeof value === "string" &&
+    (AGENT_TONE_OPTIONS as readonly string[]).includes(value)
+  );
+}
+
+function isAgentPersonality(value: unknown): value is AgentPersonality {
+  return (
+    typeof value === "string" &&
+    (AGENT_PERSONALITY_OPTIONS as readonly string[]).includes(value)
+  );
+}
+
+function readStoredUserAgentConfig(): AgentCueConfig | null {
+  try {
+    const raw = window.sessionStorage.getItem(USER_AGENT_CONFIG_KEY);
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    if (
+      !isKnownAgentName(parsed.name) ||
+      !isAgentTone(parsed.tone) ||
+      !isAgentPersonality(parsed.personality)
+    ) {
+      return null;
+    }
+
+    return createAgentCueConfig(parsed.name, parsed.tone, parsed.personality);
+  } catch {
+    return null;
+  }
+}
+
+function persistUserAgentConfig(config: AgentCueConfig): void {
+  try {
+    window.sessionStorage.setItem(USER_AGENT_CONFIG_KEY, JSON.stringify(config));
+  } catch {
+    // Ignore sessionStorage write errors.
+  }
+}
+
+function clearStoredUserAgentConfig(): void {
+  try {
+    window.sessionStorage.removeItem(USER_AGENT_CONFIG_KEY);
+  } catch {
+    // Ignore sessionStorage write errors.
+  }
+}
+
 function clearAssignmentAndReload(): void {
   clearStoredAssignment();
   clearTaskShownMarkers();
+  clearStoredUserAgentConfig();
 
   window.location.reload();
 }
@@ -142,6 +211,8 @@ function TaskPageContent() {
   const [practiceDecision, setPracticeDecision] = useState<DecisionType | null>(
     null,
   );
+  const [userAgentConfig, setUserAgentConfig] =
+    useState<AgentCueConfig | null>(null);
   const [mainRevealStage, setMainRevealStage] =
     useState<RevealStage>("situation");
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
@@ -192,6 +263,20 @@ function TaskPageContent() {
   }, [currentTrialIndex]);
 
   const isFinished = currentTrialIndex >= TOTAL_TRIALS;
+
+  useEffect(() => {
+    if (!assignment) {
+      return;
+    }
+
+    const condition = getConditionConfig(assignment.conditionId);
+    if (condition.cueSource !== "user_set") {
+      setUserAgentConfig(null);
+      return;
+    }
+
+    setUserAgentConfig(readStoredUserAgentConfig() ?? condition.agent);
+  }, [assignment]);
 
   useEffect(() => {
     if (screen === "main_task") {
@@ -334,8 +419,35 @@ function TaskPageContent() {
     setShowComprehensionFeedback(!answersAreCorrect);
 
     if (answersAreCorrect) {
-      moveToScreen("practice_trial");
+      if (activeCondition?.cueSource === "user_set") {
+        moveToScreen("agent_setup");
+      } else {
+        moveToScreen("practice_trial");
+      }
     }
+  }
+
+  function updateUserAgentConfig(
+    key: "name" | "tone" | "personality",
+    value: string,
+  ) {
+    const previous = userAgentConfig ?? getConditionConfig("user_set").agent;
+    const next = createAgentCueConfig(
+      key === "name" ? value : previous.name,
+      key === "tone" && isAgentTone(value) ? value : previous.tone,
+      key === "personality" && isAgentPersonality(value)
+        ? value
+        : previous.personality,
+    );
+
+    setUserAgentConfig(next);
+  }
+
+  function handleAgentSetupContinue() {
+    const nextConfig = userAgentConfig ?? getConditionConfig("user_set").agent;
+    persistUserAgentConfig(nextConfig);
+    setUserAgentConfig(nextConfig);
+    moveToScreen("practice_trial");
   }
 
   function handlePracticeDecision(decision: DecisionType) {
@@ -363,6 +475,11 @@ function TaskPageContent() {
     setComprehensionLoggingAnswer("");
     setShowComprehensionFeedback(false);
     setPracticeDecision(null);
+    setUserAgentConfig(
+      getConditionConfig(nextAssignment.conditionId).cueSource === "user_set"
+        ? getConditionConfig(nextAssignment.conditionId).agent
+        : null,
+    );
     setMainRevealStage("situation");
     setCurrentTrialIndex(0);
     setLatestDecisionByTrial({});
@@ -418,6 +535,7 @@ function TaskPageContent() {
   const activeCondition = assignment
     ? getConditionConfig(assignment.conditionId)
     : null;
+  const agentSetupConfig = userAgentConfig ?? getConditionConfig("user_set").agent;
   const progressValue =
     screen === "main_task"
       ? `Trial ${trialDisplayIndex} / ${TOTAL_TRIALS}`
@@ -623,6 +741,118 @@ function TaskPageContent() {
               Continue
             </button>
           </div>
+        </section>
+      ) : null}
+
+      {assignment && screen === "agent_setup" ? (
+        <section className={styles.instructionsCard}>
+          {activeCondition?.cueSource === "user_set" ? (
+            <>
+              <p className={styles.revealEyebrow}>Agent Setup</p>
+              <h2 className={styles.sectionTitle}>Configure the AI assistant</h2>
+              <p className={styles.bodyText}>
+                Choose how the assistant will be presented during the operations
+                task.
+              </p>
+
+              <div className={styles.agentPreview}>
+                <span className={styles.avatarBadge}>
+                  {agentSetupConfig.avatarLabel}
+                </span>
+                <div>
+                  <p className={styles.agentPreviewName}>
+                    {agentSetupConfig.name}
+                  </p>
+                  <p className={styles.agentPreviewMeta}>
+                    {agentSetupConfig.tone} tone -{" "}
+                    {getPersonalityLabel(agentSetupConfig.personality)}
+                  </p>
+                </div>
+              </div>
+
+              <fieldset className={styles.questionGroup}>
+                <legend className={styles.questionTitle}>Agent name</legend>
+                {AGENT_NAME_OPTIONS.map((name) => (
+                  <label className={styles.readinessItem} key={name}>
+                    <input
+                      type="radio"
+                      name="agentName"
+                      value={name}
+                      checked={agentSetupConfig.name === name}
+                      onChange={(event) => {
+                        updateUserAgentConfig("name", event.target.value);
+                      }}
+                    />
+                    <span>{name}</span>
+                  </label>
+                ))}
+              </fieldset>
+
+              <fieldset className={styles.questionGroup}>
+                <legend className={styles.questionTitle}>Tone</legend>
+                {AGENT_TONE_OPTIONS.map((tone) => (
+                  <label className={styles.readinessItem} key={tone}>
+                    <input
+                      type="radio"
+                      name="agentTone"
+                      value={tone}
+                      checked={agentSetupConfig.tone === tone}
+                      onChange={(event) => {
+                        updateUserAgentConfig("tone", event.target.value);
+                      }}
+                    />
+                    <span>{tone === "warm" ? "Warm" : "Neutral"}</span>
+                  </label>
+                ))}
+              </fieldset>
+
+              <fieldset className={styles.questionGroup}>
+                <legend className={styles.questionTitle}>Personality</legend>
+                {AGENT_PERSONALITY_OPTIONS.map((personality) => (
+                  <label className={styles.readinessItem} key={personality}>
+                    <input
+                      type="radio"
+                      name="agentPersonality"
+                      value={personality}
+                      checked={agentSetupConfig.personality === personality}
+                      onChange={(event) => {
+                        updateUserAgentConfig("personality", event.target.value);
+                      }}
+                    />
+                    <span>{getPersonalityLabel(personality)}</span>
+                  </label>
+                ))}
+              </fieldset>
+
+              <div className={styles.instructionsActions}>
+                <button
+                  type="button"
+                  className={styles.primaryAction}
+                  onClick={handleAgentSetupContinue}
+                >
+                  Continue
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className={styles.sectionTitle}>Agent Setup Not Required</h2>
+              <p className={styles.bodyText}>
+                This condition uses a fixed system presentation.
+              </p>
+              <div className={styles.instructionsActions}>
+                <button
+                  type="button"
+                  className={styles.primaryAction}
+                  onClick={() => {
+                    moveToScreen("practice_trial");
+                  }}
+                >
+                  Continue
+                </button>
+              </div>
+            </>
+          )}
         </section>
       ) : null}
 
