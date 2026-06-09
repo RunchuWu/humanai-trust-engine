@@ -345,6 +345,11 @@ function TaskPageContent() {
     const decidedAt = Date.now();
     const shownAt = trialShownAtMsRef.current ?? decidedAt;
     const followAi = decision === "accept";
+    const conditionConfig = activeCondition ?? getConditionConfig(assignment.conditionId);
+    const agentConfig =
+      conditionConfig.cueSource === "control"
+        ? null
+        : getResolvedAgentConfig(conditionConfig, userAgentConfig);
 
     const decisionEvent: DecisionEvent = {
       event_id: createUuid(),
@@ -361,6 +366,12 @@ function TaskPageContent() {
       ground_truth: currentTrial.ground_truth,
       follow_ai: followAi,
       ai_correct: currentTrial.ai_reco === currentTrial.ground_truth,
+      cue_source: conditionConfig.cueSource,
+      cue_modules: conditionConfig.enabledCues,
+      agent_name: agentConfig?.name,
+      agent_tone: agentConfig?.tone,
+      agent_personality: agentConfig?.personality,
+      agent_avatar_label: agentConfig?.avatarLabel,
     };
 
     try {

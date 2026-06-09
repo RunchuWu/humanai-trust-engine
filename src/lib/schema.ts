@@ -7,6 +7,15 @@ export type ConditionId =
 export type EventType = "task_shown" | "decision";
 export type DecisionType = "accept" | "override";
 export type Recommendation = "proceed" | "reject";
+export type CueSource = "control" | "industry_set" | "user_set";
+export type CueModuleId =
+  | "agent_name"
+  | "tone_warmth"
+  | "avatar"
+  | "personality"
+  | "confidence_explanation";
+export type AgentTone = "neutral" | "warm";
+export type AgentPersonality = "precise" | "supportive" | "calm";
 
 interface BaseEvent {
   event_id: string;
@@ -33,6 +42,12 @@ export interface DecisionEvent extends BaseEvent {
   ground_truth: Recommendation;
   follow_ai: boolean;
   ai_correct: boolean;
+  cue_source?: CueSource;
+  cue_modules?: CueModuleId[];
+  agent_name?: string;
+  agent_tone?: AgentTone;
+  agent_personality?: AgentPersonality;
+  agent_avatar_label?: string;
 }
 
 export type EventUnion = TaskShownEvent | DecisionEvent;
@@ -81,6 +96,32 @@ function isDecisionType(value: unknown): value is DecisionType {
 
 function isRecommendation(value: unknown): value is Recommendation {
   return value === "proceed" || value === "reject";
+}
+
+function isCueSource(value: unknown): value is CueSource {
+  return value === "control" || value === "industry_set" || value === "user_set";
+}
+
+function isCueModuleId(value: unknown): value is CueModuleId {
+  return (
+    value === "agent_name" ||
+    value === "tone_warmth" ||
+    value === "avatar" ||
+    value === "personality" ||
+    value === "confidence_explanation"
+  );
+}
+
+function isCueModuleArray(value: unknown): value is CueModuleId[] {
+  return Array.isArray(value) && value.every((item) => isCueModuleId(item));
+}
+
+function isAgentTone(value: unknown): value is AgentTone {
+  return value === "neutral" || value === "warm";
+}
+
+function isAgentPersonality(value: unknown): value is AgentPersonality {
+  return value === "precise" || value === "supportive" || value === "calm";
 }
 
 function validateBaseFields(e: Record<string, unknown>): ValidationResult {
@@ -160,6 +201,39 @@ function validateDecisionEvent(e: Record<string, unknown>): ValidationResult {
 
   if (typeof e.ai_correct !== "boolean") {
     return { ok: false, error: "ai_correct must be a boolean" };
+  }
+
+  if (e.cue_source !== undefined && !isCueSource(e.cue_source)) {
+    return {
+      ok: false,
+      error: "cue_source must be 'control', 'industry_set', or 'user_set'",
+    };
+  }
+
+  if (e.cue_modules !== undefined && !isCueModuleArray(e.cue_modules)) {
+    return { ok: false, error: "cue_modules must be an array of cue ids" };
+  }
+
+  if (e.agent_name !== undefined && !isString(e.agent_name)) {
+    return { ok: false, error: "agent_name must be a string" };
+  }
+
+  if (e.agent_tone !== undefined && !isAgentTone(e.agent_tone)) {
+    return { ok: false, error: "agent_tone must be 'neutral' or 'warm'" };
+  }
+
+  if (
+    e.agent_personality !== undefined &&
+    !isAgentPersonality(e.agent_personality)
+  ) {
+    return {
+      ok: false,
+      error: "agent_personality must be 'precise', 'supportive', or 'calm'",
+    };
+  }
+
+  if (e.agent_avatar_label !== undefined && !isString(e.agent_avatar_label)) {
+    return { ok: false, error: "agent_avatar_label must be a string" };
   }
 
   const expectedFollowAi = e.decision === "accept";

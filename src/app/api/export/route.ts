@@ -24,6 +24,12 @@ const CSV_COLUMNS = [
   "ground_truth",
   "follow_ai",
   "ai_correct",
+  "cue_source",
+  "cue_modules",
+  "agent_name",
+  "agent_tone",
+  "agent_personality",
+  "agent_avatar_label",
 ] as const;
 
 function badRequest(message: string) {
@@ -68,6 +74,12 @@ function toCsv(events: EventUnion[]): string {
       ground_truth: "",
       follow_ai: "",
       ai_correct: "",
+      cue_source: "",
+      cue_modules: "",
+      agent_name: "",
+      agent_tone: "",
+      agent_personality: "",
+      agent_avatar_label: "",
     };
 
     if (event.event_type === "decision") {
@@ -77,6 +89,12 @@ function toCsv(events: EventUnion[]): string {
       baseRecord.ground_truth = event.ground_truth;
       baseRecord.follow_ai = event.follow_ai;
       baseRecord.ai_correct = event.ai_correct;
+      baseRecord.cue_source = event.cue_source;
+      baseRecord.cue_modules = event.cue_modules?.join("|");
+      baseRecord.agent_name = event.agent_name;
+      baseRecord.agent_tone = event.agent_tone;
+      baseRecord.agent_personality = event.agent_personality;
+      baseRecord.agent_avatar_label = event.agent_avatar_label;
     }
 
     return CSV_COLUMNS.map((column) => csvEscape(baseRecord[column])).join(",");
