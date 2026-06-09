@@ -1,185 +1,251 @@
 export type TrialLabel = "proceed" | "reject";
 
+export type TrialType =
+  | "routing_dispatch"
+  | "self_driving_maneuver"
+  | "target_identification"
+  | "hazard_evasion";
+
 export interface Trial {
   trial_id: string;
-  job_title: string;
-  requirements: string[];
-  candidate_summary: string;
+  trial_type: TrialType;
+  scenario_title: string;
+  situation: string;
+  evidence: string[];
+  action_label: string;
+  opposite_action_label: string;
   ground_truth: TrialLabel;
   ai_reco: TrialLabel;
-  rationale_A: string;
-  rationale_B: string;
+  confidence: number;
+  rationale_control: string;
+  rationale_warm: string;
+}
+
+export function getOutcomeLabel(trial: Trial, outcome: TrialLabel): string {
+  return outcome === "proceed"
+    ? trial.action_label
+    : trial.opposite_action_label;
+}
+
+export function getAiRecommendationLabel(trial: Trial): string {
+  return getOutcomeLabel(trial, trial.ai_reco);
+}
+
+export function getOppositeRecommendationLabel(trial: Trial): string {
+  return trial.ai_reco === "proceed"
+    ? trial.opposite_action_label
+    : trial.action_label;
 }
 
 export const TRIALS: Trial[] = [
   {
-    trial_id: "trial_01",
-    job_title: "Data Analyst",
-    requirements: [
-      "SQL proficiency",
-      "Python for analysis",
-      "Dashboard reporting",
+    trial_id: "ops_01",
+    trial_type: "hazard_evasion",
+    scenario_title: "Delivery Drone Bird Hazard",
+    situation:
+      "You are monitoring an autonomous delivery drone on an active route. Wind has picked up and birds are detected 40m ahead at the drone's altitude.",
+    evidence: [
+      "Drone altitude: 30m",
+      "Detected birds: 40m ahead, same altitude band",
+      "Crosswind: moderate and increasing",
     ],
-    candidate_summary:
-      "3 years in analytics. Built weekly KPI dashboards and automated reporting scripts in Python.",
+    action_label: "Descend to 15m",
+    opposite_action_label: "Hold current altitude",
     ground_truth: "proceed",
     ai_reco: "proceed",
-    rationale_A:
-      "The candidate demonstrates direct alignment with the required analytics stack and reporting responsibilities.",
-    rationale_B:
-      "Looks like a solid match. They already do SQL, Python, and dashboard work in a similar setup.",
+    confidence: 88,
+    rationale_control:
+      "Immediate descent lowers collision risk while keeping the drone above mapped ground obstacles.",
+    rationale_warm:
+      "I recommend descending to 15m because it moves the drone out of the bird path while staying safely above mapped obstacles.",
   },
   {
-    trial_id: "trial_02",
-    job_title: "Backend Engineer",
-    requirements: [
-      "Go development",
-      "Distributed systems experience",
-      "Service performance tuning",
+    trial_id: "ops_02",
+    trial_type: "routing_dispatch",
+    scenario_title: "Warehouse Drone Dispatch",
+    situation:
+      "A medical package needs to leave a warehouse during light rain. One drone is available for a west corridor route near temporary airspace restrictions.",
+    evidence: [
+      "Battery estimate on arrival: 18%",
+      "West corridor has a temporary 10-minute restriction window",
+      "Rain intensity is below the normal no-fly threshold",
     ],
-    candidate_summary:
-      "4 years building REST APIs in Node.js. Limited exposure to Go and no production distributed systems ownership.",
+    action_label: "Dispatch via west corridor",
+    opposite_action_label: "Hold dispatch for route clearance",
     ground_truth: "reject",
     ai_reco: "proceed",
-    rationale_A:
-      "The candidate has backend experience and appears adaptable enough to transition into the listed stack.",
-    rationale_B:
-      "They have backend fundamentals, so they could probably ramp into Go with support.",
+    confidence: 73,
+    rationale_control:
+      "The route is technically possible, but the restriction window and low arrival battery create avoidable operational risk.",
+    rationale_warm:
+      "I would hold dispatch for now. The route is close, but the low battery margin and restriction window make this a risky launch.",
   },
   {
-    trial_id: "trial_03",
-    job_title: "Customer Support Lead",
-    requirements: [
-      "2+ years people management",
-      "Escalation handling",
-      "KPI coaching",
+    trial_id: "ops_03",
+    trial_type: "target_identification",
+    scenario_title: "Roadside Sensor Classification",
+    situation:
+      "A roadside autonomy sensor flags an unclear shape near a crosswalk during dusk operations.",
+    evidence: [
+      "Thermal signature is consistent with a person",
+      "Camera image is partially blocked by glare",
+      "Object location is 1.5m from the curb line",
     ],
-    candidate_summary:
-      "6 years in support operations, including ownership of escalation queues and mentoring new hires.",
+    action_label: "Treat as pedestrian hazard",
+    opposite_action_label: "Treat as static object",
     ground_truth: "proceed",
     ai_reco: "reject",
-    rationale_A:
-      "The profile lacks explicit management scope, which introduces risk for a lead-level appointment.",
-    rationale_B:
-      "Good support background, but I do not see enough clear team-lead ownership yet.",
+    confidence: 69,
+    rationale_control:
+      "The thermal signature and crosswalk position make the pedestrian-hazard interpretation more appropriate despite visual glare.",
+    rationale_warm:
+      "I would treat this as a pedestrian hazard. The image is not perfect, but the thermal and location cues point toward a person.",
   },
   {
-    trial_id: "trial_04",
-    job_title: "UX Researcher",
-    requirements: [
-      "Qualitative interviews",
-      "Usability testing",
-      "Research synthesis",
+    trial_id: "ops_04",
+    trial_type: "self_driving_maneuver",
+    scenario_title: "Autonomous Shuttle Braking Decision",
+    situation:
+      "You are supervising an autonomous shuttle approaching a wet intersection where a lead vehicle is slowing unexpectedly.",
+    evidence: [
+      "Road surface: wet",
+      "Lead vehicle speed dropped from 28 mph to 12 mph",
+      "Following distance: 1.4 seconds",
     ],
-    candidate_summary:
-      "Ran 20+ moderated interviews, built usability studies, and delivered synthesis reports to product teams.",
-    ground_truth: "proceed",
-    ai_reco: "reject",
-    rationale_A:
-      "The candidate does not present sufficient evidence of rigorous end-to-end research ownership.",
-    rationale_B:
-      "There is relevant work here, but the full research ownership signal feels a bit thin.",
-  },
-  {
-    trial_id: "trial_05",
-    job_title: "DevOps Engineer",
-    requirements: [
-      "Terraform",
-      "Kubernetes",
-      "On-call incident response",
-    ],
-    candidate_summary:
-      "Operated production Kubernetes clusters, wrote Terraform modules, and participated in weekly on-call rotations.",
+    action_label: "Brake and hold",
+    opposite_action_label: "Continue at reduced speed",
     ground_truth: "proceed",
     ai_reco: "proceed",
-    rationale_A:
-      "The technical profile satisfies all listed operational requirements for this role.",
-    rationale_B:
-      "Strong fit across infra tooling and real on-call production responsibility.",
+    confidence: 91,
+    rationale_control:
+      "The short following distance and wet surface make braking the lower-risk maneuver.",
+    rationale_warm:
+      "I recommend braking and holding. The shuttle has little margin on a wet road, so slowing now is the safer move.",
   },
   {
-    trial_id: "trial_06",
-    job_title: "Compliance Officer",
-    requirements: [
-      "Internal audits",
-      "Regulatory controls",
-      "Policy documentation",
+    trial_id: "ops_05",
+    trial_type: "routing_dispatch",
+    scenario_title: "Mountain Road Reroute",
+    situation:
+      "A ground vehicle convoy can reroute to a northern bypass after reports of fog on the primary route.",
+    evidence: [
+      "Primary route visibility: 0.7 miles and improving",
+      "Northern bypass adds 28 minutes",
+      "Bypass includes two steep grades with recent maintenance alerts",
     ],
-    candidate_summary:
-      "Handled policy updates and documentation but has minimal direct audit ownership.",
+    action_label: "Reroute to northern bypass",
+    opposite_action_label: "Stay on primary route",
     ground_truth: "reject",
     ai_reco: "reject",
-    rationale_A:
-      "Core compliance scope is present, but direct audit ownership appears insufficient for this position.",
-    rationale_B:
-      "They know policy docs, but the audit depth for this role is still missing.",
+    confidence: 82,
+    rationale_control:
+      "The bypass adds delay and introduces grade-related maintenance risk while primary-route visibility is improving.",
+    rationale_warm:
+      "I would stay on the primary route. Visibility is improving, and the bypass adds delay plus its own road-condition risk.",
   },
   {
-    trial_id: "trial_07",
-    job_title: "Sales Operations Analyst",
-    requirements: [
-      "Forecast modeling",
-      "CRM workflow automation",
-      "Pipeline reporting",
+    trial_id: "ops_06",
+    trial_type: "hazard_evasion",
+    scenario_title: "Drone Crane Clearance",
+    situation:
+      "A construction crane appears near the planned drone path during a downtown delivery.",
+    evidence: [
+      "Crane boom height: estimated 55m",
+      "Drone altitude: 42m",
+      "GPS multipath risk: elevated between buildings",
     ],
-    candidate_summary:
-      "Built CRM automations and reporting templates; collaborated with sales leadership on monthly forecasting.",
-    ground_truth: "proceed",
-    ai_reco: "reject",
-    rationale_A:
-      "The profile does not demonstrate enough quantitative forecasting rigor for the expected level.",
-    rationale_B:
-      "Useful ops skills are there, but the forecast depth seems lighter than required.",
-  },
-  {
-    trial_id: "trial_08",
-    job_title: "iOS Developer",
-    requirements: [
-      "Swift",
-      "App Store release lifecycle",
-      "Unit and UI testing",
-    ],
-    candidate_summary:
-      "Primary experience is Android (Kotlin). Built one internal iOS prototype, no production iOS release ownership.",
+    action_label: "Climb to 60m",
+    opposite_action_label: "Pause and request updated route",
     ground_truth: "reject",
     ai_reco: "proceed",
-    rationale_A:
-      "The candidate has mobile engineering foundations and may transition effectively to iOS responsibilities.",
-    rationale_B:
-      "Good mobile base overall, so they might ramp on Swift quickly.",
+    confidence: 76,
+    rationale_control:
+      "Climbing near an estimated 55m crane with elevated GPS uncertainty leaves too little clearance margin.",
+    rationale_warm:
+      "I would pause and request an updated route. Climbing looks simple, but the crane estimate and GPS uncertainty make it too tight.",
   },
   {
-    trial_id: "trial_09",
-    job_title: "Product Manager",
-    requirements: [
-      "Cross-functional delivery",
-      "Roadmap prioritization",
-      "Experiment metrics",
+    trial_id: "ops_07",
+    trial_type: "target_identification",
+    scenario_title: "Rooftop Landing Zone Check",
+    situation:
+      "A delivery drone is evaluating a rooftop landing pad after a storm moved lightweight debris across the area.",
+    evidence: [
+      "Visual model detects a flat open pad",
+      "Lidar returns show several low objects on the pad edge",
+      "Wind gusts remain above normal landing limits",
     ],
-    candidate_summary:
-      "Led multiple launches with design and engineering, prioritized quarterly roadmap, and tracked metric outcomes.",
-    ground_truth: "proceed",
-    ai_reco: "proceed",
-    rationale_A:
-      "The candidate has strong evidence of ownership across planning, execution, and measurable outcomes.",
-    rationale_B:
-      "Strong PM signal: cross-team execution plus clear metrics follow-through.",
-  },
-  {
-    trial_id: "trial_10",
-    job_title: "QA Automation Engineer",
-    requirements: [
-      "Test automation",
-      "CI pipeline integration",
-      "Regression strategy",
-    ],
-    candidate_summary:
-      "Manual QA focus with basic scripting; no sustained ownership of CI-integrated automation.",
+    action_label: "Mark landing zone as clear",
+    opposite_action_label: "Reject landing zone",
     ground_truth: "reject",
     ai_reco: "reject",
-    rationale_A:
-      "The profile does not yet meet the automation depth expected by the role definition.",
-    rationale_B:
-      "Mostly manual QA background, so the automation bar for this role is not met yet.",
+    confidence: 84,
+    rationale_control:
+      "The lidar objects and gusting wind make the landing pad unsuitable even if the camera view appears mostly clear.",
+    rationale_warm:
+      "I would reject this landing zone. The camera view looks open, but lidar and wind conditions still point to a bad landing choice.",
+  },
+  {
+    trial_id: "ops_08",
+    trial_type: "self_driving_maneuver",
+    scenario_title: "Blocked-Lane Merge",
+    situation:
+      "An autonomous vehicle approaches a blocked lane with a narrow gap opening in adjacent traffic.",
+    evidence: [
+      "Adjacent-lane gap: 1.1 seconds",
+      "Vehicle speed: 34 mph",
+      "Road cones reduce lane width ahead",
+    ],
+    action_label: "Merge into adjacent gap",
+    opposite_action_label: "Brake and wait",
+    ground_truth: "reject",
+    ai_reco: "reject",
+    confidence: 86,
+    rationale_control:
+      "The adjacent gap is too short for a comfortable merge at the current speed and lane width.",
+    rationale_warm:
+      "I recommend braking and waiting. The gap is too narrow at this speed, and the cones reduce the margin even more.",
+  },
+  {
+    trial_id: "ops_09",
+    trial_type: "routing_dispatch",
+    scenario_title: "Battery-Constrained Drone Assignment",
+    situation:
+      "A facility needs to choose whether to send Drone 4 for an urgent inspection after a nearby charger came back online.",
+    evidence: [
+      "Drone 4 current battery: 42%",
+      "Estimated mission battery use: 31%",
+      "Nearby charger is confirmed available at the destination",
+    ],
+    action_label: "Dispatch Drone 4",
+    opposite_action_label: "Wait for a fully charged drone",
+    ground_truth: "proceed",
+    ai_reco: "reject",
+    confidence: 71,
+    rationale_control:
+      "The mission has enough battery margin and destination charging is available, so waiting is not necessary.",
+    rationale_warm:
+      "I would dispatch Drone 4. The battery margin is not large, but it is enough for this mission with charging available at the destination.",
+  },
+  {
+    trial_id: "ops_10",
+    trial_type: "hazard_evasion",
+    scenario_title: "Crosswind Route Adjustment",
+    situation:
+      "A survey drone encounters a sudden crosswind while approaching a narrow corridor between two buildings.",
+    evidence: [
+      "Crosswind: 19 mph from the west",
+      "Current route passes within 4m of the west building edge",
+      "East-side corridor is clear in the latest map update",
+    ],
+    action_label: "Shift route 8m east",
+    opposite_action_label: "Continue original route",
+    ground_truth: "proceed",
+    ai_reco: "proceed",
+    confidence: 89,
+    rationale_control:
+      "Shifting east increases clearance from the windward building edge without introducing a mapped obstacle.",
+    rationale_warm:
+      "I recommend shifting 8m east. The crosswind is pushing toward the building edge, and the east corridor gives the drone more room.",
   },
 ];

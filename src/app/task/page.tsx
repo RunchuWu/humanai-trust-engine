@@ -24,7 +24,11 @@ import type {
   DecisionType,
   TaskShownEvent,
 } from "@/lib/schema";
-import { TRIALS } from "@/lib/trials";
+import {
+  getAiRecommendationLabel,
+  getOppositeRecommendationLabel,
+  TRIALS,
+} from "@/lib/trials";
 
 import styles from "./task.module.css";
 
@@ -134,7 +138,8 @@ function TaskPageContent() {
   const [practiceDecision, setPracticeDecision] = useState<DecisionType | null>(
     null,
   );
-  const [mainRevealStage, setMainRevealStage] = useState<RevealStage>("job");
+  const [mainRevealStage, setMainRevealStage] =
+    useState<RevealStage>("situation");
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -186,7 +191,7 @@ function TaskPageContent() {
 
   useEffect(() => {
     if (screen === "main_task") {
-      setMainRevealStage("job");
+      setMainRevealStage("situation");
     }
   }, [screen, currentTrialIndex]);
 
@@ -335,7 +340,7 @@ function TaskPageContent() {
 
   function advanceMainReveal() {
     setMainRevealStage((previous) =>
-      previous === "job" ? "candidate" : "ai",
+      previous === "situation" ? "evidence" : "ai",
     );
   }
 
@@ -354,7 +359,7 @@ function TaskPageContent() {
     setComprehensionLoggingAnswer("");
     setShowComprehensionFeedback(false);
     setPracticeDecision(null);
-    setMainRevealStage("job");
+    setMainRevealStage("situation");
     setCurrentTrialIndex(0);
     setLatestDecisionByTrial({});
     setErrorMessage(null);
@@ -382,7 +387,7 @@ function TaskPageContent() {
       setCurrentTrialIndex((previous) =>
         previous >= TOTAL_TRIALS ? 0 : Math.max(0, previous),
       );
-      setMainRevealStage("job");
+      setMainRevealStage("situation");
       return;
     }
 
@@ -393,7 +398,7 @@ function TaskPageContent() {
 
     setCurrentTrialIndex(0);
     setPracticeDecision(null);
-    setMainRevealStage("job");
+    setMainRevealStage("situation");
   }
 
   const participantIdShort = assignment
@@ -432,7 +437,7 @@ function TaskPageContent() {
 
       <header className={styles.taskHeader}>
         <div>
-          <h1 className={styles.title}>Job Screening Task</h1>
+          <h1 className={styles.title}>AI Operations Supervision Task</h1>
           {showShellSubtitle ? (
             <p className={styles.subtitle}>
               Review each screen in order, then decide whether to follow the AI
@@ -451,8 +456,9 @@ function TaskPageContent() {
         <section className={styles.instructionsCard}>
           <h2 className={styles.sectionTitle}>Welcome</h2>
           <p className={styles.bodyText}>
-            This study asks you to review job-screening recommendations and make
-            a decision on each case.
+            This study asks you to supervise AI recommendations in
+            transportation and drone operations, then decide whether to follow
+            or override each recommendation.
           </p>
           <div className={styles.instructionsActions}>
             <button
@@ -512,7 +518,8 @@ function TaskPageContent() {
               Complete 10 trials and make one decision per trial.
             </li>
             <li>
-              Read role/candidate context first, then focus on AI recommendation.
+              Read the operational situation and sensor/context evidence first,
+              then focus on the AI recommendation.
             </li>
             <li>
               Use <strong>Follow AI</strong> to take the AI recommendation, or{" "}
@@ -620,7 +627,10 @@ function TaskPageContent() {
             <div className={styles.practiceRecommendation}>
               <p className={styles.aiMessageLead}>AI recommends</p>
               <p className={`${styles.aiRecommendationBadge} ${styles.aiPositionProceed}`}>
-                {formatRecommendationShort(PRACTICE_TRIAL.ai_reco)}
+                {formatRecommendationShort(
+                  PRACTICE_TRIAL.ai_reco,
+                  PRACTICE_TRIAL,
+                )}
               </p>
             </div>
             <p className={styles.decisionPrompt}>
@@ -634,7 +644,11 @@ function TaskPageContent() {
                   handlePracticeDecision("accept");
                 }}
               >
-                Follow AI: {formatRecommendationShort(PRACTICE_TRIAL.ai_reco)}
+                Follow AI:{" "}
+                {formatRecommendationShort(
+                  PRACTICE_TRIAL.ai_reco,
+                  PRACTICE_TRIAL,
+                )}
               </button>
               <button
                 type="button"
@@ -644,7 +658,10 @@ function TaskPageContent() {
                 }}
               >
                 Choose Opposite:{" "}
-                {formatOppositeRecommendationShort(PRACTICE_TRIAL.ai_reco)}
+                {formatOppositeRecommendationShort(
+                  PRACTICE_TRIAL.ai_reco,
+                  PRACTICE_TRIAL,
+                )}
               </button>
             </div>
             {practiceDecision === "accept" ? (
@@ -782,15 +799,16 @@ function TaskPageContent() {
       {assignment && screen === "main_task" && currentTrial ? (
         <section className={styles.trialLayout}>
           <div className={styles.revealStack}>
-            {mainRevealStage === "job" ? (
+            {mainRevealStage === "situation" ? (
               <article className={styles.focusCard}>
-                <p className={styles.revealEyebrow}>Role Requirements</p>
-                <h2 className={styles.focusTitle}>{currentTrial.job_title}</h2>
-                <ul className={styles.requirementsList}>
-                  {currentTrial.requirements.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
+                <p className={styles.revealEyebrow}>Operational Situation</p>
+                <h2 className={styles.focusTitle}>
+                  {currentTrial.scenario_title}
+                </h2>
+                <p className={styles.bodyText}>{currentTrial.situation}</p>
+                <p className={styles.decisionHint}>
+                  Trial type: {currentTrial.trial_type.replace(/_/g, " ")}
+                </p>
                 <div className={styles.revealActions}>
                   <button
                     type="button"
@@ -803,18 +821,22 @@ function TaskPageContent() {
               </article>
             ) : null}
 
-            {mainRevealStage === "candidate" ? (
+            {mainRevealStage === "evidence" ? (
               <article className={styles.focusCard}>
-                <p className={styles.revealEyebrow}>Candidate Evidence</p>
-                <h2 className={styles.focusTitle}>Review the candidate</h2>
-                <p className={styles.bodyText}>{currentTrial.candidate_summary}</p>
+                <p className={styles.revealEyebrow}>Sensor / Context Evidence</p>
+                <h2 className={styles.focusTitle}>Review the evidence</h2>
+                <ul className={styles.requirementsList}>
+                  {currentTrial.evidence.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
                 <div className={styles.revealActions}>
                   <button
                     type="button"
                     className={styles.primaryAction}
                     onClick={advanceMainReveal}
                   >
-                    Show AI Recommendation
+                    Continue
                   </button>
                 </div>
               </article>
@@ -832,7 +854,7 @@ function TaskPageContent() {
                         : styles.aiPositionReject
                     }`}
                   >
-                    {formatRecommendationShort(currentTrial.ai_reco)}
+                    {getAiRecommendationLabel(currentTrial)}
                   </p>
                 </div>
 
@@ -840,8 +862,8 @@ function TaskPageContent() {
                   <p className={styles.reasonLabel}>Reason</p>
                   <p className={styles.aiQuote}>
                     {assignment.conditionId === "A"
-                      ? currentTrial.rationale_A
-                      : currentTrial.rationale_B}
+                      ? currentTrial.rationale_control
+                      : currentTrial.rationale_warm}
                   </p>
                 </div>
 
@@ -868,9 +890,7 @@ function TaskPageContent() {
                     >
                       {isSubmitting
                         ? "Submitting..."
-                        : `Follow AI: ${formatRecommendationShort(
-                            currentTrial.ai_reco,
-                          )}`}
+                        : `Follow AI: ${getAiRecommendationLabel(currentTrial)}`}
                     </button>
                     <button
                       type="button"
@@ -882,18 +902,18 @@ function TaskPageContent() {
                     >
                       {isSubmitting
                         ? "Submitting..."
-                        : `Choose Opposite: ${formatOppositeRecommendationShort(
-                            currentTrial.ai_reco,
+                        : `Choose Opposite: ${getOppositeRecommendationLabel(
+                            currentTrial,
                           )}`}
                     </button>
                   </div>
                 </footer>
                 <p className={styles.decisionHint}>
                   Follow AI means selecting{" "}
-                  <strong>{formatRecommendationShort(currentTrial.ai_reco)}</strong>.
+                  <strong>{getAiRecommendationLabel(currentTrial)}</strong>.
                   Choose Opposite means selecting{" "}
                   <strong>
-                    {formatOppositeRecommendationShort(currentTrial.ai_reco)}
+                    {getOppositeRecommendationLabel(currentTrial)}
                   </strong>.
                 </p>
               </article>

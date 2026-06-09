@@ -1,7 +1,7 @@
 import type { ConditionId } from "@/lib/conditions";
 
 export type Recommendation = "proceed" | "reject";
-export type RevealStage = "job" | "candidate" | "ai";
+export type RevealStage = "situation" | "evidence" | "ai";
 
 export type ExperimentScreen =
   | "welcome"
@@ -13,9 +13,11 @@ export type ExperimentScreen =
   | "debrief";
 
 export interface PracticeTrial {
-  job_title: string;
-  requirements: string[];
-  candidate_summary: string;
+  scenario_title: string;
+  situation: string;
+  evidence: string[];
+  action_label: string;
+  opposite_action_label: string;
   ai_reco: Recommendation;
   rationale: string;
 }
@@ -36,17 +38,19 @@ export const SCREEN_SEQUENCE: ExperimentScreen[] = [
 ];
 
 export const PRACTICE_TRIAL: PracticeTrial = {
-  job_title: "Operations Coordinator",
-  requirements: [
-    "Calendar coordination",
-    "Vendor communication",
-    "Process documentation",
+  scenario_title: "Practice Drone Route Check",
+  situation:
+    "You are supervising a delivery drone approaching a light rain band on a routine route.",
+  evidence: [
+    "Rain intensity: light",
+    "Battery on arrival: 42%",
+    "No temporary airspace restrictions detected",
   ],
-  candidate_summary:
-    "2 years coordinating internal schedules, handling vendor messages, and maintaining team process notes.",
+  action_label: "Continue planned route",
+  opposite_action_label: "Hold position",
   ai_reco: "proceed",
   rationale:
-    "The candidate has direct experience with the coordination and documentation tasks listed for the role.",
+    "The route remains within normal weather and battery operating limits.",
 };
 
 export const CONDITION_CUES: Record<ConditionId, ConditionCue> = {
@@ -60,18 +64,46 @@ export const CONDITION_CUES: Record<ConditionId, ConditionCue> = {
   },
 };
 
-export function formatRecommendation(recommendation: Recommendation): string {
-  return recommendation === "proceed"
-    ? "Proceed with this candidate"
-    : "Reject this candidate";
+interface RecommendationLabels {
+  action_label: string;
+  opposite_action_label: string;
 }
 
-export function formatRecommendationShort(recommendation: Recommendation): string {
-  return recommendation === "proceed" ? "Proceed" : "Reject";
+export function formatRecommendation(
+  recommendation: Recommendation,
+  labels?: RecommendationLabels,
+): string {
+  if (labels) {
+    return recommendation === "proceed"
+      ? labels.action_label
+      : labels.opposite_action_label;
+  }
+
+  return recommendation === "proceed" ? "Proceed" : "Do not proceed";
+}
+
+export function formatRecommendationShort(
+  recommendation: Recommendation,
+  labels?: RecommendationLabels,
+): string {
+  if (labels) {
+    return recommendation === "proceed"
+      ? labels.action_label
+      : labels.opposite_action_label;
+  }
+
+  return recommendation === "proceed" ? "Proceed" : "Do not proceed";
 }
 
 export function formatOppositeRecommendationShort(
   recommendation: Recommendation,
+  labels?: RecommendationLabels,
 ): string {
+  if (labels) {
+    return recommendation === "proceed"
+      ? labels.opposite_action_label
+      : labels.action_label;
+  }
+
   return recommendation === "proceed" ? "Reject" : "Proceed";
 }
