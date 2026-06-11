@@ -4,10 +4,11 @@ import { useState } from "react";
 
 import type { Assignment, ConditionId } from "@/lib/conditions";
 import {
+  CUE_MODULE_IDS,
+  CUE_MODULE_LABELS,
   CONDITION_IDS,
   type CueModuleId,
   getConditionConfig,
-  getCueModuleSummary,
 } from "@/lib/cue-config";
 import type { ExperimentScreen } from "@/lib/experiment-config";
 
@@ -32,7 +33,11 @@ export default function DebugPanel({
   currentTrialIndex,
   totalTrials,
   screens,
+  effectiveCueModules,
+  defaultCueModules,
   onForceCondition,
+  onToggleCueModule,
+  onResetCueModules,
   onJumpToScreen,
   onReset,
 }: DebugPanelProps) {
@@ -77,6 +82,8 @@ export default function DebugPanel({
         right: 12,
         width: 360,
         maxWidth: "calc(100vw - 24px)",
+        maxHeight: "calc(100vh - 24px)",
+        overflowY: "auto",
         border: "1px solid #d1d5db",
         borderRadius: 8,
         background: "#fff",
@@ -122,7 +129,7 @@ export default function DebugPanel({
       </p>
       <p style={{ margin: "4px 0" }}>
         <strong>cue modules:</strong>{" "}
-        {conditionConfig ? getCueModuleSummary(conditionConfig) : "-"}
+        {effectiveCueModules.length > 0 ? effectiveCueModules.join(", ") : "none"}
       </p>
       <p style={{ margin: "4px 0" }}>
         <strong>sessionId:</strong> {assignment?.sessionId ?? "-"}
@@ -194,6 +201,44 @@ export default function DebugPanel({
             </button>
           ))}
         </div>
+        <p style={{ margin: "0 0 6px", fontWeight: 600 }}>HumanQ Toggles</p>
+        <p style={{ margin: "0 0 6px", color: "#64748b" }}>
+          Defaults: {defaultCueModules.length > 0 ? defaultCueModules.join(", ") : "none"}
+        </p>
+        <div
+          style={{
+            display: "grid",
+            gap: 6,
+            marginBottom: 8,
+          }}
+        >
+          {CUE_MODULE_IDS.map((cueModuleId) => (
+            <label
+              key={cueModuleId}
+              style={{
+                display: "flex",
+                gap: 6,
+                alignItems: "flex-start",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={effectiveCueModules.includes(cueModuleId)}
+                onChange={() => {
+                  onToggleCueModule(cueModuleId);
+                }}
+              />
+              <span>{CUE_MODULE_LABELS[cueModuleId]}</span>
+            </label>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={onResetCueModules}
+          style={{ fontSize: 12, marginBottom: 8 }}
+        >
+          Reset toggles
+        </button>
         <p style={{ margin: "4px 0" }}>
           <a href="/api/export?format=json" target="_blank" rel="noreferrer">
             Export JSON
