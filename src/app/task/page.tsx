@@ -15,8 +15,10 @@ import {
   AGENT_NAME_OPTIONS,
   AGENT_PERSONALITY_OPTIONS,
   AGENT_TONE_OPTIONS,
+  applyCueModuleOverride,
   createAgentCueConfig,
   type AgentCueConfig,
+  type CueModuleId,
   type AgentPersonality,
   type AgentTone,
   getConditionConfig,
@@ -215,6 +217,9 @@ function TaskPageContent() {
   );
   const [userAgentConfig, setUserAgentConfig] =
     useState<AgentCueConfig | null>(null);
+  const [activeCueModulesOverride, setActiveCueModulesOverride] = useState<
+    CueModuleId[] | null
+  >(null);
   const [mainRevealStage, setMainRevealStage] =
     useState<RevealStage>("situation");
   const [currentTrialIndex, setCurrentTrialIndex] = useState(0);
@@ -345,9 +350,10 @@ function TaskPageContent() {
     const decidedAt = Date.now();
     const shownAt = trialShownAtMsRef.current ?? decidedAt;
     const followAi = decision === "accept";
-    const conditionConfig = activeCondition ?? getConditionConfig(assignment.conditionId);
+    const conditionConfig =
+      effectiveCondition ?? getConditionConfig(assignment.conditionId);
     const agentConfig =
-      conditionConfig.cueSource === "control"
+      conditionConfig.enabledCues.length === 0
         ? null
         : getResolvedAgentConfig(conditionConfig, userAgentConfig);
 
@@ -488,6 +494,7 @@ function TaskPageContent() {
     setComprehensionLoggingAnswer("");
     setShowComprehensionFeedback(false);
     setPracticeDecision(null);
+    setActiveCueModulesOverride(null);
     setUserAgentConfig(
       getConditionConfig(nextAssignment.conditionId).cueSource === "user_set"
         ? getConditionConfig(nextAssignment.conditionId).agent
@@ -509,6 +516,24 @@ function TaskPageContent() {
         error instanceof Error ? error.message : "Failed to force condition.";
       setErrorMessage(message);
     }
+  }
+
+  function handleToggleCueModule(cueModuleId: CueModuleId) {
+    if (!activeCondition) {
+      return;
+    }
+
+    const currentModules =
+      activeCueModulesOverride ?? activeCondition.enabledCues;
+    const nextModules = currentModules.includes(cueModuleId)
+      ? currentModules.filter((item) => item !== cueModuleId)
+      : [...currentModules, cueModuleId];
+
+    setActiveCueModulesOverride(nextModules);
+  }
+
+  function handleResetCueModules() {
+    setActiveCueModulesOverride(null);
   }
 
   function handleDebugScreenJump(nextScreen: ExperimentScreen) {
@@ -548,8 +573,11 @@ function TaskPageContent() {
   const activeCondition = assignment
     ? getConditionConfig(assignment.conditionId)
     : null;
-  const activeAgent = activeCondition
-    ? getResolvedAgentConfig(activeCondition, userAgentConfig)
+  const effectiveCondition = activeCondition
+    ? applyCueModuleOverride(activeCondition, activeCueModulesOverride)
+    : null;
+  const activeAgent = effectiveCondition
+    ? getResolvedAgentConfig(effectiveCondition, userAgentConfig)
     : null;
   const agentSetupConfig = userAgentConfig ?? getConditionConfig("user_set").agent;
   const progressValue =
@@ -570,7 +598,11 @@ function TaskPageContent() {
           currentTrialIndex={currentTrialIndex}
           totalTrials={TOTAL_TRIALS}
           screens={SCREEN_SEQUENCE}
+          effectiveCueModules={effectiveCondition?.enabledCues ?? []}
+          defaultCueModules={activeCondition?.enabledCues ?? []}
           onForceCondition={handleForceCondition}
+          onToggleCueModule={handleToggleCueModule}
+          onResetCueModules={handleResetCueModules}
           onJumpToScreen={handleDebugScreenJump}
           onReset={clearAssignmentAndReload}
         />
@@ -1098,22 +1130,22 @@ function TaskPageContent() {
             {mainRevealStage === "ai" ? (
               <article className={styles.focusCard}>
                 <p className={styles.revealEyebrow}>AI Recommendation</p>
-                {activeCondition &&
+                {effectiveCondition &&
                 activeAgent &&
-                activeCondition.cueSource !== "control" ? (
+                effectiveCondition.enabledCues.length > 0 ? (
                   <div className={styles.agentCueHeader}>
-                    {hasCue(activeCondition, "avatar") ? (
+                    {hasCue(effectiveCondition, "avatar") ? (
                       <span className={styles.avatarBadge}>
                         {activeAgent.avatarLabel}
                       </span>
                     ) : null}
                     <div>
-                      {hasCue(activeCondition, "agent_name") ? (
+                      {hasCue(effectiveCondition, "agent_name") ? (
                         <p className={styles.agentPreviewName}>
                           {activeAgent.name}
                         </p>
                       ) : null}
-                      {hasCue(activeCondition, "personality") ? (
+                      {hasCue(effectiveCondition, "personality") ? (
                         <p className={styles.agentPreviewMeta}>
                           {getPersonalityLabel(activeAgent.personality)}
                         </p>
@@ -1123,10 +1155,10 @@ function TaskPageContent() {
                 ) : null}
                 <div className={styles.aiRecommendationBlock}>
                   <p className={styles.aiMessageLead}>
-                    {activeCondition &&
+                    {effectiveCondition &&
                     activeAgent &&
-                    activeCondition.cueSource !== "control" &&
-                    hasCue(activeCondition, "agent_name")
+                    effectiveCondition.enabledCues.length > 0 &&
+                    hasCue(effectiveCondition, "agent_name")
                       ? `${activeAgent.name} recommends`
                       : "AI recommends"}
                   </p>
@@ -1144,16 +1176,16 @@ function TaskPageContent() {
                 <div className={styles.aiBody}>
                   <p className={styles.reasonLabel}>Reason</p>
                   <p className={styles.aiQuote}>
-                    {activeCondition
+                    {effectiveCondition
                       ? getRationaleForCondition(
                           currentTrial,
-                          activeCondition,
+                          effectiveCondition,
                           activeAgent,
                         )
                       : currentTrial.rationale_control}
                   </p>
-                  {activeCondition &&
-                  hasCue(activeCondition, "confidence_explanation") ? (
+                  {effectiveCondition &&
+                  hasCue(effectiveCondition, "confidence_explanation") ? (
                     <p className={styles.confidenceLine}>
                       Confidence: {currentTrial.confidence}%
                     </p>

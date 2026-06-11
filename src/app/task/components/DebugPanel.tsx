@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { Assignment, ConditionId } from "@/lib/conditions";
 import {
   CONDITION_IDS,
+  type CueModuleId,
   getConditionConfig,
   getCueModuleSummary,
 } from "@/lib/cue-config";
@@ -16,7 +17,11 @@ interface DebugPanelProps {
   currentTrialIndex: number;
   totalTrials: number;
   screens: ExperimentScreen[];
+  effectiveCueModules: CueModuleId[];
+  defaultCueModules: CueModuleId[];
   onForceCondition: (conditionId: ConditionId) => void;
+  onToggleCueModule: (cueModuleId: CueModuleId) => void;
+  onResetCueModules: () => void;
   onJumpToScreen: (screen: ExperimentScreen) => void;
   onReset: () => void;
 }

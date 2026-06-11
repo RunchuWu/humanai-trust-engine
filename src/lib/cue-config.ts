@@ -29,6 +29,22 @@ export interface ConditionConfig {
   agent: AgentCueConfig;
 }
 
+export const CUE_MODULE_IDS: CueModuleId[] = [
+  "agent_name",
+  "tone_warmth",
+  "avatar",
+  "personality",
+  "confidence_explanation",
+];
+
+export const CUE_MODULE_LABELS: Record<CueModuleId, string> = {
+  agent_name: "Agent name",
+  tone_warmth: "Warm tone",
+  avatar: "Avatar",
+  personality: "Personality framing",
+  confidence_explanation: "Confidence/explanation",
+};
+
 export const AGENT_NAME_OPTIONS = ["Atlas", "Nova", "Scout"] as const;
 export const AGENT_TONE_OPTIONS: AgentTone[] = ["neutral", "warm"];
 export const AGENT_PERSONALITY_OPTIONS: AgentPersonality[] = [
@@ -112,6 +128,20 @@ export function hasCue(
   cueModuleId: CueModuleId,
 ): boolean {
   return condition.enabledCues.includes(cueModuleId);
+}
+
+export function applyCueModuleOverride(
+  condition: ConditionConfig,
+  enabledCuesOverride: CueModuleId[] | null,
+): ConditionConfig {
+  if (!enabledCuesOverride) {
+    return condition;
+  }
+
+  return {
+    ...condition,
+    enabledCues: enabledCuesOverride,
+  };
 }
 
 export function getCueModuleSummary(condition: ConditionConfig): string {
