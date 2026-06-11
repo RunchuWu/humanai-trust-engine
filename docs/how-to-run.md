@@ -64,10 +64,19 @@ Cue modules are configured independently:
 - reset assignment
 - force `control`, `industry_set`, or `user_set`
 - inspect cue source and enabled cue modules
+- toggle HumanQ cue modules for the current debug session:
+  - agent name
+  - tone/warmth
+  - avatar/face
+  - personality framing
+  - confidence/explanation style
+- reset HumanQ toggles to the assigned condition defaults
 - jump to any experiment screen
 - export JSON or CSV
 
 Debug controls do not change the participant-facing route unless `debug=1` is present.
+HumanQ toggle changes are researcher-only and session-local. New decision events
+log the effective active cue modules after any debug toggles.
 
 ## Verification Commands
 

@@ -43,7 +43,7 @@ Optional cue metadata fields:
 | Field | Type | Description |
 | --- | --- | --- |
 | `cue_source` | `"control"`, `"industry_set"`, or `"user_set"` | Cue-source factor for the participant's assigned condition |
-| `cue_modules` | array | Enabled cue modules for this condition |
+| `cue_modules` | array | Effective active cue modules, including researcher debug toggle changes when `?debug=1` is used |
 | `agent_name` | string | Rendered agent name, when a name cue is active |
 | `agent_tone` | `"neutral"` or `"warm"` | Rendered tone/warmth setting, when available |
 | `agent_personality` | `"precise"`, `"supportive"`, or `"calm"` | Rendered personality framing, when available |
