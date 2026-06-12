@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { readLegacyEvents, toCsv } from "@/lib/event-store";
+import { getCurrentStudyRunId, readRunEvents, toCsv } from "@/lib/event-store";
 import type { EventUnion } from "@/lib/schema";
 
 export const runtime = "nodejs";
@@ -24,7 +24,7 @@ export async function GET(request: Request) {
   let events: EventUnion[];
 
   try {
-    events = await readLegacyEvents();
+    events = await readRunEvents(getCurrentStudyRunId());
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to read events";
     return serverError(message);

@@ -1,14 +1,13 @@
-import { appendFile, mkdir } from "node:fs/promises";
-import path from "node:path";
-
 import { NextResponse } from "next/server";
 
+import {
+  addStudyRunId,
+  appendEvent,
+  getCurrentStudyRunId,
+} from "@/lib/event-store";
 import { validateEvent, type EventUnion } from "@/lib/schema";
 
 export const runtime = "nodejs";
-
-const DATA_DIR = path.join(process.cwd(), "data");
-const EVENTS_FILE_PATH = path.join(DATA_DIR, "events.jsonl");
 
 function badRequest(message: string) {
   return NextResponse.json({ ok: false, message }, { status: 400 });
@@ -32,18 +31,15 @@ export async function POST(request: Request) {
     return badRequest(validation.error ?? "Invalid event payload");
   }
 
+  const event = addStudyRunId(payload as EventUnion, getCurrentStudyRunId());
+
   try {
-    await mkdir(DATA_DIR, { recursive: true });
-    await appendFile(
-      EVENTS_FILE_PATH,
-      `${JSON.stringify(payload as EventUnion)}\n`,
-      "utf8",
-    );
+    await appendEvent(event);
 
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch {
     return NextResponse.json(
-      { ok: false, message: "Failed to write event to data/events.jsonl" },
+      { ok: false, message: "Failed to write event to study run storage" },
       { status: 500 },
     );
   }

@@ -1,13 +1,22 @@
-import { readFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { validateEvent, type EventUnion } from "@/lib/schema";
 
+const DATA_DIR = path.join(process.cwd(), "data");
+const RUNS_DIR = path.join(DATA_DIR, "runs");
+
 export const LEGACY_EVENTS_FILE_PATH = path.join(
-  process.cwd(),
-  "data",
+  DATA_DIR,
   "events.jsonl",
 );
+
+export interface RunManifest {
+  study_run_id: string;
+  storage_version: 1;
+  created_at_ms: number;
+  created_at_iso: string;
+}
 
 const CSV_COLUMNS = [
   "event_id",
@@ -30,7 +39,31 @@ const CSV_COLUMNS = [
   "agent_tone",
   "agent_personality",
   "agent_avatar_label",
+  "study_run_id",
 ] as const;
+
+export function sanitizeStudyRunId(value: string | null | undefined): string {
+  const trimmed = value?.trim() ?? "";
+  const safe = trimmed.replace(/[^A-Za-z0-9._-]/g, "-").slice(0, 80);
+
+  return safe || "local-dev";
+}
+
+export function getCurrentStudyRunId(): string {
+  return sanitizeStudyRunId(process.env.STUDY_RUN_ID);
+}
+
+export function getRunDir(studyRunId: string): string {
+  return path.join(RUNS_DIR, sanitizeStudyRunId(studyRunId));
+}
+
+export function getRunEventsFilePath(studyRunId: string): string {
+  return path.join(getRunDir(studyRunId), "events.jsonl");
+}
+
+export function getRunManifestFilePath(studyRunId: string): string {
+  return path.join(getRunDir(studyRunId), "manifest.json");
+}
 
 function csvEscape(value: unknown): string {
   if (value === undefined || value === null) {
@@ -45,6 +78,73 @@ function csvEscape(value: unknown): string {
   }
 
   return escaped;
+}
+
+async function readOptionalFile(filePath: string): Promise<string | null> {
+  try {
+    return await readFile(filePath, "utf8");
+  } catch (error) {
+    const isMissingFile =
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code?: string }).code === "ENOENT";
+
+    if (isMissingFile) {
+      return null;
+    }
+
+    throw error;
+  }
+}
+
+async function ensureRunManifest(studyRunId: string): Promise<void> {
+  const safeStudyRunId = sanitizeStudyRunId(studyRunId);
+  const runDir = getRunDir(safeStudyRunId);
+  const manifestPath = getRunManifestFilePath(safeStudyRunId);
+
+  await mkdir(runDir, { recursive: true });
+
+  const existingManifest = await readOptionalFile(manifestPath);
+  if (existingManifest !== null) {
+    return;
+  }
+
+  const now = Date.now();
+  const manifest: RunManifest = {
+    study_run_id: safeStudyRunId,
+    storage_version: 1,
+    created_at_ms: now,
+    created_at_iso: new Date(now).toISOString(),
+  };
+
+  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+}
+
+export function addStudyRunId(
+  event: EventUnion,
+  studyRunId = getCurrentStudyRunId(),
+): EventUnion {
+  return {
+    ...event,
+    study_run_id: sanitizeStudyRunId(studyRunId),
+  };
+}
+
+export async function appendEvent(event: EventUnion): Promise<EventUnion> {
+  const studyRunId = sanitizeStudyRunId(
+    event.study_run_id ?? getCurrentStudyRunId(),
+  );
+  const eventWithRunId = addStudyRunId(event, studyRunId);
+
+  await ensureRunManifest(studyRunId);
+  await appendFile(
+    getRunEventsFilePath(studyRunId),
+    `${JSON.stringify(eventWithRunId)}\n`,
+    "utf8",
+  );
+
+  return eventWithRunId;
 }
 
 export function parseEventLines(content: string): EventUnion[] {
@@ -81,22 +181,23 @@ export function parseEventLines(content: string): EventUnion[] {
 }
 
 export async function readLegacyEvents(): Promise<EventUnion[]> {
-  try {
-    const content = await readFile(LEGACY_EVENTS_FILE_PATH, "utf8");
-    return parseEventLines(content);
-  } catch (error) {
-    const isMissingFile =
-      error &&
-      typeof error === "object" &&
-      "code" in error &&
-      (error as { code?: string }).code === "ENOENT";
+  const content = await readOptionalFile(LEGACY_EVENTS_FILE_PATH);
 
-    if (isMissingFile) {
-      return [];
-    }
-
-    throw error;
+  if (content === null) {
+    return [];
   }
+
+  return parseEventLines(content);
+}
+
+export async function readRunEvents(studyRunId: string): Promise<EventUnion[]> {
+  const content = await readOptionalFile(getRunEventsFilePath(studyRunId));
+
+  if (content === null) {
+    return [];
+  }
+
+  return parseEventLines(content);
 }
 
 export function toCsv(events: EventUnion[]): string {
@@ -124,6 +225,7 @@ export function toCsv(events: EventUnion[]): string {
       agent_tone: "",
       agent_personality: "",
       agent_avatar_label: "",
+      study_run_id: event.study_run_id ?? "",
     };
 
     if (event.event_type === "decision") {

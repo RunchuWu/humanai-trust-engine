@@ -22,6 +22,7 @@ interface BaseEvent {
   participant_id: string;
   condition_id: ConditionId;
   session_id: string;
+  study_run_id?: string;
   event_type: EventType;
   timestamp_ms: number;
 }
@@ -143,6 +144,10 @@ function validateBaseFields(e: Record<string, unknown>): ValidationResult {
 
   if (!isUuid(e.session_id)) {
     return { ok: false, error: "session_id must be a UUID string" };
+  }
+
+  if (e.study_run_id !== undefined && !isString(e.study_run_id)) {
+    return { ok: false, error: "study_run_id must be a string" };
   }
 
   if (e.event_type !== "task_shown" && e.event_type !== "decision") {
