@@ -30,6 +30,15 @@ export interface RunManifest {
   created_at_iso: string;
 }
 
+export interface RunSummary {
+  study_run_id: string;
+  manifest: RunManifest | null;
+  event_count: number;
+  participant_count: number;
+  condition_breakdown: Record<string, number>;
+  last_event_timestamp_ms: number | null;
+}
+
 export interface EventFilters {
   studyRunId: string | "all";
   eventType?: EventType;
@@ -259,6 +268,38 @@ async function ensureRunManifest(studyRunId: string): Promise<void> {
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
 }
 
+function createFallbackManifest(studyRunId: string): RunManifest {
+  return {
+    study_run_id: sanitizeStudyRunId(studyRunId),
+    storage_version: 1,
+    created_at_ms: 0,
+    created_at_iso: "",
+  };
+}
+
+export async function readRunManifest(
+  studyRunId: string,
+): Promise<RunManifest | null> {
+  const safeStudyRunId = sanitizeStudyRunId(studyRunId);
+  const content = await readOptionalFile(getRunManifestFilePath(safeStudyRunId));
+
+  if (content === null) {
+    return null;
+  }
+
+  const parsed: unknown = JSON.parse(content);
+  if (
+    typeof parsed === "object" &&
+    parsed !== null &&
+    "study_run_id" in parsed &&
+    "storage_version" in parsed
+  ) {
+    return parsed as RunManifest;
+  }
+
+  return createFallbackManifest(safeStudyRunId);
+}
+
 export function addStudyRunId(
   event: EventUnion,
   studyRunId = getCurrentStudyRunId(),
@@ -427,6 +468,44 @@ export async function readFilteredEvents(
   return filterEvents(eventGroups.flat(), filters).sort(
     (a, b) => a.timestamp_ms - b.timestamp_ms,
   );
+}
+
+export async function getRunSummary(studyRunId: string): Promise<RunSummary> {
+  const safeStudyRunId = sanitizeStudyRunId(studyRunId);
+  const [manifest, events] = await Promise.all([
+    readRunManifest(safeStudyRunId),
+    readRunEvents(safeStudyRunId),
+  ]);
+  const participantIds = new Set(events.map((event) => event.participant_id));
+  const conditionBreakdown = events.reduce<Record<string, number>>(
+    (accumulator, event) => {
+      accumulator[event.condition_id] =
+        (accumulator[event.condition_id] ?? 0) + 1;
+      return accumulator;
+    },
+    {},
+  );
+  const lastEvent = events.at(-1);
+
+  return {
+    study_run_id: safeStudyRunId,
+    manifest,
+    event_count: events.length,
+    participant_count: participantIds.size,
+    condition_breakdown: conditionBreakdown,
+    last_event_timestamp_ms: lastEvent?.timestamp_ms ?? null,
+  };
+}
+
+export async function getRunSummaries(): Promise<RunSummary[]> {
+  const runIds = new Set(await listStudyRunIds());
+  runIds.add(getCurrentStudyRunId());
+
+  const summaries = await Promise.all(
+    Array.from(runIds).map((studyRunId) => getRunSummary(studyRunId)),
+  );
+
+  return summaries.sort((a, b) => a.study_run_id.localeCompare(b.study_run_id));
 }
 
 export function toCsv(events: EventUnion[]): string {

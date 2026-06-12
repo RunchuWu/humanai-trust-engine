@@ -27,6 +27,46 @@ interface DebugPanelProps {
   onReset: () => void;
 }
 
+interface RunSummary {
+  study_run_id: string;
+  event_count: number;
+  participant_count: number;
+  condition_breakdown: Record<string, number>;
+  last_event_timestamp_ms: number | null;
+}
+
+interface RunsResponse {
+  current_study_run_id: string;
+  runs: RunSummary[];
+}
+
+interface PreviewEvent {
+  event_id: string;
+  participant_id: string;
+  condition_id: string;
+  session_id: string;
+  study_run_id?: string;
+  event_type: string;
+  timestamp_ms: number;
+  trial_id: string;
+  trial_index: number;
+}
+
+interface PreviewResponse {
+  current_study_run_id: string;
+  total_count: number;
+  returned_count: number;
+  events: PreviewEvent[];
+}
+
+function formatTimestamp(timestampMs: number | null): string {
+  if (timestampMs === null) {
+    return "-";
+  }
+
+  return new Date(timestampMs).toLocaleString();
+}
+
 export default function DebugPanel({
   assignment,
   currentScreen,
@@ -42,9 +82,103 @@ export default function DebugPanel({
   onReset,
 }: DebugPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [runs, setRuns] = useState<RunSummary[]>([]);
+  const [preview, setPreview] = useState<PreviewResponse | null>(null);
+  const [currentStudyRunId, setCurrentStudyRunId] = useState("local-dev");
+  const [studyRunFilter, setStudyRunFilter] = useState("current");
+  const [eventTypeFilter, setEventTypeFilter] = useState("");
+  const [conditionFilter, setConditionFilter] = useState("");
+  const [participantFilter, setParticipantFilter] = useState("");
+  const [sessionFilter, setSessionFilter] = useState("");
+  const [trialFilter, setTrialFilter] = useState("");
+  const [dataError, setDataError] = useState<string | null>(null);
+  const [isDataLoading, setIsDataLoading] = useState(false);
   const conditionConfig = assignment
     ? getConditionConfig(assignment.conditionId)
     : null;
+
+  function buildDataQuery(
+    format: "json" | "csv" | null,
+    currentRunId = currentStudyRunId,
+  ): string {
+    const params = new URLSearchParams();
+    const selectedRun =
+      studyRunFilter === "current" ? currentRunId : studyRunFilter;
+
+    params.set("study_run_id", selectedRun);
+
+    if (format) {
+      params.set("format", format);
+    } else {
+      params.set("limit", "100");
+    }
+
+    if (eventTypeFilter) {
+      params.set("event_type", eventTypeFilter);
+    }
+
+    if (conditionFilter) {
+      params.set("condition_id", conditionFilter);
+    }
+
+    if (participantFilter.trim()) {
+      params.set("participant_id", participantFilter.trim());
+    }
+
+    if (sessionFilter.trim()) {
+      params.set("session_id", sessionFilter.trim());
+    }
+
+    if (trialFilter.trim()) {
+      params.set("trial_id", trialFilter.trim());
+    }
+
+    return params.toString();
+  }
+
+  async function loadPreview(currentRunId = currentStudyRunId) {
+    const response = await fetch(`/api/events/preview?${buildDataQuery(null, currentRunId)}`);
+    if (!response.ok) {
+      throw new Error("Failed to load event preview");
+    }
+
+    const data = (await response.json()) as PreviewResponse;
+    setPreview(data);
+  }
+
+  async function refreshPreview() {
+    setDataError(null);
+    setIsDataLoading(true);
+
+    try {
+      await loadPreview();
+    } catch (error) {
+      setDataError(error instanceof Error ? error.message : "Failed to load data");
+    } finally {
+      setIsDataLoading(false);
+    }
+  }
+
+  async function refreshResearcherData() {
+    setDataError(null);
+    setIsDataLoading(true);
+
+    try {
+      const response = await fetch("/api/runs");
+      if (!response.ok) {
+        throw new Error("Failed to load study runs");
+      }
+
+      const data = (await response.json()) as RunsResponse;
+      setRuns(data.runs);
+      setCurrentStudyRunId(data.current_study_run_id);
+      await loadPreview(data.current_study_run_id);
+    } catch (error) {
+      setDataError(error instanceof Error ? error.message : "Failed to load data");
+    } finally {
+      setIsDataLoading(false);
+    }
+  }
 
   if (!isOpen) {
     return (
@@ -52,6 +186,7 @@ export default function DebugPanel({
         type="button"
         onClick={() => {
           setIsOpen(true);
+          void refreshResearcherData();
         }}
         style={{
           position: "fixed",
@@ -239,15 +374,187 @@ export default function DebugPanel({
         >
           Reset toggles
         </button>
-        <p style={{ margin: "4px 0" }}>
-          <a href="/api/export?format=json" target="_blank" rel="noreferrer">
-            Export JSON
-          </a>
-          {" | "}
-          <a href="/api/export?format=csv" target="_blank" rel="noreferrer">
-            Export CSV
-          </a>
-        </p>
+        <div
+          style={{
+            marginTop: 10,
+            paddingTop: 10,
+            borderTop: "1px solid #e5e7eb",
+          }}
+        >
+          <p style={{ margin: "0 0 6px", fontWeight: 600 }}>Data Preview</p>
+          <div style={{ display: "grid", gap: 6 }}>
+            <label style={{ display: "grid", gap: 2 }}>
+              <span>Study run</span>
+              <select
+                value={studyRunFilter}
+                onChange={(event) => {
+                  setStudyRunFilter(event.target.value);
+                }}
+              >
+                <option value="current">Current ({currentStudyRunId})</option>
+                <option value="all">All runs</option>
+                {runs.map((run) => (
+                  <option key={run.study_run_id} value={run.study_run_id}>
+                    {run.study_run_id}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label style={{ display: "grid", gap: 2 }}>
+              <span>Event type</span>
+              <select
+                value={eventTypeFilter}
+                onChange={(event) => {
+                  setEventTypeFilter(event.target.value);
+                }}
+              >
+                <option value="">All events</option>
+                <option value="task_shown">task_shown</option>
+                <option value="decision">decision</option>
+              </select>
+            </label>
+            <label style={{ display: "grid", gap: 2 }}>
+              <span>Condition</span>
+              <select
+                value={conditionFilter}
+                onChange={(event) => {
+                  setConditionFilter(event.target.value);
+                }}
+              >
+                <option value="">All conditions</option>
+                {CONDITION_IDS.map((conditionId) => (
+                  <option key={conditionId} value={conditionId}>
+                    {conditionId}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <input
+              type="text"
+              placeholder="participant_id"
+              value={participantFilter}
+              onChange={(event) => {
+                setParticipantFilter(event.target.value);
+              }}
+            />
+            <input
+              type="text"
+              placeholder="session_id"
+              value={sessionFilter}
+              onChange={(event) => {
+                setSessionFilter(event.target.value);
+              }}
+            />
+            <input
+              type="text"
+              placeholder="trial_id"
+              value={trialFilter}
+              onChange={(event) => {
+                setTrialFilter(event.target.value);
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                void refreshPreview();
+              }}
+              disabled={isDataLoading}
+              style={{ fontSize: 12 }}
+            >
+              {isDataLoading ? "Loading..." : "Apply filters"}
+            </button>
+          </div>
+
+          {dataError ? (
+            <p style={{ margin: "6px 0", color: "#b91c1c" }}>{dataError}</p>
+          ) : null}
+
+          <div style={{ marginTop: 8 }}>
+            <p style={{ margin: "0 0 4px", fontWeight: 600 }}>Runs</p>
+            {runs.length === 0 ? (
+              <p style={{ margin: "0 0 6px", color: "#64748b" }}>
+                No study-run files found yet.
+              </p>
+            ) : null}
+            {runs.map((run) => (
+              <div
+                key={run.study_run_id}
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: 6,
+                  padding: 6,
+                  marginBottom: 6,
+                }}
+              >
+                <strong>{run.study_run_id}</strong>
+                <p style={{ margin: "2px 0" }}>
+                  events: {run.event_count}; participants:{" "}
+                  {run.participant_count}
+                </p>
+                <p style={{ margin: "2px 0" }}>
+                  last: {formatTimestamp(run.last_event_timestamp_ms)}
+                </p>
+                <p style={{ margin: "2px 0", color: "#64748b" }}>
+                  conditions:{" "}
+                  {Object.keys(run.condition_breakdown).length > 0
+                    ? Object.entries(run.condition_breakdown)
+                        .map(([conditionId, count]) => `${conditionId}:${count}`)
+                        .join(", ")
+                    : "none"}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 8 }}>
+            <p style={{ margin: "0 0 4px", fontWeight: 600 }}>
+              Preview{" "}
+              {preview
+                ? `(${preview.returned_count}/${preview.total_count})`
+                : ""}
+            </p>
+            {preview?.events.slice(0, 8).map((event) => (
+              <div
+                key={event.event_id}
+                style={{
+                  borderTop: "1px solid #f1f5f9",
+                  padding: "5px 0",
+                }}
+              >
+                <strong>{event.event_type}</strong> {event.trial_id} #
+                {event.trial_index}
+                <br />
+                <span style={{ color: "#64748b" }}>
+                  {event.study_run_id ?? "-"} / {event.condition_id} /{" "}
+                  {formatTimestamp(event.timestamp_ms)}
+                </span>
+              </div>
+            ))}
+            {preview && preview.events.length === 0 ? (
+              <p style={{ margin: "0 0 6px", color: "#64748b" }}>
+                No events match the active filters.
+              </p>
+            ) : null}
+          </div>
+
+          <p style={{ margin: "8px 0 0" }}>
+            <a
+              href={`/api/export?${buildDataQuery("json")}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Export filtered JSON
+            </a>
+            {" | "}
+            <a
+              href={`/api/export?${buildDataQuery("csv")}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Export filtered CSV
+            </a>
+          </p>
+        </div>
       </div>
     </aside>
   );
