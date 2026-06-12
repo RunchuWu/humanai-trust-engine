@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getCurrentStudyRunId, readRunEvents, toCsv } from "@/lib/event-store";
+import { parseEventFilters, readFilteredEvents, toCsv } from "@/lib/event-store";
 import type { EventUnion } from "@/lib/schema";
 
 export const runtime = "nodejs";
@@ -21,10 +21,15 @@ export async function GET(request: Request) {
     return badRequest("Query parameter 'format' must be 'json' or 'csv'");
   }
 
+  const filterParse = parseEventFilters(url.searchParams);
+  if (!filterParse.ok || !filterParse.filters) {
+    return badRequest(filterParse.error ?? "Invalid export filters");
+  }
+
   let events: EventUnion[];
 
   try {
-    events = await readRunEvents(getCurrentStudyRunId());
+    events = await readFilteredEvents(filterParse.filters);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to read events";
     return serverError(message);

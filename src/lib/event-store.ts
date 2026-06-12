@@ -1,7 +1,19 @@
-import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import {
+  appendFile,
+  mkdir,
+  readFile,
+  readdir,
+  writeFile,
+} from "node:fs/promises";
 import path from "node:path";
 
-import { validateEvent, type EventUnion } from "@/lib/schema";
+import {
+  validateEvent,
+  type ConditionId,
+  type CueSource,
+  type EventType,
+  type EventUnion,
+} from "@/lib/schema";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const RUNS_DIR = path.join(DATA_DIR, "runs");
@@ -16,6 +28,24 @@ export interface RunManifest {
   storage_version: 1;
   created_at_ms: number;
   created_at_iso: string;
+}
+
+export interface EventFilters {
+  studyRunId: string | "all";
+  eventType?: EventType;
+  conditionId?: ConditionId;
+  participantId?: string;
+  sessionId?: string;
+  trialId?: string;
+  cueSource?: CueSource;
+  fromTimestampMs?: number;
+  toTimestampMs?: number;
+}
+
+export interface FilterParseResult {
+  ok: boolean;
+  filters?: EventFilters;
+  error?: string;
 }
 
 const CSV_COLUMNS = [
@@ -63,6 +93,114 @@ export function getRunEventsFilePath(studyRunId: string): string {
 
 export function getRunManifestFilePath(studyRunId: string): string {
   return path.join(getRunDir(studyRunId), "manifest.json");
+}
+
+function isEventType(value: string): value is EventType {
+  return value === "task_shown" || value === "decision";
+}
+
+function isConditionId(value: string): value is ConditionId {
+  return (
+    value === "control" ||
+    value === "industry_set" ||
+    value === "user_set" ||
+    value === "A" ||
+    value === "B"
+  );
+}
+
+function isCueSource(value: string): value is CueSource {
+  return value === "control" || value === "industry_set" || value === "user_set";
+}
+
+function parseTimestampFilter(
+  params: URLSearchParams,
+  key: "from_timestamp_ms" | "to_timestamp_ms",
+): { ok: true; value?: number } | { ok: false; error: string } {
+  const rawValue = params.get(key);
+  if (!rawValue) {
+    return { ok: true };
+  }
+
+  const value = Number(rawValue);
+  if (!Number.isFinite(value) || value < 0) {
+    return { ok: false, error: `${key} must be a non-negative number` };
+  }
+
+  return { ok: true, value };
+}
+
+export function parseEventFilters(params: URLSearchParams): FilterParseResult {
+  const requestedStudyRunId = params.get("study_run_id");
+  const studyRunId =
+    requestedStudyRunId === "all"
+      ? "all"
+      : sanitizeStudyRunId(requestedStudyRunId ?? getCurrentStudyRunId());
+  const eventType = params.get("event_type");
+  const conditionId = params.get("condition_id");
+  const cueSource = params.get("cue_source");
+  const fromTimestamp = parseTimestampFilter(params, "from_timestamp_ms");
+  const toTimestamp = parseTimestampFilter(params, "to_timestamp_ms");
+
+  if (eventType && !isEventType(eventType)) {
+    return { ok: false, error: "event_type must be 'task_shown' or 'decision'" };
+  }
+
+  if (conditionId && !isConditionId(conditionId)) {
+    return {
+      ok: false,
+      error:
+        "condition_id must be 'control', 'industry_set', 'user_set', 'A', or 'B'",
+    };
+  }
+
+  if (cueSource && !isCueSource(cueSource)) {
+    return {
+      ok: false,
+      error: "cue_source must be 'control', 'industry_set', or 'user_set'",
+    };
+  }
+
+  if (!fromTimestamp.ok) {
+    return fromTimestamp;
+  }
+
+  if (!toTimestamp.ok) {
+    return toTimestamp;
+  }
+
+  if (
+    fromTimestamp.value !== undefined &&
+    toTimestamp.value !== undefined &&
+    fromTimestamp.value > toTimestamp.value
+  ) {
+    return {
+      ok: false,
+      error: "from_timestamp_ms must be less than or equal to to_timestamp_ms",
+    };
+  }
+
+  const parsedEventType =
+    eventType && isEventType(eventType) ? eventType : undefined;
+  const parsedConditionId =
+    conditionId && isConditionId(conditionId) ? conditionId : undefined;
+  const parsedCueSource =
+    cueSource && isCueSource(cueSource) ? cueSource : undefined;
+
+  return {
+    ok: true,
+    filters: {
+      studyRunId,
+      eventType: parsedEventType,
+      conditionId: parsedConditionId,
+      participantId: params.get("participant_id") || undefined,
+      sessionId: params.get("session_id") || undefined,
+      trialId: params.get("trial_id") || undefined,
+      cueSource: parsedCueSource,
+      fromTimestampMs: fromTimestamp.value,
+      toTimestampMs: toTimestamp.value,
+    },
+  };
 }
 
 function csvEscape(value: unknown): string {
@@ -191,13 +329,104 @@ export async function readLegacyEvents(): Promise<EventUnion[]> {
 }
 
 export async function readRunEvents(studyRunId: string): Promise<EventUnion[]> {
-  const content = await readOptionalFile(getRunEventsFilePath(studyRunId));
+  const safeStudyRunId = sanitizeStudyRunId(studyRunId);
+  const content = await readOptionalFile(getRunEventsFilePath(safeStudyRunId));
 
   if (content === null) {
     return [];
   }
 
-  return parseEventLines(content);
+  return parseEventLines(content).map((event) =>
+    event.study_run_id ? event : addStudyRunId(event, safeStudyRunId),
+  );
+}
+
+export async function listStudyRunIds(): Promise<string[]> {
+  try {
+    const entries = await readdir(RUNS_DIR, { withFileTypes: true });
+    return entries
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => sanitizeStudyRunId(entry.name))
+      .sort((a, b) => a.localeCompare(b));
+  } catch (error) {
+    const isMissingDirectory =
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code?: string }).code === "ENOENT";
+
+    if (isMissingDirectory) {
+      return [];
+    }
+
+    throw error;
+  }
+}
+
+export function filterEvents(
+  events: EventUnion[],
+  filters: EventFilters,
+): EventUnion[] {
+  return events.filter((event) => {
+    if (filters.eventType && event.event_type !== filters.eventType) {
+      return false;
+    }
+
+    if (filters.conditionId && event.condition_id !== filters.conditionId) {
+      return false;
+    }
+
+    if (filters.participantId && event.participant_id !== filters.participantId) {
+      return false;
+    }
+
+    if (filters.sessionId && event.session_id !== filters.sessionId) {
+      return false;
+    }
+
+    if (filters.trialId && event.trial_id !== filters.trialId) {
+      return false;
+    }
+
+    if (
+      filters.cueSource &&
+      (event.event_type !== "decision" || event.cue_source !== filters.cueSource)
+    ) {
+      return false;
+    }
+
+    if (
+      filters.fromTimestampMs !== undefined &&
+      event.timestamp_ms < filters.fromTimestampMs
+    ) {
+      return false;
+    }
+
+    if (
+      filters.toTimestampMs !== undefined &&
+      event.timestamp_ms > filters.toTimestampMs
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+export async function readFilteredEvents(
+  filters: EventFilters,
+): Promise<EventUnion[]> {
+  const studyRunIds =
+    filters.studyRunId === "all"
+      ? await listStudyRunIds()
+      : [sanitizeStudyRunId(filters.studyRunId)];
+  const eventGroups = await Promise.all(
+    studyRunIds.map((studyRunId) => readRunEvents(studyRunId)),
+  );
+
+  return filterEvents(eventGroups.flat(), filters).sort(
+    (a, b) => a.timestamp_ms - b.timestamp_ms,
+  );
 }
 
 export function toCsv(events: EventUnion[]): string {
