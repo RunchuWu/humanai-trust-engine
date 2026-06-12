@@ -12,6 +12,12 @@ npm install
 npm run dev
 ```
 
+Optional study-run label:
+
+```bash
+STUDY_RUN_ID=pilot-week3 npm run dev
+```
+
 Open:
 
 - Participant mode: `http://localhost:3000/task`
@@ -72,11 +78,47 @@ Cue modules are configured independently:
   - confidence/explanation style
 - reset HumanQ toggles to the assigned condition defaults
 - jump to any experiment screen
-- export JSON or CSV
+- preview study-run data and recent events
+- filter data by run, event type, condition, participant, session, and trial
+- export filtered JSON or CSV
 
 Debug controls do not change the participant-facing route unless `debug=1` is present.
 HumanQ toggle changes are researcher-only and session-local. New decision events
 log the effective active cue modules after any debug toggles.
+
+## Data Storage And Export
+
+New events are stored by study run:
+
+```text
+data/runs/<study_run_id>/events.jsonl
+data/runs/<study_run_id>/manifest.json
+```
+
+If `STUDY_RUN_ID` is not set, the app uses `local-dev`.
+
+Old single-file local test data should be archived under:
+
+```text
+data/archive/events-legacy-<date>.jsonl
+```
+
+Useful export URLs:
+
+```text
+http://localhost:3000/api/export?format=json
+http://localhost:3000/api/export?format=csv
+http://localhost:3000/api/export?format=csv&event_type=decision
+http://localhost:3000/api/export?format=csv&condition_id=user_set
+http://localhost:3000/api/export?format=json&study_run_id=all
+```
+
+Researcher preview APIs:
+
+```text
+http://localhost:3000/api/runs
+http://localhost:3000/api/events/preview?limit=100
+```
 
 ## Verification Commands
 

@@ -13,8 +13,8 @@ The project has moved beyond the initial screening prototype. The current codeba
 - Uses staged trial reveal so participants see the operational situation, sensor/context evidence, and AI recommendation in sequence
 - Randomly assigns participants to `control`, `industry_set`, or `user_set` and persists assignment identity
 - Renders modular cue-source/cue-type conditions for agent name, tone/warmth, avatar, personality, and confidence/explanation style
-- Logs behavioral events (`task_shown`, `decision`) to local JSONL
-- Exports event-level data as JSON or CSV
+- Logs behavioral events (`task_shown`, `decision`) to study-run JSONL files
+- Exports filtered event-level data as JSON or CSV
 - Separates participant-facing UI from researcher/debug utilities
 - Provides debug tools for condition forcing, screen jumping, reset, and export
 
@@ -54,9 +54,7 @@ Debug mode shows researcher utilities without changing experiment logic:
 - `Reset` action
 - Force `control`, `industry_set`, or `user_set` for researcher review
 - Jump to any experiment screen
-- Export tools available at any time (including before task completion):
-  - `Export JSON`
-  - `Export CSV`
+- Researcher data preview with study-run summaries, filters, and export links
 
 This supports quick exploratory checks and mentor review without forcing a full run each time.
 
@@ -116,10 +114,17 @@ Behavioral implication:
 
 ### Storage
 
-Append-only JSON Lines file:
+Append-only JSON Lines files grouped by study run:
 
-- `data/events.jsonl`
+- `data/runs/<study_run_id>/events.jsonl`
+- `data/runs/<study_run_id>/manifest.json`
 - one event per line (`JSON.stringify(event) + "\n"`)
+
+`study_run_id` is resolved from `STUDY_RUN_ID`. If the environment variable is not set, the app uses `local-dev`.
+
+Legacy local test data from the old single-file workflow should be archived under:
+
+- `data/archive/events-legacy-<date>.jsonl`
 
 ### Core Fields (minimum)
 
@@ -131,7 +136,7 @@ Append-only JSON Lines file:
 
 Common envelope also includes:
 
-- `event_id`, `session_id`, `event_type`, `trial_id`, `trial_index`
+- `event_id`, `session_id`, `study_run_id`, `event_type`, `trial_id`, `trial_index`
 
 Decision events also include cue metadata when available:
 
@@ -145,7 +150,24 @@ Event-level export endpoints:
 - `GET /api/export?format=json`
 - `GET /api/export?format=csv`
 
-Both are sorted by `timestamp_ms` ascending.
+Exports default to the current study run and are sorted by `timestamp_ms` ascending.
+
+Useful filters:
+
+- `study_run_id=all`
+- `event_type=decision`
+- `condition_id=user_set`
+- `participant_id=<uuid>`
+- `session_id=<uuid>`
+- `trial_id=ops_01`
+- `cue_source=industry_set`
+- `from_timestamp_ms=<number>`
+- `to_timestamp_ms=<number>`
+
+Researcher preview endpoints:
+
+- `GET /api/runs`
+- `GET /api/events/preview?limit=100`
 
 ## Repository Navigation
 
@@ -154,8 +176,11 @@ Both are sorted by `timestamp_ms` ascending.
 - `src/app/task/components/DebugPanel.tsx`: researcher debug panel
 - `src/app/api/log/route.ts`: event ingestion API
 - `src/app/api/export/route.ts`: event export API
+- `src/app/api/runs/route.ts`: study-run summary API
+- `src/app/api/events/preview/route.ts`: filtered event preview API
 - `src/lib/conditions.ts`: assignment/persistence logic
 - `src/lib/cue-config.ts`: cue source/module configuration and rendering helpers
+- `src/lib/event-store.ts`: study-run storage, filtering, and CSV helpers
 - `src/lib/experiment-config.ts`: screen sequence, practice trial, recommendation helpers
 - `src/lib/trials.ts`: 10-trial operations dataset
 - `src/lib/schema.ts`: event typing + validation
@@ -169,6 +194,12 @@ Both are sorted by `timestamp_ms` ascending.
 ```bash
 npm install
 npm run dev
+```
+
+Optional study-run label:
+
+```bash
+STUDY_RUN_ID=pilot-week3 npm run dev
 ```
 
 Open:
@@ -199,9 +230,10 @@ curl -I 'http://localhost:3000/task?debug=1'
   "participant_id": "2df44c3c-6f43-4eef-8f16-e0d1609ca60b",
   "condition_id": "user_set",
   "session_id": "9f9f71ce-53c0-4f29-8b8b-c83f9557f2d0",
+  "study_run_id": "pilot-week3",
   "event_type": "decision",
   "timestamp_ms": 1762056654789,
-  "trial_id": "trial_03",
+  "trial_id": "ops_03",
   "trial_index": 2,
   "decision": "override",
   "latency_ms": 1842,
