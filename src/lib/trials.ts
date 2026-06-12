@@ -76,9 +76,9 @@ export const TRIALS: Trial[] = [
     ai_reco: "proceed",
     confidence: 73,
     rationale_control:
-      "The route is technically possible, but the restriction window and low arrival battery create avoidable operational risk.",
+      "Rain remains below the no-fly threshold, and the corridor should clear before the drone reaches the restricted segment.",
     rationale_warm:
-      "I would hold dispatch for now. The route is close, but the low battery margin and restriction window make this a risky launch.",
+      "I would dispatch via the west corridor. The rain is still within limits, and the restriction window should clear in time.",
   },
   {
     trial_id: "ops_03",
@@ -97,9 +97,9 @@ export const TRIALS: Trial[] = [
     ai_reco: "reject",
     confidence: 69,
     rationale_control:
-      "The thermal signature and crosswalk position make the pedestrian-hazard interpretation more appropriate despite visual glare.",
+      "The camera view is partially blocked, and the object is near the curb line rather than clearly inside the crosswalk path.",
     rationale_warm:
-      "I would treat this as a pedestrian hazard. The image is not perfect, but the thermal and location cues point toward a person.",
+      "I would treat this as a static object. The image is unclear, and the object position does not clearly confirm a pedestrian hazard.",
   },
   {
     trial_id: "ops_04",
@@ -160,9 +160,9 @@ export const TRIALS: Trial[] = [
     ai_reco: "proceed",
     confidence: 76,
     rationale_control:
-      "Climbing near an estimated 55m crane with elevated GPS uncertainty leaves too little clearance margin.",
+      "Climbing above the estimated crane height should restore vertical clearance while keeping the delivery route moving.",
     rationale_warm:
-      "I would pause and request an updated route. Climbing looks simple, but the crane estimate and GPS uncertainty make it too tight.",
+      "I would climb to 60m here. That should move the drone above the crane estimate while avoiding a full route delay.",
   },
   {
     trial_id: "ops_07",
@@ -223,9 +223,9 @@ export const TRIALS: Trial[] = [
     ai_reco: "reject",
     confidence: 71,
     rationale_control:
-      "The mission has enough battery margin and destination charging is available, so waiting is not necessary.",
+      "The projected battery margin is narrow, so waiting for a fully charged drone reduces the chance of an incomplete inspection.",
     rationale_warm:
-      "I would dispatch Drone 4. The battery margin is not large, but it is enough for this mission with charging available at the destination.",
+      "I would wait for a fully charged drone. Drone 4 might make it, but the battery margin is tighter than I would prefer.",
   },
   {
     trial_id: "ops_10",
