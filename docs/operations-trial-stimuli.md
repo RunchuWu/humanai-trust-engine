@@ -8,11 +8,25 @@ Source of truth in the application:
 - Practice trial and screen sequence: `src/lib/experiment-config.ts`
 - Cue source and language rendering: `src/lib/cue-config.ts`
 
+Schema reference:
+
+- `docs/stimulus-schema.md`
+
 ## Current Use
 
 The current stimuli are fixed, hardcoded pilot examples. This is intentional for the current phase because the participant-facing materials should be reviewable, reproducible, and stable across participants.
 
 AI can be used offline to draft future trial text, but participant-facing trial content should remain fixed until the research design explicitly moves to live generation.
+
+For the Week 7-12 HSF alignment work, also see:
+
+- `docs/hsf-current-trial-readiness.md` for the current trial balance and HSF readiness audit
+- `docs/stimulus-schema.md` for the current runtime trial schema and proposed HSF extension
+- `docs/current-condition-stimulus-matrix.md` for the current condition-by-stimulus presentation matrix
+- `docs/hsf-stimulus-design.md` for the proposed HSF stimulus data model and matrix
+- `docs/candidate-trial-expansion-bank.md` for draft candidate additions if the team expands to a 16-trial set
+- `docs/hsf-manipulation-checks.md` for draft manipulation-check items
+- `docs/hsf-docs-index.md` for the full HSF documentation map
 
 ## Field Guide
 
@@ -298,4 +312,3 @@ Use this checklist when adding or revising trial stimuli.
 - Confidence values should not accidentally reveal whether the AI is correct.
 - Participant-facing text should not reveal the ground truth.
 - Practice remains a button-meaning check and should not be treated as a main trial.
-

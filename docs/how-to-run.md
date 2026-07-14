@@ -62,6 +62,27 @@ Cue modules are configured independently:
 - personality framing
 - confidence/explanation style
 
+## HSF Alignment Status
+
+The current runtime uses cue-source conditions and cue modules. HSF dimensions are
+documented for research alignment, but explicit HSF metadata is not yet exported
+as runtime fields.
+
+Use these documents for the Week 7-12 HSF review path:
+
+- `docs/hsf-docs-index.md`
+- `docs/condition-logic.md`
+- `docs/hsf-cue-definitions.md`
+- `docs/hsf-cue-interface-note.md`
+- `docs/stimulus-schema.md`
+- `docs/hsf-stimulus-design.md`
+- `docs/hsf-current-trial-readiness.md`
+- `docs/hsf-implementation-handoff.md`
+- `docs/researcher-walkthrough.md`
+
+After Andrea confirms the participant-facing format and priority HSF dimensions,
+the runtime implementation should follow `docs/hsf-implementation-handoff.md`.
+
 ## Debug Mode
 
 `/task?debug=1` shows researcher controls:
@@ -70,6 +91,8 @@ Cue modules are configured independently:
 - reset assignment
 - force `control`, `industry_set`, or `user_set`
 - inspect cue source and enabled cue modules
+- preview the draft HSF mapping for active cue modules, current-trial AI
+  correctness, and whether the confidence value is displayed
 - toggle HumanQ cue modules for the current debug session:
   - agent name
   - tone/warmth
@@ -85,6 +108,10 @@ Cue modules are configured independently:
 Debug controls do not change the participant-facing route unless `debug=1` is present.
 HumanQ toggle changes are researcher-only and session-local. New decision events
 log the effective active cue modules after any debug toggles.
+
+The HSF preview is a non-exported, researcher-only interpretation of the current
+cue modules. It is not an approved HSF condition structure and does not add HSF
+metadata to participant events or exports.
 
 ## Data Storage And Export
 
@@ -120,12 +147,46 @@ http://localhost:3000/api/runs
 http://localhost:3000/api/events/preview?limit=100
 ```
 
+For export smoke tests, condition coverage, full-session checks, and filter QA,
+use `docs/export-qa-checklist.md`.
+For the ordered validation, filter assertion, and summary workflow, use
+`docs/export-analysis-workflow.md`.
+
+To validate a JSON export, CSV export, or local JSONL event log with the current
+event-schema rules:
+
+```bash
+npm run validate:export -- --file data/runs/local-dev/events.jsonl
+npm run validate:export -- --url 'http://localhost:3000/api/export?format=json'
+npm run validate:export -- --url 'http://localhost:3000/api/export?format=csv'
+```
+
+Add `--full-session` when the export should contain a completed 10-trial
+participant session. Add `--expect-event-count <number>` or
+`--expect-decision-count <number>` when the expected export size is known.
+
+To summarize current trust-calibration metrics from a JSON export, CSV export,
+or local JSONL event log:
+
+```bash
+npm run summarize:export -- --file data/runs/local-dev/events.jsonl --latest-only
+npm run summarize:export -- --url 'http://localhost:3000/api/export?format=json' --latest-only
+npm run summarize:export -- --url 'http://localhost:3000/api/export?format=csv' --latest-only
+```
+
 ## Verification Commands
 
 ```bash
-npm run lint
-npx tsc --noEmit
-curl -L 'http://localhost:3000/task?debug=1'
+npm run verify:final
+npm run dev
+npm run smoke:runtime
 ```
 
-`npm run build` may require an environment where Next/Turbopack can bind its internal local port.
+Notes:
+
+- `npm run verify:final` runs lint, TypeScript, documentation reference checks, local export validation, local export summary, and production build.
+- `npm run smoke:runtime` expects a running app and checks the root redirect, participant page, debug page, run summary API, JSON export, CSV export, and event preview endpoints.
+- `npm run build` may require an environment where Next/Turbopack can bind its internal local port. In this sandbox, the build can fail until rerun outside the sandbox.
+- `next.config.ts` sets `turbopack.root` to the project directory, so the previous workspace-root warning from the parent `/Users/runchuwu/pnpm-lock.yaml` should not appear in current dev/build output.
+- `npm run check:docs` verifies local documentation links and backticked file references under `docs/`.
+- Use `docs/verification-log.md` for the latest recorded lint, typecheck, documentation, build, export, and runtime smoke-check results.

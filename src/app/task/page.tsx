@@ -35,6 +35,7 @@ import {
   type ExperimentScreen,
   type RevealStage,
 } from "@/lib/experiment-config";
+import { getHsfDebugSnapshot } from "@/lib/hsf-debug";
 import type {
   DecisionEvent,
   DecisionType,
@@ -579,6 +580,9 @@ function TaskPageContent() {
   const activeAgent = effectiveCondition
     ? getResolvedAgentConfig(effectiveCondition, userAgentConfig)
     : null;
+  const hsfDebugSnapshot = effectiveCondition
+    ? getHsfDebugSnapshot(effectiveCondition, currentTrial)
+    : null;
   const agentSetupConfig = userAgentConfig ?? getConditionConfig("user_set").agent;
   const progressValue =
     screen === "main_task"
@@ -600,6 +604,7 @@ function TaskPageContent() {
           screens={SCREEN_SEQUENCE}
           effectiveCueModules={effectiveCondition?.enabledCues ?? []}
           defaultCueModules={activeCondition?.enabledCues ?? []}
+          hsfDebugSnapshot={hsfDebugSnapshot}
           onForceCondition={handleForceCondition}
           onToggleCueModule={handleToggleCueModule}
           onResetCueModules={handleResetCueModules}

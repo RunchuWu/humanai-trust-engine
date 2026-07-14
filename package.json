@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:docs": "node scripts/check-doc-references.mjs",
+    "smoke:runtime": "node scripts/smoke-runtime.mjs",
+    "validate:export": "node scripts/validate-export.mjs",
+    "summarize:export": "node scripts/summarize-export.mjs",
+    "verify:final": "npm run lint && tsc --noEmit && npm run check:docs && npm run validate:export -- --file data/runs/local-dev/events.jsonl --full-session --expect-condition-id control --expect-event-count 22 --expect-decision-count 10 && npm run summarize:export -- --file data/runs/local-dev/events.jsonl --latest-only && npm run build"
   },
   "dependencies": {
     "next": "16.1.6",

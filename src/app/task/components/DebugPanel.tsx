@@ -11,6 +11,7 @@ import {
   getConditionConfig,
 } from "@/lib/cue-config";
 import type { ExperimentScreen } from "@/lib/experiment-config";
+import type { HsfDebugSnapshot } from "@/lib/hsf-debug";
 
 interface DebugPanelProps {
   assignment: Assignment | null;
@@ -20,6 +21,7 @@ interface DebugPanelProps {
   screens: ExperimentScreen[];
   effectiveCueModules: CueModuleId[];
   defaultCueModules: CueModuleId[];
+  hsfDebugSnapshot: HsfDebugSnapshot | null;
   onForceCondition: (conditionId: ConditionId) => void;
   onToggleCueModule: (cueModuleId: CueModuleId) => void;
   onResetCueModules: () => void;
@@ -75,6 +77,7 @@ export default function DebugPanel({
   screens,
   effectiveCueModules,
   defaultCueModules,
+  hsfDebugSnapshot,
   onForceCondition,
   onToggleCueModule,
   onResetCueModules,
@@ -279,6 +282,47 @@ export default function DebugPanel({
         <strong>progress:</strong> {Math.min(currentTrialIndex + 1, totalTrials)}/
         {totalTrials}
       </p>
+
+      <div
+        style={{
+          marginTop: 10,
+          paddingTop: 10,
+          borderTop: "1px solid #e5e7eb",
+        }}
+      >
+        <p style={{ margin: "0 0 4px", fontWeight: 600 }}>
+          HSF Preview (draft mapping)
+        </p>
+        <p style={{ margin: "0 0 6px", color: "#64748b" }}>
+          Researcher-only view. This does not create an HSF condition or add
+          HSF fields to event exports.
+        </p>
+        <p style={{ margin: "4px 0" }}>
+          <strong>condition dimensions:</strong>{" "}
+          {hsfDebugSnapshot && hsfDebugSnapshot.conditionDimensions.length > 0
+            ? hsfDebugSnapshot.conditionDimensions
+                .map(
+                  ({ label, cueModules }) =>
+                    `${label} (${cueModules.join(", ")})`,
+                )
+                .join("; ")
+            : "none mapped from active cue modules"}
+        </p>
+        <p style={{ margin: "4px 0" }}>
+          <strong>current-trial behavior:</strong>{" "}
+          {hsfDebugSnapshot?.trial
+            ? hsfDebugSnapshot.trial.aiCorrect
+              ? "AI recommendation correct"
+              : "AI recommendation incorrect"
+            : "no active main-task trial"}
+        </p>
+        <p style={{ margin: "4px 0" }}>
+          <strong>confidence:</strong>{" "}
+          {hsfDebugSnapshot?.trial
+            ? `${hsfDebugSnapshot.trial.confidence}% (${hsfDebugSnapshot.trial.confidenceVisible ? "displayed" : "hidden"})`
+            : "-"}
+        </p>
+      </div>
 
       <div
         style={{
