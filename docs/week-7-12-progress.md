@@ -1250,6 +1250,112 @@ Initial verification:
 - Final post-documentation checks also passed: `npm run check:docs` scanned 39
   markdown files and 705 local references; `git diff --check` passed again.
 
+### Task: Draft concise follow-up for Andrya
+
+Status: Complete as a draft, not sent
+
+What was done:
+
+- Reviewed Andrya's acknowledgement that she needs time to review the plan.
+- Reduced the follow-up to the two decisions that gate the next substantive
+  implementation phase: participant-facing format and initial HSF scope.
+- Provided recommended options and a `1A, 2A` reply path so she can respond
+  without reviewing the whole documentation package first.
+- Recorded that RD-01 and RD-02 remain pending; no project direction was
+  inferred from the acknowledgement alone.
+
+Output:
+
+- Updated `docs/andrea-alignment-email.md` with a follow-up email draft.
+- Updated `docs/research-decision-tracker.md`.
+
+Reason not sent:
+
+- The request was to draft the email. Sending it remains under Runchu's control.
+
+Verification:
+
+- `npm run check:docs` passed, scanning 39 markdown files and 708 local references.
+- `git diff --check` passed.
+
+### Task: Create and validate a direction-independent stimulus dataset
+
+Status: Complete as a review-only stimulus bank
+
+What was done:
+
+- Converted the 10 current runtime trials and six candidate trials into one
+  structured JSON review bank.
+- Kept the bank independent of unresolved research decisions: it contains raw
+  trial content and review status, but no approved HSF condition IDs or factor
+  levels.
+- Marked the dataset `review_only` with `runtime_integration: not_active`; no
+  candidate was added to the participant-facing task.
+- Added a validator for field shape, enum values, unique IDs, evidence count,
+  confidence bounds, action-label consistency, planned balance, error-type
+  balance, and rationale word-count differences.
+- Used the TypeScript compiler to load `src/lib/trials.ts` structurally and
+  verify that all 10 `runtime_current` bank records match runtime exactly.
+- Added `npm run validate:stimuli` and included it in `npm run verify:final`.
+- Documented the field dictionary, derived fields, validation contract, review
+  workflow, and promotion boundary.
+- Kept JSON as the canonical, Git-diffable source. A spreadsheet review export
+  was not generated because the current session did not expose the required
+  spreadsheet artifact dependency loader; no unverified workbook was created.
+
+Output:
+
+- Added `data/stimuli/operations-stimulus-bank.json`.
+- Added `scripts/validate-stimuli.mjs`.
+- Added `docs/stimulus-dataset-workflow.md`.
+- Updated `.gitignore` so review-bank JSON under `data/stimuli/` is tracked while
+  participant run and archive data remain ignored.
+- Updated `package.json`.
+- Updated stimulus, run, readiness, traceability, and documentation-index docs.
+
+Validated balance:
+
+- 16 total stimuli: 10 current plus six candidates.
+- Four trials per operational trial type.
+- Eight `proceed` and eight `reject` ground truths.
+- Eight `proceed` and eight `reject` AI recommendations.
+- Eight correct and eight incorrect AI recommendations.
+- Four false-proceed and four false-reject errors.
+- Confidence range 62-91; median 83.
+- Runtime synchronization 10/10.
+
+Review findings:
+
+- All 16 stimuli remain `pending` research review.
+- `ops_01`, `ops_04`, and `ops_10` have warm-versus-neutral rationale word
+  differences above the six-word warning threshold.
+- The validator reports these differences without rewriting current participant
+  materials.
+
+Verification:
+
+- `node --check scripts/validate-stimuli.mjs` passed.
+- `npm run validate:stimuli` passed with three documented reading-load warnings.
+- `npm run validate:stimuli -- --json` produced the machine-readable report.
+- `npm run lint` passed after renaming a local CommonJS wrapper variable flagged
+  by the Next.js ESLint rule.
+- `npx tsc --noEmit` passed.
+- `npm run check:docs` passed, scanning 40 markdown files and 733 local references.
+- `git diff --check` passed.
+- `npm run verify:final` passed after sandbox escalation for the production
+  build; the complete chain included the new stimulus validator.
+- The successful production build compiled in 1751.0 ms.
+- The final post-documentation scan covered 40 markdown files and 744 local
+  references.
+- Confirmed `data/runs/` and `data/archive/` remain ignored after adding the
+  narrow `data/stimuli/*.json` exception.
+
+Planned commit message:
+
+```text
+feat: add validated stimulus review bank
+```
+
 ## Next Recommended Tasks
 
 1. Get Andrea's confirmation on participant-facing format and priority HSF dimensions.

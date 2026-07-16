@@ -174,6 +174,25 @@ npm run summarize:export -- --url 'http://localhost:3000/api/export?format=json'
 npm run summarize:export -- --url 'http://localhost:3000/api/export?format=csv' --latest-only
 ```
 
+## Stimulus Dataset Validation
+
+Validate the review-only 16-trial stimulus bank:
+
+```bash
+npm run validate:stimuli
+```
+
+Print the full machine-readable quality report:
+
+```bash
+npm run validate:stimuli -- --json
+```
+
+The validator checks field shape, trial balance, error-type balance, rationale
+reading-load warnings, and exact synchronization between the 10 current bank
+records and `src/lib/trials.ts`. It does not approve candidates or add them to
+the participant-facing task. See `docs/stimulus-dataset-workflow.md`.
+
 ## Verification Commands
 
 ```bash
@@ -184,7 +203,9 @@ npm run smoke:runtime
 
 Notes:
 
-- `npm run verify:final` runs lint, TypeScript, documentation reference checks, local export validation, local export summary, and production build.
+- `npm run verify:final` runs lint, TypeScript, documentation reference checks,
+  stimulus dataset validation, local export validation, local export summary,
+  and production build.
 - `npm run smoke:runtime` expects a running app and checks the root redirect, participant page, debug page, run summary API, JSON export, CSV export, and event preview endpoints.
 - `npm run build` may require an environment where Next/Turbopack can bind its internal local port. In this sandbox, the build can fail until rerun outside the sandbox.
 - `next.config.ts` sets `turbopack.root` to the project directory, so the previous workspace-root warning from the parent `/Users/runchuwu/pnpm-lock.yaml` should not appear in current dev/build output.

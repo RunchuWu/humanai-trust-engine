@@ -32,6 +32,7 @@ Do not treat the HSF metadata fields listed in planning docs as current exported
 | `docs/hsf-stimulus-design.md` | Draft HSF trial data model, matrix, and approval checklist | Draft pending format confirmation |
 | `docs/hsf-stimulus-matrix-template.md` | Fillable matrix for assigning candidate trials to HSF cells | Template pending approved matrix scope |
 | `docs/candidate-trial-expansion-bank.md` | Candidate six-trial expansion bank for balancing a 16-trial set | Draft candidates pending review |
+| `docs/stimulus-dataset-workflow.md` | Canonical review-bank schema, validation rules, and approval workflow | Current structured dataset workflow |
 | `docs/stimulus-approval-worksheet.md` | Per-stimulus approval worksheet | Template pending review process |
 | `docs/hsf-current-trial-readiness.md` | Audits current 10 operations trials for HSF readiness | Current-state audit |
 | `docs/hsf-manipulation-checks.md` | Draft manipulation-check item bank | Draft pending item review |

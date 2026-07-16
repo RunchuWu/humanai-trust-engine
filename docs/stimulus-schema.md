@@ -2,6 +2,16 @@
 
 This document describes the current runtime stimulus schema and the proposed HSF extension path. It is the Week 11 stimulus-schema reference for researchers and implementers.
 
+## Review Bank Source
+
+`data/stimuli/operations-stimulus-bank.json` is the structured, review-only
+stimulus bank. It combines snapshots of the 10 current runtime trials with six
+candidate additions. It does not replace the runtime source and does not define
+approved HSF metadata.
+
+Use `docs/stimulus-dataset-workflow.md` for the field dictionary, balance
+targets, validator contract, and review process.
+
 ## Current Runtime Source of Truth
 
 Current main-task stimuli are defined in `src/lib/trials.ts`.
@@ -137,5 +147,6 @@ Before adding or changing runtime stimulus fields:
 - `docs/hsf-stimulus-design.md`
 - `docs/hsf-current-trial-readiness.md`
 - `docs/candidate-trial-expansion-bank.md`
+- `docs/stimulus-dataset-workflow.md`
 - `docs/stimulus-approval-worksheet.md`
 - `docs/analysis-plan.md`

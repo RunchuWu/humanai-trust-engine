@@ -40,8 +40,8 @@ Deliverables and acceptance criteria:
 | Plan item | Current evidence | Status | Remaining action |
 | --- | --- | --- | --- |
 | Confirm target participant-facing format after Andrea feedback | `docs/research-decision-tracker.md`, `docs/participant-format-options.md` | Deferred | Update tracker after Andrea/research-team response |
-| Draft HSF-aligned stimulus data model | `docs/hsf-stimulus-design.md`, `docs/stimulus-schema.md` | Draft complete | Convert to runtime fields after approved matrix scope |
-| Specify required trial fields | `docs/stimulus-schema.md`, `docs/hsf-stimulus-design.md`, `docs/stimulus-approval-worksheet.md` | Draft complete | Add approved HSF fields to runtime only after confirmation |
+| Draft HSF-aligned stimulus data model | `data/stimuli/operations-stimulus-bank.json`, `docs/stimulus-dataset-workflow.md`, `docs/hsf-stimulus-design.md`, `docs/stimulus-schema.md` | Structured review model complete; HSF extension draft complete | Convert approved HSF fields to runtime after matrix confirmation |
+| Specify required trial fields | `docs/stimulus-dataset-workflow.md`, `docs/stimulus-schema.md`, `docs/hsf-stimulus-design.md`, `docs/stimulus-approval-worksheet.md` | Complete for direction-independent bank; HSF fields remain draft | Add approved HSF fields to runtime only after confirmation |
 | Create initial stimulus matrix | `docs/hsf-stimulus-design.md`, `docs/hsf-stimulus-matrix-template.md` | Draft complete | Select final matrix scope and populate approved cells |
 | Define stimulus approval checklist | `docs/stimulus-approval-worksheet.md`, `docs/hsf-stimulus-design.md` | Complete as template | Use during actual stimulus approval |
 
@@ -49,7 +49,7 @@ Deliverables and acceptance criteria:
 
 | Requirement | Evidence | Status |
 | --- | --- | --- |
-| Dataset/stimulus design note | `docs/hsf-stimulus-design.md` | Draft complete |
+| Dataset/stimulus design note | `docs/stimulus-dataset-workflow.md`, `docs/hsf-stimulus-design.md` | Complete for review bank; HSF design remains draft |
 | Initial HSF stimulus matrix | `docs/hsf-stimulus-design.md`, `docs/hsf-stimulus-matrix-template.md` | Draft complete |
 | Stimulus approval checklist | `docs/stimulus-approval-worksheet.md` | Complete as template |
 | Team can review mapping to cue dimensions and performance conditions | `docs/hsf-stimulus-design.md`, `docs/current-condition-stimulus-matrix.md`, `docs/hsf-current-trial-readiness.md` | Partial; current mapping is reviewable but not final approved HSF matrix |
@@ -84,8 +84,8 @@ Deliverables and acceptance criteria:
 
 | Plan item | Current evidence | Status | Remaining action |
 | --- | --- | --- | --- |
-| Expand and balance operations/drone trials | `docs/candidate-trial-expansion-bank.md` | Draft complete | Approve and add candidates to runtime only after stimulus review |
-| Ensure AI-correct and AI-incorrect recommendations | `docs/hsf-current-trial-readiness.md`, `docs/current-condition-stimulus-matrix.md` | Complete for current 10 trials | Recheck if trial set changes |
+| Expand and balance operations/drone trials | `data/stimuli/operations-stimulus-bank.json`, `scripts/validate-stimuli.mjs`, `docs/candidate-trial-expansion-bank.md` | Complete as a balanced review bank | Approve and add candidates to runtime only after stimulus review |
+| Ensure AI-correct and AI-incorrect recommendations | `scripts/validate-stimuli.mjs`, `docs/stimulus-dataset-workflow.md`, `docs/hsf-current-trial-readiness.md` | Complete for the review bank and current 10 trials | Revalidate after any approved edits |
 | Add or prepare manipulation-check items | `docs/hsf-manipulation-checks.md`, `docs/manipulation-check-implementation-spec.md` | Draft complete | Approve wording/placement before runtime UI/logging |
 | Check visual salience and reading burden | `docs/ui-salience-reading-load-audit.md` | Complete current-state audit | Recheck after runtime HSF cue changes |
 | Run through full participant flow in participant and debug modes | `docs/researcher-walkthrough.md`, `docs/verification-log.md`, `docs/internal-pilot-notes.md` | Partial | Full internal pilot still needs to be run and recorded |

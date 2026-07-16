@@ -1,5 +1,39 @@
 # Draft Alignment Email to Andrea
 
+## Follow-up Email Draft (not sent)
+
+Subject: Quick follow-up: two HSF decisions for the next implementation phase
+
+Hi Andrya,
+
+Thank you again for letting me know that you are reviewing the plan. When you
+have a moment, two short decisions would let me move the next implementation
+phase forward without locking in the wrong study design. A reply such as `1A,
+2A` would be completely sufficient.
+
+1. **Participant-facing format**
+   - **A. Controlled decision-based task with fixed AI recommendations**
+     (my recommendation for this phase)
+   - **B. Interactive AI collaboration experience**
+
+2. **Initial HSF scope**
+   - **A. Start with agency, communication, and behavior**, while holding
+     appearance and relationality stable (my recommendation for a cleaner
+     initial experiment)
+   - **B. Include all five HSF dimensions in the immediate experiment**
+
+With those two decisions, I can finalize the condition/stimulus structure and
+then implement the corresponding cue metadata, debug inspection, and export
+fields. I will keep the current controlled task unchanged until the direction is
+confirmed.
+
+Best,
+Runchu
+
+---
+
+## Original Alignment Email Draft
+
 Subject: Week 7-12 HSF alignment questions and controlled-stimulus direction
 
 Hi Andrea,

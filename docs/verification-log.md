@@ -2,6 +2,45 @@
 
 This log records verification commands run during Week 7-12 work.
 
+## Stimulus Dataset Validation - 2026-07-16 CST
+
+Change verified:
+
+- Added a structured 16-record, review-only stimulus bank.
+- Added field, balance, error-type, reading-load, and runtime-sync validation.
+- Added `npm run validate:stimuli` to the final verification chain.
+- Kept all six candidates out of participant runtime.
+
+Commands run from repository root:
+
+```bash
+node --check scripts/validate-stimuli.mjs
+npm run validate:stimuli
+npm run validate:stimuli -- --json
+npm run lint
+npx tsc --noEmit
+npm run check:docs
+git diff --check
+```
+
+Results:
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| Script syntax | Passed | `node --check scripts/validate-stimuli.mjs` completed with exit code 0 |
+| Dataset structure and balance | Passed | 16 total; four per trial type; 8/8 truth, recommendation, and correctness balances; four errors in each direction |
+| Runtime synchronization | Passed | All 10 `runtime_current` records match `src/lib/trials.ts` exactly |
+| Review status | Expected pending state | All 16 records remain `pending`; validation is not research approval |
+| Reading-load review | Three warnings | `ops_01`, `ops_04`, and `ops_10` exceed the six-word paired-rationale warning threshold |
+| Machine-readable report | Passed | `--json` produced counts, confidence summary, runtime sync, per-trial rationale loads, warnings, and no errors |
+| ESLint | Passed after local correction | Initial lint rejected a script variable named `module`; it was renamed and lint then passed |
+| TypeScript | Passed | `npx tsc --noEmit` completed with exit code 0 |
+| Documentation references | Passed | Final post-documentation `npm run check:docs` scan covered 40 markdown files and 744 local references |
+| Diff whitespace | Passed before final log update | `git diff --check` completed with exit code 0 |
+| Final verification chain | Passed after sandbox escalation | The sandboxed run reached build and failed on Turbopack's internal port bind; the full rerun passed outside the sandbox |
+| Production build | Passed | Next.js compiled successfully in 1751.0 ms |
+| Data ignore boundary | Passed | `data/stimuli/*.json` is trackable while `data/runs/` and `data/archive/` remain ignored |
+
 ## HSF Debug Preview Verification - 2026-07-14 CST
 
 Change verified:

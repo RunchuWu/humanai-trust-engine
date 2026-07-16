@@ -43,6 +43,8 @@ next-env.d.ts
 # logs / data
 data/*
 !data/.gitkeep
+!data/stimuli/
+!data/stimuli/*.json
 
 # env
 .env

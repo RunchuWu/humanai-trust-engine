@@ -149,4 +149,10 @@ Before any candidate is committed to runtime configuration:
 
 ## Implementation Note
 
+The structured review bank is stored at
+`data/stimuli/operations-stimulus-bank.json`. Run
+`npm run validate:stimuli` after editing the bank. The validator checks the
+planned 16-trial balance and confirms that the 10 `runtime_current` records still
+match `src/lib/trials.ts` exactly.
+
 If these candidates are approved, they should be added to `src/lib/trials.ts` only after the research team confirms the participant-facing format and final trial count. Until then, this document is a review bank, not a runtime source of truth.

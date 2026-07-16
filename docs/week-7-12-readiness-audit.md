@@ -16,7 +16,7 @@ The goal is not complete yet because Week 9-12 implementation and final pilot pa
 | Week | Plan goal | Current status | Evidence | Remaining work |
 | --- | --- | --- | --- | --- |
 | Week 7 | Research alignment and cue mapping | Mostly complete as draft research-alignment work | `docs/week-7-12-plan.md`, `docs/hsf-cue-interface-note.md`, `docs/andrea-alignment-email.md` | Send/confirm Andrea questions; review missing HSF manuscript/design/method materials if provided |
-| Week 8 | Dataset and stimulus design | Draft complete, pending research confirmation | `docs/hsf-stimulus-design.md`, `docs/hsf-current-trial-readiness.md`, `docs/hsf-manipulation-checks.md` | Select final matrix scope; approve stimuli; decide manipulation-check placement |
+| Week 8 | Dataset and stimulus design | Structured review bank and draft design complete, pending research confirmation | `data/stimuli/operations-stimulus-bank.json`, `docs/stimulus-dataset-workflow.md`, `docs/hsf-stimulus-design.md`, `docs/hsf-current-trial-readiness.md`, `docs/hsf-manipulation-checks.md` | Select final matrix scope; approve stimuli; decide manipulation-check placement |
 | Week 9 | Implement confirmed cue structure | Pre-implementation handoff complete; runtime not changed | `docs/hsf-implementation-handoff.md` | Add confirmed HSF metadata to cue config, trials, schema, event payloads, exports, and debug panel |
 | Week 10 | Pilot readiness | Partially prepared through audits, candidate expansion bank, manipulation-check draft, and manipulation-check implementation spec | `docs/hsf-current-trial-readiness.md`, `docs/candidate-trial-expansion-bank.md`, `docs/hsf-manipulation-checks.md`, `docs/manipulation-check-implementation-spec.md`, `docs/ui-salience-reading-load-audit.md`, `docs/current-condition-stimulus-matrix.md`, `docs/researcher-walkthrough.md` | Approve final stimulus set and manipulation-check placement if required; run full participant and debug pilot after implementation |
 | Week 11 | Pilot revision and documentation | Current-state docs prepared | `docs/how-to-run.md`, `docs/event-schema.md`, `docs/stimulus-schema.md`, `docs/current-condition-stimulus-matrix.md`, `docs/operations-trial-stimuli.md`, `docs/researcher-walkthrough.md`, `docs/export-qa-checklist.md`, `docs/hsf-docs-index.md` | Revise docs after pilot feedback and confirmed runtime implementation |
@@ -50,6 +50,9 @@ The goal is not complete yet because Week 9-12 implementation and final pilot pa
 - `npm run validate:export` can validate current JSON exports, CSV exports, or JSONL logs for schema shape, CSV header order, trust-calibration derived fields, timestamp ordering, duplicate event IDs, full-session coverage, filter expectations, and exact event/decision row counts.
 - `npm run summarize:export` can summarize current trust-calibration metrics by condition and AI correctness from JSON exports, CSV exports, or JSONL logs.
 - `npm run check:docs` can verify local documentation references across the Week 7-12 markdown docs.
+- `npm run validate:stimuli` verifies the 16-record review bank, its planned
+  balance, rationale reading-load warnings, and synchronization with the 10
+  current runtime trials.
 
 ### Partially Supported
 
@@ -58,7 +61,9 @@ The goal is not complete yet because Week 9-12 implementation and final pilot pa
 - Manipulation-check items exist as a draft, but wording and placement are not approved.
 - Manipulation-check implementation shape is documented, but runtime UI/logging/export are not implemented.
 - Current 10 trials support a small fixed pilot base, but they are not final HSF stimuli.
-- A six-trial candidate expansion bank exists, but candidates are not approved runtime stimuli.
+- A structured 16-trial review bank combines 10 current and six candidate
+  stimuli with automated validation, but all review statuses remain pending and
+  candidates are not approved runtime stimuli.
 - UI salience and reading-load have a current-state audit, but final HSF cue conditions still need approved balancing rules.
 - Export QA is documented for current fields and filters, but future HSF metadata QA cannot be completed until runtime metadata exists.
 - Automated export validation covers current JSON/CSV/JSONL events, filters, and known row counts, but participant-mode/debug-mode provenance still needs documented review before pilot use.

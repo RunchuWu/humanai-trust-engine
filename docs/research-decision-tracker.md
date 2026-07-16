@@ -246,3 +246,4 @@ Decision support:
 | --- | --- | --- |
 | 2026-07-11 | Initial tracker created from Week 7-12 plan and current repository audit | Local planning docs |
 | 2026-07-11 | Added links to candidate expansion, UI salience, manipulation-check implementation, analysis, and export QA decision support docs | Local planning docs |
+| 2026-07-16 | Andrya acknowledged the plan and said feedback would follow; substantive decisions remain pending. Drafted a low-burden follow-up limited to RD-01 and RD-02. | Email reply from Andrya; `docs/andrea-alignment-email.md` |
