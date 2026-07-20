@@ -30,10 +30,10 @@ condition logic or runtime stimuli. The current shared structure is:
 - An accessible trial progress bar during the main task and at completion.
 - One 880px maximum workspace used across onboarding, practice, trials, and
   debrief.
-- A stable, non-clickable Situation / Evidence / Recommendation indicator on
-  main trials.
-- Explicit back buttons let participants revisit Situation and Evidence before
-  deciding, without making the stage indicator itself interactive.
+- A stable Situation / Evidence / Recommendation navigation row on main trials;
+  each full-width cell is directly clickable and keyboard-focusable.
+- Explicit back buttons also let participants revisit Situation and Evidence,
+  with the Recommendation back action separated below the decision area.
 - Equal-width and equal-style `Follow AI` and `Choose Opposite` controls.
 - Single-column controls on mobile with wrapping action labels.
 

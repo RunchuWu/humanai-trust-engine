@@ -262,18 +262,9 @@
 
 .stageItem {
   position: relative;
-  display: flex;
   min-width: 0;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 10px 10px;
   border-bottom: 3px solid transparent;
   color: #7a8493;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.25;
-  text-align: center;
 }
 
 .stageItem + .stageItem {
@@ -288,6 +279,38 @@
 
 .stageItemComplete {
   color: #344054;
+}
+
+.stageButton {
+  display: flex;
+  width: 100%;
+  min-height: 61px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
+}
+
+.stageButton:hover:not(:disabled) {
+  background: rgba(23, 105, 224, 0.06);
+}
+
+.stageButton:focus-visible {
+  outline: 3px solid #1769e0;
+  outline-offset: -3px;
+}
+
+.stageButton:disabled {
+  cursor: not-allowed;
 }
 
 .stageNumber {
@@ -484,13 +507,12 @@
 .aiActions {
   display: grid;
   gap: 12px;
-  margin-top: auto;
+  margin-top: 24px;
   padding-top: 24px;
 }
 
-.recommendationBackRow {
-  display: flex;
-  margin-bottom: 2px;
+.recommendationFooter {
+  justify-content: flex-start;
 }
 
 .decisionButtons {
@@ -927,10 +949,6 @@
     width: 100%;
   }
 
-  .recommendationBackRow {
-    width: 100%;
-  }
-
   .retryNotice {
     align-items: stretch;
     flex-direction: column;
@@ -1003,9 +1021,10 @@
     min-height: 58px;
   }
 
-  .stageItem {
+  .stageButton {
     flex-direction: column;
     gap: 4px;
+    min-height: 55px;
     padding: 8px 3px 7px;
     font-size: 11px;
   }

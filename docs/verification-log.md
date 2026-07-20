@@ -2,6 +2,40 @@
 
 This log records verification commands run during Week 7-12 work.
 
+## Direct Trial Stage Navigation - 2026-07-20 CST
+
+Change verified:
+
+- Converted all three stage cells to keyboard-focusable buttons with
+  `aria-current` on the active stage.
+- Added direct stage selection without changing trial, decision, or logging
+  state.
+- Moved `Back to Evidence` to the Recommendation card footer and retained
+  submission locking.
+
+Commands run from repository root:
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run qa:pilot
+npm run verify:final
+```
+
+Results:
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| ESLint | Passed | Completed with exit code 0 |
+| TypeScript | Passed | `tsc --noEmit` completed with exit code 0 |
+| Navigation semantics | Passed by source review | Each stage is a native button; the active button exposes `aria-current="step"` |
+| Submission lock | Passed by source review | Stage buttons and Recommendation back remain disabled while `isSubmitting` is true |
+| State boundary review | Passed | Direct navigation only updates `mainRevealStage`; event and trial state are unchanged |
+| Responsive source review | Passed | Stage buttons retain fixed desktop/mobile heights and labels wrap inside their three grid tracks |
+| Pilot/data regression | Passed with expected review flag | All three current conditions and export contracts passed; only the intentional synthetic resubmit was flagged |
+| Final verification chain | Passed | Documentation, stimuli, pilot QA, export summary, and production build completed successfully |
+| Production build | Passed | Next.js compiled successfully in 2.2 seconds and generated all static pages |
+
 ## Trial Stage Review Navigation - 2026-07-20 CST
 
 Change verified:
@@ -39,7 +73,7 @@ Results:
 Change verified:
 
 - Added the participant app header, phase state, accessible main-task progress,
-  and non-interactive trial stage indicator.
+  and trial stage indicator.
 - Replaced legacy participant card styles with one responsive operations
   workspace and consistent controls/status states.
 - Kept condition-specific cue rendering, trial content, screen flow, logging,

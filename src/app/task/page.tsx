@@ -513,6 +513,14 @@ function TaskPageContent() {
     );
   }
 
+  function navigateMainReveal(stage: RevealStage) {
+    if (isSubmitting) {
+      return;
+    }
+
+    setMainRevealStage(stage);
+  }
+
   function handleStartMainTask() {
     setCurrentTrialIndex(0);
     trialShownAtMsRef.current = null;
@@ -1205,10 +1213,19 @@ function TaskPageContent() {
                   className={`${styles.stageItem} ${
                     isCurrentStage ? styles.stageItemCurrent : ""
                   } ${isFinishedStage ? styles.stageItemComplete : ""}`}
-                  aria-current={isCurrentStage ? "step" : undefined}
                 >
-                  <span className={styles.stageNumber}>{stageIndex + 1}</span>
-                  <span className={styles.stageLabel}>{stage.label}</span>
+                  <button
+                    type="button"
+                    className={styles.stageButton}
+                    onClick={() => {
+                      navigateMainReveal(stage.id);
+                    }}
+                    disabled={isSubmitting}
+                    aria-current={isCurrentStage ? "step" : undefined}
+                  >
+                    <span className={styles.stageNumber}>{stageIndex + 1}</span>
+                    <span className={styles.stageLabel}>{stage.label}</span>
+                  </button>
                 </li>
               );
             })}
@@ -1348,16 +1365,6 @@ function TaskPageContent() {
                 </div>
 
                 <footer className={styles.aiActions}>
-                  <div className={styles.recommendationBackRow}>
-                    <button
-                      type="button"
-                      className={styles.backButton}
-                      onClick={retreatMainReveal}
-                      disabled={isSubmitting}
-                    >
-                      Back to Evidence
-                    </button>
-                  </div>
                   {currentTrialSavedDecision ? (
                     <p className={styles.savedDecisionHint}>
                       Latest saved decision for this trial:{" "}
@@ -1406,6 +1413,18 @@ function TaskPageContent() {
                     {getOppositeRecommendationLabel(currentTrial)}
                   </strong>.
                 </p>
+                <div
+                  className={`${styles.revealActions} ${styles.recommendationFooter}`}
+                >
+                  <button
+                    type="button"
+                    className={styles.backButton}
+                    onClick={retreatMainReveal}
+                    disabled={isSubmitting}
+                  >
+                    Back to Evidence
+                  </button>
+                </div>
               </article>
             ) : null}
 

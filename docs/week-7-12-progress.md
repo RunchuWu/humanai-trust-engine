@@ -1513,8 +1513,8 @@ What was done:
   green/red status treatments.
 - Replaced onboarding step numbering with `Getting started`, added explicit
   main-task and completed phases, and added an accessible trial progress bar.
-- Added a fixed, non-interactive Situation / Evidence / Recommendation stage
-  indicator to every main trial.
+- Added a fixed Situation / Evidence / Recommendation stage indicator to every
+  main trial.
 - Unified Welcome, Consent, Instructions, Comprehension, Agent Setup, Practice,
   main trials, and Debrief around one workspace panel and stable action area.
 - Improved operational evidence hierarchy, recommendation layout, form rows,
@@ -1560,8 +1560,8 @@ What was done:
 
 - Added `Back to Situation` on the Evidence stage.
 - Added `Back to Evidence` on the Recommendation stage.
-- Kept the stage indicator informational and non-clickable so movement remains
-  explicit and sequential.
+- Initially kept the stage indicator informational and non-clickable; this was
+  later superseded by direct stage navigation after participant-flow review.
 - Reused the existing heading-focus behavior so the destination stage heading
   receives focus after forward or backward navigation.
 - Disabled Recommendation-stage back navigation during decision submission.
@@ -1580,6 +1580,38 @@ Planned commit message:
 
 ```text
 feat: allow review across trial stages
+```
+
+### Task: Make trial stages directly navigable
+
+Status: Complete
+
+What was done:
+
+- Converted Situation, Evidence, and Recommendation in the stage indicator into
+  full-cell buttons.
+- Allowed direct movement to any of the three stages while keeping the current
+  trial and all recorded state unchanged.
+- Preserved current-stage, preceding-stage, hover, keyboard-focus, desktop, and
+  mobile visual states.
+- Disabled all stage navigation while a decision submission is in progress.
+- Moved `Back to Evidence` below the decision explanation into a dedicated
+  footer at the bottom of the Recommendation card.
+- Kept `Back to Situation` in the Evidence card's bottom action area.
+
+Result:
+
+- Participants can compare Situation, Evidence, and Recommendation in any order
+  by using either the top navigation or the explicit back/continue buttons.
+- Decision choices retain equal visual weight and are no longer preceded by a
+  back button.
+- The Recommendation back action remains inside the card and visually separate
+  from `Back to Previous Trial` outside the card.
+
+Planned commit message:
+
+```text
+feat: add direct trial stage navigation
 ```
 
 ## Next Recommended Tasks
