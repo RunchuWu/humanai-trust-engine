@@ -123,9 +123,20 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
+  min-height: 44px;
+  padding: 8px 4px;
   color: #374151;
   font-size: 13px;
   line-height: 1.45;
+  cursor: pointer;
+}
+
+.readinessItem input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  accent-color: #0f6efd;
+  margin-top: 2px;
 }
 
 .readinessCheckbox {
@@ -260,6 +271,14 @@
   color: #0f172a;
   font-size: 24px;
   line-height: 1.25;
+}
+
+.sectionTitle:focus,
+.focusTitle:focus,
+.revealEyebrow:focus,
+.completionTitle:focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 4px;
 }
 
 .practiceRecommendation,
@@ -469,7 +488,7 @@
 }
 
 .backButton {
-  min-height: 34px;
+  min-height: 44px;
   border-radius: 8px;
   border: 1px solid #cbd5e1;
   background: #ffffff;
@@ -537,7 +556,7 @@
 }
 
 .retryButton {
-  min-height: 32px;
+  min-height: 44px;
   border-radius: 8px;
   border: 1px solid #dcb46f;
   background: #ffffff;
@@ -565,7 +584,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
+  min-height: 44px;
   border-radius: 10px;
   border: 1px solid transparent;
   padding: 0 14px;
@@ -833,6 +852,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .progressFill {
+    transition: none;
+  }
+
   .revealCard,
   .aiRecommendationCard,
   .focusCard {

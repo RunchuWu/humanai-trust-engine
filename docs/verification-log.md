@@ -2,6 +2,41 @@
 
 This log records verification commands run during Week 7-12 work.
 
+## Baseline UX and Accessibility - 2026-07-20 CST
+
+Change verified:
+
+- Added screen/stage heading focus management and visible focus indicators.
+- Added status, alert, and busy semantics to shared participant states.
+- Increased shared touch targets and completed reduced-motion handling.
+- Forced a consistent light browser color scheme and study-specific metadata.
+- Kept stimuli, conditions, cue presentation, event schema, and exports
+  unchanged.
+
+Commands run from repository root:
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run dev -- --port 3001
+npm run smoke:runtime -- --base-url http://localhost:3001
+```
+
+Results:
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| ESLint | Passed | `npm run lint` completed with exit code 0 |
+| TypeScript | Passed | `npx tsc --noEmit` completed with exit code 0 |
+| Development server | Passed | Next.js started at `http://localhost:3001` in 1551ms |
+| Runtime route smoke | Passed after sandbox escalation | Root redirect, participant/debug pages, run API, JSON/CSV exports, and event preview all returned expected statuses |
+| Final verification chain | Passed after sandbox escalation | Lint, TypeScript, docs, stimulus validation, export validation, summary generation, and build all passed |
+| Stimulus validation | Passed with known warnings | All 16 records passed; the existing `ops_01`, `ops_04`, and `ops_10` reading-load warnings remain |
+| Export validation | Passed | Existing fixture contained 22 events and 10 decisions in the expected control condition |
+| Production build | Passed | Next.js compiled successfully in 2.5s and generated all static pages |
+| In-app browser availability | Unavailable | Browser runtime initialized, but the available-browser list was empty |
+| Desktop/mobile visual inspection | Pending | No screenshot or interactive-browser result is claimed for this session |
+
 ## Stimulus Dataset Validation - 2026-07-16 CST
 
 Change verified:

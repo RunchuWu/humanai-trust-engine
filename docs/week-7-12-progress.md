@@ -1356,8 +1356,74 @@ Planned commit message:
 feat: add validated stimulus review bank
 ```
 
+### Task: Improve baseline UX and accessibility without changing experiment cues
+
+Status: Complete in code; manual browser visual check remains
+
+What was done:
+
+- Audited the shared participant flow for keyboard navigation, focus changes,
+  mobile touch targets, reading load, error states, instructions, and
+  comprehension feedback.
+- Added heading focus management across all participant screens, all three
+  trial reveal stages, and trial-to-trial transitions.
+- Added visible focus indicators for headings and interactive controls.
+- Added status/alert semantics for initialization, comprehension feedback,
+  practice feedback, and runtime logging errors.
+- Added an `aria-busy` state during decision submission and removed stale
+  comprehension feedback when participants revise an answer.
+- Raised shared action, back, retry, checkbox, and radio targets to mobile-safe
+  minimum sizes.
+- Completed reduced-motion handling for the progress transition.
+- Forced a consistent light browser color scheme and replaced default Next.js
+  metadata with study-specific metadata.
+- Confirmed that no trial text, condition assignment, cue module, HSF
+  presentation, event schema, or export field changed.
+
+Output:
+
+- Added `docs/baseline-ux-accessibility-audit.md`.
+- Updated `src/app/task/page.tsx`.
+- Updated `src/app/task/task.module.css`.
+- Updated `src/app/globals.css`.
+- Updated `src/app/layout.tsx`.
+- Updated `docs/verification-log.md`.
+
+Result:
+
+- Keyboard and assistive-technology users now receive a predictable focus target
+  after every client-side screen change.
+- Error and validation states are exposed through live status semantics.
+- Shared touch targets are at least 44px high and narrow-screen layout behavior
+  remains condition invariant.
+- Reading-load staging remains intact; the three known stimulus-rationale
+  warnings remain review items rather than being silently rewritten.
+- Lint, TypeScript, and localhost runtime smoke checks passed.
+- The complete `npm run verify:final` chain passed, including stimulus and export
+  validation, summary generation, and the production build.
+- The development server started successfully at `http://localhost:3001`.
+- The in-app browser was unavailable in this session, so desktop/mobile visual
+  inspection is recorded as pending rather than reported as passed.
+
+Purpose assessment:
+
+- The engineering objective is substantially achieved: all identified safe,
+  shared UX/accessibility issues now have explicit implementation support.
+- Residual risk is limited to visual/interactive browser QA at representative
+  viewport sizes; it does not block the next direction-independent engineering
+  task.
+
+Planned commit message:
+
+```text
+fix: improve baseline task accessibility
+```
+
 ## Next Recommended Tasks
 
-1. Get Andrea's confirmation on participant-facing format and priority HSF dimensions.
-2. After confirmation, select the final HSF matrix scope and populate it with approved operations trials.
-3. Update trial schema, cue configuration, debug display, and export fields only after cue dimensions and condition labels are approved.
+1. Strengthen pilot and data QA with repeatable synthetic runs, export integrity,
+   session deduplication, condition-assignment checks, and a pre-analysis report.
+2. Complete a manual desktop/mobile and keyboard walkthrough when an interactive
+   browser target is available.
+3. Get Andrya's confirmation before changing the participant-facing experiment
+   format or formal HSF condition structure.

@@ -1,13 +1,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  color-scheme: light;
 }
 
 html,
@@ -35,8 +29,7 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+:where(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
 }

@@ -234,6 +234,7 @@ function TaskPageContent() {
 
   const trialShownAtMsRef = useRef<number | null>(null);
   const decisionLockRef = useRef(false);
+  const screenHeadingRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
     let isActive = true;
@@ -291,6 +292,20 @@ function TaskPageContent() {
       setMainRevealStage("situation");
     }
   }, [screen, currentTrialIndex]);
+
+  useEffect(() => {
+    if (!assignment) {
+      return;
+    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      screenHeadingRef.current?.focus();
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [assignment, screen, mainRevealStage, currentTrialIndex]);
 
   useEffect(() => {
     if (!assignment || screen !== "main_task" || !currentTrial || isFinished) {
@@ -626,13 +641,23 @@ function TaskPageContent() {
         <p className={styles.taskStatus}>{progressValue}</p>
       </header>
 
-      {errorMessage ? <p className={styles.errorText}>Error: {errorMessage}</p> : null}
+      {errorMessage ? (
+        <p className={styles.errorText} role="alert" aria-atomic="true">
+          Error: {errorMessage}
+        </p>
+      ) : null}
 
-      {!assignment ? <p className={styles.infoText}>Initializing assignment...</p> : null}
+      {!assignment ? (
+        <p className={styles.infoText} role="status" aria-live="polite">
+          Initializing assignment...
+        </p>
+      ) : null}
 
       {assignment && screen === "welcome" ? (
         <section className={styles.instructionsCard}>
-          <h2 className={styles.sectionTitle}>Welcome</h2>
+          <h2 ref={screenHeadingRef} className={styles.sectionTitle} tabIndex={-1}>
+            Welcome
+          </h2>
           <p className={styles.bodyText}>
             This study asks you to supervise AI recommendations in
             transportation and drone operations, then decide whether to follow
@@ -654,7 +679,9 @@ function TaskPageContent() {
 
       {assignment && screen === "consent" ? (
         <section className={styles.instructionsCard}>
-          <h2 className={styles.sectionTitle}>Consent</h2>
+          <h2 ref={screenHeadingRef} className={styles.sectionTitle} tabIndex={-1}>
+            Consent
+          </h2>
           <p className={styles.bodyText}>
             Your responses, response times, assigned condition, and trial
             metadata will be recorded for research analysis. Do not enter any
@@ -690,7 +717,9 @@ function TaskPageContent() {
 
       {assignment && screen === "instructions" ? (
         <section className={styles.instructionsCard}>
-          <h2 className={styles.sectionTitle}>Instructions</h2>
+          <h2 ref={screenHeadingRef} className={styles.sectionTitle} tabIndex={-1}>
+            Instructions
+          </h2>
           <ul className={styles.instructionsList}>
             <li>
               Complete 10 trials and make one decision per trial.
@@ -720,7 +749,9 @@ function TaskPageContent() {
 
       {assignment && screen === "comprehension_check" ? (
         <section className={styles.instructionsCard}>
-          <h2 className={styles.sectionTitle}>Comprehension Check</h2>
+          <h2 ref={screenHeadingRef} className={styles.sectionTitle} tabIndex={-1}>
+            Comprehension Check
+          </h2>
           <fieldset className={styles.questionGroup}>
             <legend className={styles.questionTitle}>
               What does Follow AI mean?
@@ -733,6 +764,7 @@ function TaskPageContent() {
                 checked={comprehensionDecisionAnswer === "accept_follows_ai"}
                 onChange={(event) => {
                   setComprehensionDecisionAnswer(event.target.value);
+                  setShowComprehensionFeedback(false);
                 }}
               />
               <span>Follow AI means use the AI recommendation.</span>
@@ -745,6 +777,7 @@ function TaskPageContent() {
                 checked={comprehensionDecisionAnswer === "accept_disagrees"}
                 onChange={(event) => {
                   setComprehensionDecisionAnswer(event.target.value);
+                  setShowComprehensionFeedback(false);
                 }}
               />
               <span>Follow AI means choose the opposite outcome.</span>
@@ -762,6 +795,7 @@ function TaskPageContent() {
                 checked={comprehensionLoggingAnswer === "decision_and_time"}
                 onChange={(event) => {
                   setComprehensionLoggingAnswer(event.target.value);
+                  setShowComprehensionFeedback(false);
                 }}
               />
               <span>My decision and response time for each trial.</span>
@@ -774,13 +808,14 @@ function TaskPageContent() {
                 checked={comprehensionLoggingAnswer === "personal_notes"}
                 onChange={(event) => {
                   setComprehensionLoggingAnswer(event.target.value);
+                  setShowComprehensionFeedback(false);
                 }}
               />
               <span>Personal notes I type into the page.</span>
             </label>
           </fieldset>
           {showComprehensionFeedback ? (
-            <p className={styles.startHint}>
+            <p className={styles.practiceError} role="alert">
               Please review the instructions and select the correct answers to
               continue.
             </p>
@@ -802,7 +837,13 @@ function TaskPageContent() {
           {activeCondition?.cueSource === "user_set" ? (
             <>
               <p className={styles.revealEyebrow}>Agent Setup</p>
-              <h2 className={styles.sectionTitle}>Configure the AI assistant</h2>
+              <h2
+                ref={screenHeadingRef}
+                className={styles.sectionTitle}
+                tabIndex={-1}
+              >
+                Configure the AI assistant
+              </h2>
               <p className={styles.bodyText}>
                 Choose how the assistant will be presented during the operations
                 task.
@@ -889,7 +930,13 @@ function TaskPageContent() {
             </>
           ) : (
             <>
-              <h2 className={styles.sectionTitle}>Agent Setup Not Required</h2>
+              <h2
+                ref={screenHeadingRef}
+                className={styles.sectionTitle}
+                tabIndex={-1}
+              >
+                Agent Setup Not Required
+              </h2>
               <p className={styles.bodyText}>
                 This condition uses a fixed system presentation.
               </p>
@@ -913,7 +960,9 @@ function TaskPageContent() {
         <section className={styles.trialLayout}>
           <article className={styles.focusCard}>
             <p className={styles.revealEyebrow}>Practice</p>
-            <h2 className={styles.focusTitle}>Learn the decision buttons</h2>
+            <h2 ref={screenHeadingRef} className={styles.focusTitle} tabIndex={-1}>
+              Learn the decision buttons
+            </h2>
             <div className={styles.practiceRecommendation}>
               <p className={styles.aiMessageLead}>AI recommends</p>
               <p className={`${styles.aiRecommendationBadge} ${styles.aiPositionProceed}`}>
@@ -955,12 +1004,12 @@ function TaskPageContent() {
               </button>
             </div>
             {practiceDecision === "accept" ? (
-              <p className={styles.practiceSuccess}>
+              <p className={styles.practiceSuccess} role="status" aria-live="polite">
                 Correct. Follow AI means selecting the AI recommendation.
               </p>
             ) : null}
             {practiceDecision === "override" ? (
-              <p className={styles.practiceError}>
+              <p className={styles.practiceError} role="alert">
                 That button chooses the opposite outcome. Select Follow AI to
                 continue.
               </p>
@@ -987,7 +1036,13 @@ function TaskPageContent() {
             </div>
             <div>
               <p className={styles.completionEyebrow}>End of Study</p>
-              <h2 className={styles.completionTitle}>Study Complete</h2>
+              <h2
+                ref={screenHeadingRef}
+                className={styles.completionTitle}
+                tabIndex={-1}
+              >
+                Study Complete
+              </h2>
             </div>
           </div>
           <p className={styles.completionText}>
@@ -1092,7 +1147,11 @@ function TaskPageContent() {
             {mainRevealStage === "situation" ? (
               <article className={styles.focusCard}>
                 <p className={styles.revealEyebrow}>Operational Situation</p>
-                <h2 className={styles.focusTitle}>
+                <h2
+                  ref={screenHeadingRef}
+                  className={styles.focusTitle}
+                  tabIndex={-1}
+                >
                   {currentTrial.scenario_title}
                 </h2>
                 <p className={styles.bodyText}>{currentTrial.situation}</p>
@@ -1114,7 +1173,13 @@ function TaskPageContent() {
             {mainRevealStage === "evidence" ? (
               <article className={styles.focusCard}>
                 <p className={styles.revealEyebrow}>Sensor / Context Evidence</p>
-                <h2 className={styles.focusTitle}>Review the evidence</h2>
+                <h2
+                  ref={screenHeadingRef}
+                  className={styles.focusTitle}
+                  tabIndex={-1}
+                >
+                  Review the evidence
+                </h2>
                 <ul className={styles.requirementsList}>
                   {currentTrial.evidence.map((item) => (
                     <li key={item}>{item}</li>
@@ -1133,8 +1198,14 @@ function TaskPageContent() {
             ) : null}
 
             {mainRevealStage === "ai" ? (
-              <article className={styles.focusCard}>
-                <p className={styles.revealEyebrow}>AI Recommendation</p>
+              <article className={styles.focusCard} aria-busy={isSubmitting}>
+                <h2
+                  ref={screenHeadingRef}
+                  className={styles.revealEyebrow}
+                  tabIndex={-1}
+                >
+                  AI Recommendation
+                </h2>
                 {effectiveCondition &&
                 activeAgent &&
                 effectiveCondition.enabledCues.length > 0 ? (
