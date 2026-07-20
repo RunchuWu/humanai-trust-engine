@@ -52,6 +52,14 @@ import styles from "./task.module.css";
 const TOTAL_TRIALS = TRIALS.length;
 const TASK_SHOWN_MARKER_PREFIX = "humanai_task_shown";
 const USER_AGENT_CONFIG_KEY = "humanai_user_agent_config";
+const TRIAL_STAGES: ReadonlyArray<{
+  id: RevealStage;
+  label: string;
+}> = [
+  { id: "situation", label: "Situation" },
+  { id: "evidence", label: "Evidence" },
+  { id: "ai", label: "Recommendation" },
+];
 
 function shortenId(id: string): string {
   if (id.length <= 14) {
@@ -580,7 +588,6 @@ function TaskPageContent() {
     ? shortenId(assignment.participantId)
     : "-";
   const sessionIdShort = assignment ? shortenId(assignment.sessionId) : "-";
-  const currentScreenIndex = SCREEN_SEQUENCE.indexOf(screen);
   const trialDisplayIndex =
     screen === "main_task" || screen === "debrief"
       ? Math.min(currentTrialIndex + 1, TOTAL_TRIALS)
@@ -599,14 +606,23 @@ function TaskPageContent() {
     ? getHsfDebugSnapshot(effectiveCondition, currentTrial)
     : null;
   const agentSetupConfig = userAgentConfig ?? getConditionConfig("user_set").agent;
-  const progressValue =
-    screen === "main_task"
-      ? `Trial ${trialDisplayIndex} / ${TOTAL_TRIALS}`
-      : `Step ${currentScreenIndex + 1} / ${SCREEN_SEQUENCE.length}`;
+  const isMainTask = screen === "main_task";
+  const isComplete = screen === "debrief";
+  const taskPhase = isMainTask
+    ? "Main task"
+    : isComplete
+      ? "Completed"
+      : "Getting started";
+  const progressValue = isMainTask
+    ? `Trial ${trialDisplayIndex} of ${TOTAL_TRIALS}`
+    : taskPhase;
+  const progressNow = isComplete ? TOTAL_TRIALS : currentTrialIndex + 1;
+  const currentStageIndex = TRIAL_STAGES.findIndex(
+    (stage) => stage.id === mainRevealStage,
+  );
   const canContinueConsent = consentAccepted;
   const canContinuePractice = practiceDecision === "accept";
-  const showShellSubtitle =
-    screen === "welcome" || screen === "instructions" || screen === "consent";
+  const showShellSubtitle = !isMainTask && !isComplete;
 
   return (
     <main className={styles.page}>
@@ -629,16 +645,41 @@ function TaskPageContent() {
       ) : null}
 
       <header className={styles.taskHeader}>
-        <div>
-          <h1 className={styles.title}>AI Operations Supervision Task</h1>
-          {showShellSubtitle ? (
-            <p className={styles.subtitle}>
-              Review each screen in order, then decide whether to follow the AI
-              recommendation.
-            </p>
-          ) : null}
+        <div className={styles.taskHeaderTop}>
+          <div className={styles.taskIdentity}>
+            <h1 className={styles.title}>AI Operations Supervision Task</h1>
+            {showShellSubtitle ? (
+              <p className={styles.subtitle}>
+                Review each screen in order, then decide whether to follow the AI
+                recommendation.
+              </p>
+            ) : null}
+          </div>
+          <div className={styles.taskMeta}>
+            <p className={styles.taskPhase}>{taskPhase}</p>
+            {isMainTask ? (
+              <p className={styles.taskStatus}>{progressValue}</p>
+            ) : null}
+          </div>
         </div>
-        <p className={styles.taskStatus}>{progressValue}</p>
+        {isMainTask || isComplete ? (
+          <div className={styles.progressWrap}>
+            <div
+              className={styles.progressTrack}
+              role="progressbar"
+              aria-label="Main task progress"
+              aria-valuemin={0}
+              aria-valuemax={TOTAL_TRIALS}
+              aria-valuenow={progressNow}
+              aria-valuetext={progressValue}
+            >
+              <span
+                className={styles.progressFill}
+                style={{ width: `${(progressNow / TOTAL_TRIALS) * 100}%` }}
+              />
+            </div>
+          </div>
+        ) : null}
       </header>
 
       {errorMessage ? (
@@ -1143,6 +1184,25 @@ function TaskPageContent() {
 
       {assignment && screen === "main_task" && currentTrial ? (
         <section className={styles.trialLayout}>
+          <ol className={styles.stageIndicator} aria-label="Trial stages">
+            {TRIAL_STAGES.map((stage, stageIndex) => {
+              const isCurrentStage = stage.id === mainRevealStage;
+              const isFinishedStage = stageIndex < currentStageIndex;
+
+              return (
+                <li
+                  key={stage.id}
+                  className={`${styles.stageItem} ${
+                    isCurrentStage ? styles.stageItemCurrent : ""
+                  } ${isFinishedStage ? styles.stageItemComplete : ""}`}
+                  aria-current={isCurrentStage ? "step" : undefined}
+                >
+                  <span className={styles.stageNumber}>{stageIndex + 1}</span>
+                  <span className={styles.stageLabel}>{stage.label}</span>
+                </li>
+              );
+            })}
+          </ol>
           <div className={styles.revealStack}>
             {mainRevealStage === "situation" ? (
               <article className={styles.focusCard}>

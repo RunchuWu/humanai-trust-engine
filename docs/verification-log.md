@@ -2,6 +2,54 @@
 
 This log records verification commands run during Week 7-12 work.
 
+## Participant UI Redesign - 2026-07-20 CST
+
+Change verified:
+
+- Added the participant app header, phase state, accessible main-task progress,
+  and non-interactive trial stage indicator.
+- Replaced legacy participant card styles with one responsive operations
+  workspace and consistent controls/status states.
+- Kept condition-specific cue rendering, trial content, screen flow, logging,
+  Researcher Tools behavior, and export contracts unchanged.
+
+Commands run from repository root:
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run qa:pilot
+npm run dev -- --port 3001
+npm run smoke:runtime -- --base-url http://localhost:3001 --timeout-ms 15000
+npm run verify:final
+git diff --check
+```
+
+Results:
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| ESLint | Passed | Completed with exit code 0 |
+| TypeScript | Passed | `tsc --noEmit` completed with exit code 0 |
+| Pilot/data regression | Passed with expected review flag | All three conditions, 61 raw events, 30 latest decisions, and export contracts passed; the synthetic resubmit remains the intentional flag |
+| Participant route | Passed | `HEAD /task` returned 200 |
+| Researcher debug route | Passed | `HEAD /task?debug=1` returned 200 |
+| API and exports | Passed | Runs, preview, JSON export, and CSV export checks returned expected status and content types |
+| Documentation references | Passed | Checked 774 local references across 43 Markdown files |
+| Stimulus validation | Passed with existing warnings | Runtime stimuli remain synchronized; existing `ops_01`, `ops_04`, and `ops_10` rationale-length warnings remain |
+| Production build | Passed | Next.js compiled successfully in 3.4 seconds and generated all static pages |
+| Event/schema source comparison | Passed | No event construction, submission handler, schema, trial, condition, or export files changed |
+| Browser screenshots | Not run | In-app browser discovery returned an empty target list |
+| Full keyboard/condition walkthrough | Not run | Requires an interactive browser target; remains the manual acceptance step |
+
+Target viewport rules inspected in source:
+
+- 1440x900: workspace is capped at 880px.
+- 768x1024: workspace retains full hierarchy with reduced outer padding.
+- 390x844 and 320x568: controls use one column, long labels can wrap, stage
+  labels use stable three-column tracks, and horizontal page overflow is
+  disabled.
+
 ## Pilot and Data QA - 2026-07-20 CST
 
 Change verified:

@@ -1502,11 +1502,65 @@ Planned commit message:
 feat: add repeatable pilot data QA
 ```
 
+### Task: Redesign the participant task interface
+
+Status: Complete, with manual browser review pending
+
+What was done:
+
+- Rebuilt the shared `/task` shell as a light operations workspace with the
+  existing Geist font, neutral surfaces, solid blue actions, and restrained
+  green/red status treatments.
+- Replaced onboarding step numbering with `Getting started`, added explicit
+  main-task and completed phases, and added an accessible trial progress bar.
+- Added a fixed, non-interactive Situation / Evidence / Recommendation stage
+  indicator to every main trial.
+- Unified Welcome, Consent, Instructions, Comprehension, Agent Setup, Practice,
+  main trials, and Debrief around one workspace panel and stable action area.
+- Improved operational evidence hierarchy, recommendation layout, form rows,
+  status messages, retry treatment, and equal-weight decision controls.
+- Added responsive rules for desktop, tablet, and narrow mobile layouts,
+  including single-column decision actions and wrapping long labels.
+- Removed the confirmed-unused legacy participant CSS selectors and kept all
+  component radii at 8px or below, except circular status/avatar elements.
+- Left `DebugPanel.tsx`, cue-specific content, stimuli, condition assignment,
+  screen sequence, submission handlers, event payloads, and exports unchanged.
+
+Output:
+
+- Updated `src/app/task/page.tsx`.
+- Replaced the participant visual system in `src/app/task/task.module.css`.
+- Updated `docs/ui-salience-reading-load-audit.md`.
+- Updated this progress log and `docs/verification-log.md`.
+
+Result:
+
+- ESLint, TypeScript, deterministic three-condition pilot QA, runtime route
+  smoke checks, documentation references, stimulus validation, export summary,
+  and the production build all pass.
+- `/task`, `/task?debug=1`, researcher APIs, and both export formats remain
+  reachable with their expected response types.
+- The source diff contains no changes to logging calls, trial definitions,
+  condition IDs, schema files, or export code.
+- The in-app browser service reported no available browser target, so the full
+  keyboard walkthrough and screenshots at 320x568, 390x844, 768x1024, and
+  1440x900 remain a documented manual review item.
+
+Planned commit message:
+
+```text
+feat: redesign participant task interface
+```
+
 ## Next Recommended Tasks
 
-1. Complete a manual desktop/mobile and keyboard walkthrough when an interactive
-   browser target is available.
+1. Complete the four-viewport screenshot and keyboard walkthrough when an
+   interactive browser target is available.
 2. Get Andrya's confirmation before changing the participant-facing experiment
    format or formal HSF condition structure.
-3. Use a new `STUDY_RUN_ID` for the first human pilot and run the new QA checker
+3. Refactor Researcher Tools inline styles in a separate commit without changing
+   debug behavior.
+4. Prepare review-only, length-matched rationale candidates for `ops_01`,
+   `ops_04`, and `ops_10` without activating them in runtime stimuli.
+5. Use a new `STUDY_RUN_ID` for the first human pilot and run the new QA checker
    against its export before analysis.

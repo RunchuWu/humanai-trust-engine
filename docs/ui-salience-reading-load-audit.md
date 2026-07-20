@@ -20,6 +20,32 @@ Current conditions reviewed:
 | `industry_set` | Fixed named agent, avatar, warm tone, personality label, warm rationale, confidence line |
 | `user_set` | Participant completes agent setup, then sees selected name/avatar/personality, warm or neutral rationale depending on tone, confidence line when cue module is enabled |
 
+## Participant UI Redesign Review
+
+The shared participant interface was redesigned on 2026-07-20 without changing
+condition logic or runtime stimuli. The current shared structure is:
+
+- A single operations-task header with onboarding, main-task, and completed
+  states.
+- An accessible trial progress bar during the main task and at completion.
+- One 880px maximum workspace used across onboarding, practice, trials, and
+  debrief.
+- A stable, non-clickable Situation / Evidence / Recommendation indicator on
+  main trials.
+- Equal-width and equal-style `Follow AI` and `Choose Opposite` controls.
+- Single-column controls on mobile with wrapping action labels.
+
+The redesign intentionally does not add a control-condition placeholder for the
+agent header. It also does not change avatar, name, personality, tone,
+confidence, or rationale content. This preserves current experimental behavior,
+but the cue salience and reading-load risks below still require mentor review
+before a final HSF design is activated.
+
+Automated verification covers lint, types, data QA, route compatibility, export
+contracts, and production build. Visual screenshots and keyboard walkthroughs
+at the four target viewports remain pending because no interactive browser
+target was available in the verification session.
+
 ## Current UI Balance
 
 ### Stable Across Conditions
