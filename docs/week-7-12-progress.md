@@ -1552,6 +1552,36 @@ Planned commit message:
 feat: redesign participant task interface
 ```
 
+### Task: Allow review across trial stages
+
+Status: Complete
+
+What was done:
+
+- Added `Back to Situation` on the Evidence stage.
+- Added `Back to Evidence` on the Recommendation stage.
+- Kept the stage indicator informational and non-clickable so movement remains
+  explicit and sequential.
+- Reused the existing heading-focus behavior so the destination stage heading
+  receives focus after forward or backward navigation.
+- Disabled Recommendation-stage back navigation during decision submission.
+- Kept a failed-submission retry visible only on Recommendation while allowing
+  participants to review Evidence and Situation before returning to retry.
+
+Result:
+
+- Participants can move Situation -> Evidence -> Recommendation and then back
+  through the same stages without changing the current trial.
+- Stage review does not submit a decision, create a new event, reset latency,
+  change trial order, or alter a saved decision.
+- ESLint, TypeScript, and the three-condition pilot/data QA gate pass.
+
+Planned commit message:
+
+```text
+feat: allow review across trial stages
+```
+
 ## Next Recommended Tasks
 
 1. Complete the four-viewport screenshot and keyboard walkthrough when an

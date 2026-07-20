@@ -2,6 +2,38 @@
 
 This log records verification commands run during Week 7-12 work.
 
+## Trial Stage Review Navigation - 2026-07-20 CST
+
+Change verified:
+
+- Added backward navigation from Evidence to Situation and Recommendation to
+  Evidence.
+- Kept the current trial, decision state, latency reference, logging, and event
+  schema unchanged during stage review.
+- Kept submission locking active and limited retry controls to Recommendation.
+
+Commands run from repository root:
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run qa:pilot
+npm run verify:final
+```
+
+Results:
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| ESLint | Passed | Completed with exit code 0 |
+| TypeScript | Passed | `tsc --noEmit` completed with exit code 0 |
+| Pilot/data regression | Passed with expected review flag | All three current conditions and export contracts passed; only the intentional synthetic resubmit was flagged |
+| State boundary review | Passed | The new handler changes only `mainRevealStage`; trial index, decision state, and logging functions are untouched |
+| Focus behavior | Passed by source review | The existing focus effect depends on `mainRevealStage` and runs after backward navigation |
+| Final verification chain | Passed | Documentation references, stimulus validation, pilot QA, export summary, and production build all completed successfully |
+| Production build | Passed | Next.js compiled successfully in 2.2 seconds and generated all static pages |
+| Interactive browser review | Not run | No browser target is available in the current agent session; participant-side manual review can run on the user's local dev server |
+
 ## Participant UI Redesign - 2026-07-20 CST
 
 Change verified:

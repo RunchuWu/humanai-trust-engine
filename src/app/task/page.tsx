@@ -503,6 +503,16 @@ function TaskPageContent() {
     );
   }
 
+  function retreatMainReveal() {
+    if (isSubmitting) {
+      return;
+    }
+
+    setMainRevealStage((previous) =>
+      previous === "ai" ? "evidence" : "situation",
+    );
+  }
+
   function handleStartMainTask() {
     setCurrentTrialIndex(0);
     trialShownAtMsRef.current = null;
@@ -1245,7 +1255,16 @@ function TaskPageContent() {
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                <div className={styles.revealActions}>
+                <div
+                  className={`${styles.revealActions} ${styles.revealActionsSplit}`}
+                >
+                  <button
+                    type="button"
+                    className={styles.backButton}
+                    onClick={retreatMainReveal}
+                  >
+                    Back to Situation
+                  </button>
                   <button
                     type="button"
                     className={styles.primaryAction}
@@ -1329,6 +1348,16 @@ function TaskPageContent() {
                 </div>
 
                 <footer className={styles.aiActions}>
+                  <div className={styles.recommendationBackRow}>
+                    <button
+                      type="button"
+                      className={styles.backButton}
+                      onClick={retreatMainReveal}
+                      disabled={isSubmitting}
+                    >
+                      Back to Evidence
+                    </button>
+                  </div>
                   {currentTrialSavedDecision ? (
                     <p className={styles.savedDecisionHint}>
                       Latest saved decision for this trial:{" "}
@@ -1392,7 +1421,7 @@ function TaskPageContent() {
                 </button>
               </div>
             ) : null}
-            {pendingRetryDecision ? (
+            {pendingRetryDecision && mainRevealStage === "ai" ? (
               <div className={styles.retryNotice}>
                 <p className={styles.retryText}>
                   Submission failed. Retry the same decision.

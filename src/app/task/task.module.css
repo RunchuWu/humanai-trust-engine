@@ -135,6 +135,15 @@
   border-top: 1px solid #e4e7ec;
 }
 
+.revealActionsSplit {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.revealActionsSplit .backButton {
+  min-width: 148px;
+}
+
 .readinessCard {
   display: grid;
   gap: 4px;
@@ -477,6 +486,11 @@
   gap: 12px;
   margin-top: auto;
   padding-top: 24px;
+}
+
+.recommendationBackRow {
+  display: flex;
+  margin-bottom: 2px;
 }
 
 .decisionButtons {
@@ -913,6 +927,10 @@
     width: 100%;
   }
 
+  .recommendationBackRow {
+    width: 100%;
+  }
+
   .retryNotice {
     align-items: stretch;
     flex-direction: column;
@@ -1001,6 +1019,11 @@
   .instructionsActions,
   .revealActions {
     padding-top: 22px;
+  }
+
+  .revealActionsSplit {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .completionHeader {

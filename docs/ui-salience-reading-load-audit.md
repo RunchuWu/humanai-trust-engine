@@ -32,6 +32,8 @@ condition logic or runtime stimuli. The current shared structure is:
   debrief.
 - A stable, non-clickable Situation / Evidence / Recommendation indicator on
   main trials.
+- Explicit back buttons let participants revisit Situation and Evidence before
+  deciding, without making the stage indicator itself interactive.
 - Equal-width and equal-style `Follow AI` and `Choose Opposite` controls.
 - Single-column controls on mobile with wrapping action labels.
 
