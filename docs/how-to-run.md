@@ -174,6 +174,19 @@ npm run summarize:export -- --url 'http://localhost:3000/api/export?format=json'
 npm run summarize:export -- --url 'http://localhost:3000/api/export?format=csv' --latest-only
 ```
 
+## Pilot Data QA
+
+Run the deterministic three-condition synthetic pilot gate:
+
+```bash
+npm run qa:pilot
+```
+
+This regenerates the synthetic fixture, validates exact export counts, checks
+all session and condition assignments, exercises the shared latest-decision
+rule, and writes `docs/pilot-data-quality-report.md`. See
+`docs/pilot-data-qa.md` for the checks and analysis boundary.
+
 ## Stimulus Dataset Validation
 
 Validate the review-only 16-trial stimulus bank:
@@ -204,8 +217,9 @@ npm run smoke:runtime
 Notes:
 
 - `npm run verify:final` runs lint, TypeScript, documentation reference checks,
-  stimulus dataset validation, local export validation, local export summary,
-  and production build.
+  stimulus dataset validation, synthetic pilot QA, synthetic export validation,
+  synthetic latest-decision summary, and production build. It does not depend
+  on ignored local participant/debug run files.
 - `npm run smoke:runtime` expects a running app and checks the root redirect, participant page, debug page, run summary API, JSON export, CSV export, and event preview endpoints.
 - `npm run build` may require an environment where Next/Turbopack can bind its internal local port. In this sandbox, the build can fail until rerun outside the sandbox.
 - `next.config.ts` sets `turbopack.root` to the project directory, so the previous workspace-root warning from the parent `/Users/runchuwu/pnpm-lock.yaml` should not appear in current dev/build output.

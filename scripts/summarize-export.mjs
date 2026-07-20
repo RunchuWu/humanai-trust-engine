@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { loadEvents } from "./export-utils.mjs";
+import { latestDecisionEvents } from "./decision-utils.mjs";
 
 function printUsage() {
   console.log(`Usage:
@@ -69,27 +70,6 @@ function parseArgs(argv) {
 
 function isDecisionEvent(event) {
   return event && event.event_type === "decision";
-}
-
-function latestDecisionEvents(decisions) {
-  const byKey = new Map();
-
-  for (const decision of decisions) {
-    const key = [
-      decision.participant_id,
-      decision.session_id,
-      decision.trial_id,
-    ].join("|");
-    const previous = byKey.get(key);
-
-    if (!previous || decision.timestamp_ms >= previous.timestamp_ms) {
-      byKey.set(key, decision);
-    }
-  }
-
-  return [...byKey.values()].sort((a, b) => {
-    return (a.timestamp_ms ?? 0) - (b.timestamp_ms ?? 0);
-  });
 }
 
 function groupBy(items, keyFn) {

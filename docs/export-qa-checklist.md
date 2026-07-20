@@ -7,6 +7,18 @@ It documents current runtime behavior only. HSF metadata and manipulation-check 
 For the ordered validation-to-summary workflow, see
 `docs/export-analysis-workflow.md`.
 
+Before a manual pilot walkthrough, run the deterministic engineering gate:
+
+```bash
+npm run qa:pilot
+```
+
+It covers JSON and CSV parsing, all three current conditions, all 10 runtime
+trials, one intentional resubmit, latest-decision reduction, session
+completeness, task/decision pairing, assignment consistency, cue metadata, and
+latency review flags. The full contract is in `docs/pilot-data-qa.md`, and the
+generated result is in `docs/pilot-data-quality-report.md`.
+
 ## Setup
 
 Start with a clean study-run label so exported rows are easy to inspect:

@@ -7,6 +7,19 @@ the research team confirms the approved runtime implementation.
 
 Use this after completing at least one participant or debug-mode session.
 
+## 0. Run the Synthetic Pilot Gate
+
+Before reviewing a real pilot export, verify the current data contract:
+
+```bash
+npm run qa:pilot
+```
+
+This regenerates deterministic three-condition JSON and CSV fixtures, validates
+exact export counts and schema in both formats, exercises one resubmit, applies
+the shared latest-only rule, and writes `docs/pilot-data-quality-report.md`. See
+`docs/pilot-data-qa.md` for the complete contract.
+
 ## 1. Start a Named Run
 
 Use a study-run label so the exported rows can be traced back to one review
@@ -145,6 +158,8 @@ Before reporting results, record:
 
 ## 7. Related Documents
 
+- `docs/pilot-data-qa.md`
+- `docs/pilot-data-quality-report.md`
 - `docs/export-qa-checklist.md`
 - `docs/analysis-plan.md`
 - `docs/event-schema.md`

@@ -2,6 +2,58 @@
 
 This log records verification commands run during Week 7-12 work.
 
+## Pilot and Data QA - 2026-07-20 CST
+
+Change verified:
+
+- Added deterministic synthetic sessions for all three current conditions.
+- Added equivalent JSON and API-column-compatible CSV fixture validation.
+- Added shared latest-decision reduction and a pre-analysis Markdown report.
+- Added blocking integrity/session/assignment checks and non-blocking review
+  flags.
+- Added `npm run qa:pilot` to the final verification chain.
+- Replaced the ignored local-run fixture in `verify:final` with the tracked
+  deterministic synthetic fixture.
+
+Commands run from repository root:
+
+```bash
+node --check scripts/decision-utils.mjs
+node --check scripts/generate-synthetic-pilot.mjs
+node --check scripts/pilot-data-qa.mjs
+node --check scripts/summarize-export.mjs
+npm run qa:pilot
+npm run lint
+npx tsc --noEmit
+shasum -a 256 data/fixtures/synthetic-pilot.json data/fixtures/synthetic-pilot.csv docs/pilot-data-quality-report.md
+node scripts/pilot-data-qa.mjs --file /tmp/humanai-incomplete-pilot.json --expect-conditions control,industry_set,user_set --expect-complete-sessions 3
+node scripts/pilot-data-qa.mjs --file /tmp/humanai-duplicate-id-pilot.json --expect-conditions control,industry_set,user_set --expect-complete-sessions 3
+npm run verify:final
+```
+
+Results:
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| Script syntax | Passed | All four changed/new scripts passed `node --check` |
+| Synthetic generation | Passed | Generated equivalent JSON/CSV fixtures with 61 events, three conditions, three sessions, and one intentional resubmit |
+| JSON export validation | Passed with expected warning | Schema and exact 61-event/31-decision counts passed; the intentional repeated decision was reported |
+| CSV export validation | Passed with expected warning | Header, parsed schema, and exact 61-event/31-decision counts matched JSON; the intentional repeated decision was reported |
+| JSON/CSV normalized equivalence | Passed | All 61 parsed events matched after normalizing the documented empty-versus-omitted control `cue_modules` value |
+| Pilot pre-analysis QA | Passed with review | Three complete sessions and 30 latest-only decisions passed all blocking checks; one intentional resubmit remains a review flag |
+| Assignment checks | Passed | One stable synthetic participant/session exists for each current condition |
+| Task/decision pairing | Passed | All 30 latest decisions have an earlier matching `task_shown` event |
+| Cue metadata | Passed | Cue source and required condition metadata match current control, industry-set, and user-set contracts |
+| Deterministic rerun | Passed | Fixture and report SHA-256 values were unchanged after regeneration |
+| Incomplete-session negative test | Passed | Removing the final user-set decision produced a failed session and exit code 1 |
+| Duplicate-ID negative test | Passed | Reusing an event ID produced a blocking failure and exit code 1 |
+| ESLint | Passed | `npm run lint` completed with exit code 0 |
+| TypeScript | Passed | `npx tsc --noEmit` completed with exit code 0 |
+| Documentation references | Passed | Final scan covered 43 markdown files and 774 local references |
+| Latest-only summary | Passed | Reduced 31 raw decisions to 30 analysis decisions across three complete condition sessions |
+| Final verification chain | Passed after sandbox escalation | Lint, TypeScript, docs, stimulus validation, JSON/CSV pilot QA, summary, and build all passed without ignored local-run data |
+| Production build | Passed | Next.js compiled successfully in 2.5s and generated all static pages |
+
 ## Baseline UX and Accessibility - 2026-07-20 CST
 
 Change verified:

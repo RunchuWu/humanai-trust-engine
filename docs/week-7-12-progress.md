@@ -1419,11 +1419,94 @@ Planned commit message:
 fix: improve baseline task accessibility
 ```
 
+### Task: Add repeatable pilot and data QA engineering
+
+Status: Complete
+
+What was done:
+
+- Added a deterministic synthetic pilot generator based on the 10
+  `runtime_current` stimulus-bank records.
+- Generated equivalent JSON and API-column-compatible CSV fixtures and
+  validated both formats with exact counts.
+- Generated three complete sessions covering `control`, `industry_set`, and
+  `user_set`, with fixed UUIDs and timestamps and no participant data.
+- Added one intentional decision resubmit so raw-versus-analysis-ready row
+  handling is continuously exercised.
+- Extracted the latest-decision reduction into one shared helper used by both
+  the existing export summary and the new pilot QA report.
+- Added blocking checks for duplicate event IDs, participant/condition
+  consistency, session ownership, run IDs, cue metadata, complete trial
+  coverage, task-shown pairing, and expected condition/session coverage.
+- Added non-blocking review flags for valid resubmits, repeated or unmatched
+  task-shown events, assignment imbalance, latency thresholds, and combined
+  study runs.
+- Added `npm run qa:pilot` and included it in `npm run verify:final`.
+- Removed the ignored `data/runs/local-dev/events.jsonl` dependency from the
+  project-level final verification chain; final verification now uses the
+  tracked synthetic fixture and is portable to a clean clone.
+- Generated a stable pre-analysis Markdown report and documented how to run the
+  same checker against real file or API exports.
+- Confirmed the QA script fails on two corrupted fixtures: one missing final
+  decision and one duplicate `event_id`.
+- Re-ran the synthetic gate and confirmed fixture/report SHA-256 values remained
+  unchanged.
+
+Output:
+
+- Added `data/fixtures/synthetic-pilot.json`.
+- Added `data/fixtures/synthetic-pilot.csv`.
+- Added `scripts/decision-utils.mjs`.
+- Added `scripts/generate-synthetic-pilot.mjs`.
+- Added `scripts/pilot-data-qa.mjs`.
+- Added `docs/pilot-data-qa.md`.
+- Added `docs/pilot-data-quality-report.md`.
+- Updated `scripts/summarize-export.mjs` to use the shared dedupe helper.
+- Updated `package.json`, `.gitignore`, run instructions, export QA, export
+  analysis, progress, and verification documentation.
+
+Result:
+
+- The synthetic gate contains 61 events: 30 `task_shown`, 31 raw decisions,
+  and 30 latest-only decisions.
+- Both JSON and CSV fixtures pass the current export schema, header, count, and
+  full-session checks.
+- All three sessions are complete across trial indexes 0-9 and all three current
+  conditions have one synthetic participant.
+- All blocking integrity checks pass; the report returns `PASS WITH REVIEW`
+  solely because the fixture intentionally contains one resubmit.
+- Removing one final decision produces an incomplete-session failure and exit
+  code 1.
+- Duplicating one event ID produces a unique-event failure and exit code 1.
+- Repeated `qa:pilot` runs produce byte-identical fixture and report files.
+- Project-level final verification no longer depends on untracked local run
+  data; real pilot exports remain separately validatable by file or URL.
+- The updated `npm run verify:final` chain passed end to end; the production
+  build compiled in 2.5 seconds.
+
+Purpose assessment:
+
+- The pilot/data QA objective is achieved for the current runtime contract: a
+  researcher now has one repeatable gate for synthetic data, export integrity,
+  session completeness, dedupe behavior, condition assignment, and a durable
+  pre-analysis report.
+- The checker explicitly records the remaining runtime limitation: debug-mode
+  provenance is not an event field, so debug and participant sessions must use
+  separate `study_run_id` values.
+- This engineering gate does not claim research approval for HSF factors,
+  stimuli, or manipulation checks.
+
+Planned commit message:
+
+```text
+feat: add repeatable pilot data QA
+```
+
 ## Next Recommended Tasks
 
-1. Strengthen pilot and data QA with repeatable synthetic runs, export integrity,
-   session deduplication, condition-assignment checks, and a pre-analysis report.
-2. Complete a manual desktop/mobile and keyboard walkthrough when an interactive
+1. Complete a manual desktop/mobile and keyboard walkthrough when an interactive
    browser target is available.
-3. Get Andrya's confirmation before changing the participant-facing experiment
+2. Get Andrya's confirmation before changing the participant-facing experiment
    format or formal HSF condition structure.
+3. Use a new `STUDY_RUN_ID` for the first human pilot and run the new QA checker
+   against its export before analysis.

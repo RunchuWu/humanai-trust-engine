@@ -24,6 +24,31 @@ export const EXPECTED_CSV_COLUMNS = [
   "study_run_id",
 ];
 
+function csvEscape(value) {
+  if (value === undefined || value === null) {
+    return "";
+  }
+
+  const escaped = String(value).replace(/"/g, '""');
+  if (/[",\n\r]/.test(escaped)) {
+    return `"${escaped}"`;
+  }
+  return escaped;
+}
+
+export function serializeEventsToCsv(events) {
+  const rows = events.map((event) => {
+    return EXPECTED_CSV_COLUMNS.map((column) => {
+      if (column === "cue_modules") {
+        return csvEscape(event.cue_modules?.join("|"));
+      }
+      return csvEscape(event[column]);
+    }).join(",");
+  });
+
+  return [EXPECTED_CSV_COLUMNS.join(","), ...rows].join("\n");
+}
+
 function parseCsvRows(text) {
   const rows = [];
   let row = [];

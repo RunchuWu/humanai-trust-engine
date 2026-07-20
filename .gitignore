@@ -45,6 +45,9 @@ data/*
 !data/.gitkeep
 !data/stimuli/
 !data/stimuli/*.json
+!data/fixtures/
+!data/fixtures/*.json
+!data/fixtures/*.csv
 
 # env
 .env

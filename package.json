@@ -9,10 +9,12 @@
     "lint": "eslint",
     "check:docs": "node scripts/check-doc-references.mjs",
     "smoke:runtime": "node scripts/smoke-runtime.mjs",
+    "generate:synthetic-pilot": "node scripts/generate-synthetic-pilot.mjs",
+    "qa:pilot": "npm run generate:synthetic-pilot && npm run validate:export -- --file data/fixtures/synthetic-pilot.json --full-session --expect-event-count 61 --expect-decision-count 31 && npm run validate:export -- --file data/fixtures/synthetic-pilot.csv --full-session --expect-event-count 61 --expect-decision-count 31 && node scripts/pilot-data-qa.mjs --file data/fixtures/synthetic-pilot.json --expect-conditions control,industry_set,user_set --expect-complete-sessions 3 --report docs/pilot-data-quality-report.md",
     "validate:stimuli": "node scripts/validate-stimuli.mjs",
     "validate:export": "node scripts/validate-export.mjs",
     "summarize:export": "node scripts/summarize-export.mjs",
-    "verify:final": "npm run lint && tsc --noEmit && npm run check:docs && npm run validate:stimuli && npm run validate:export -- --file data/runs/local-dev/events.jsonl --full-session --expect-condition-id control --expect-event-count 22 --expect-decision-count 10 && npm run summarize:export -- --file data/runs/local-dev/events.jsonl --latest-only && npm run build"
+    "verify:final": "npm run lint && tsc --noEmit && npm run check:docs && npm run validate:stimuli && npm run qa:pilot && npm run summarize:export -- --file data/fixtures/synthetic-pilot.json --latest-only && npm run build"
   },
   "dependencies": {
     "next": "16.1.6",
