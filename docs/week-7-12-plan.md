@@ -4,7 +4,7 @@ This plan reflects the midterm direction from the HSF manuscript materials and t
 
 The working assumption for this phase is:
 
-> Continue with a controlled decision-based experiment using fixed, reviewable stimuli unless Andrea confirms that the participant-facing study should become an interactive AI collaboration experience.
+> Continue with a controlled decision-based experiment using fixed, reviewable stimuli unless Andrya confirms that the participant-facing study should become an interactive AI collaboration experience.
 
 Fixed stimuli means controlled experimental materials, not low-quality placeholder data. The goal is to manipulate HSF cue dimensions and AI performance conditions cleanly enough that participant trust, delegation, and blame outcomes can be interpreted.
 
@@ -16,7 +16,7 @@ The attached HSF materials shift the next phase from a generic humanlike-agent i
 - Calibration threshold: humanlike signaling should increase trust only when demonstrated capability supports the signal; over-signaling should create a trust penalty.
 - Market Humanlikeness Architecture: humanlike cues should be represented as separable design dimensions rather than one bundled "humanlike AI" condition.
 
-## Immediate Questions for Andrea
+## Immediate Questions for Andrya
 
 These questions should be clarified before major implementation changes:
 
@@ -79,14 +79,14 @@ Tasks:
 1. Review the HSF manuscript, experimental-design note, and recentered method draft.
 2. Map the current cue modules to HSF dimensions.
 3. Identify which cues already exist in the interface and which would require new UI or trial-data fields.
-4. Send Andrea the alignment questions above.
+4. Send Andrya the alignment questions above.
 5. Draft a short cue-to-interface note that can be reviewed by the research team.
 
 Deliverables:
 
 - `docs/week-7-12-plan.md`
 - draft cue mapping table
-- alignment email to Andrea
+- alignment email to Andrya
 
 Acceptance criteria:
 
@@ -100,7 +100,7 @@ Primary goal: define how the controlled stimuli should be built if the project r
 
 Tasks:
 
-1. Confirm the target participant-facing format after Andrea's feedback.
+1. Confirm the target participant-facing format after Andrya's feedback.
 2. Draft the stimulus data model for HSF-aligned trials.
 3. Specify required fields for each trial:
    - scenario title

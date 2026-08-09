@@ -100,7 +100,7 @@ Until those fields are implemented, HSF mapping is documented outside the runtim
 
 ## Proposed HSF Extension
 
-After Andrea/research-team confirmation, extend the runtime schema with approved fields such as:
+After Andrya/research-team confirmation, extend the runtime schema with approved fields such as:
 
 ```ts
 type HsfDimension =

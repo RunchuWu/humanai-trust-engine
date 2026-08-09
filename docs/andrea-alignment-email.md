@@ -1,4 +1,41 @@
-# Draft Alignment Email to Andrea
+# Draft Alignment Email to Andrya
+
+## Final Work Product Preview (ready to send on August 11)
+
+Subject: GSoC 2026 final work product preview
+
+Hi Andrya,
+
+I am preparing my GSoC 2026 Final Work Submission, which opens on August 17
+and is due on August 24 at 18:00 UTC.
+
+The core project is now implemented and passing its final verification. It
+includes the participant experiment flow, three cue-source conditions, the
+transportation and drone operations task, trust-calibration event logging,
+researcher/debug tools, JSON/CSV export, accessibility improvements, and
+reproducible pilot-data QA.
+
+The public work-product report is available here:
+
+https://github.com/RunchuWu/humanai-trust-engine/blob/main/docs/final-work-product.md
+
+The report clearly separates the completed runtime implementation from the HSF
+metadata, manipulation-check, expanded-stimulus, and real-participant pilot
+work that still depends on research-team confirmation.
+
+Could you please let me know by August 15 if you see any blocking issue with
+the submission or any claim that should be revised? If I do not hear back, I
+will keep the research-dependent items documented as future work and complete
+the Dashboard submission by August 22 to leave a safety margin before the
+official deadline.
+
+I am copying the organization administrator so the organization also has the
+final project status and preview link.
+
+Best,
+Runchu
+
+---
 
 ## Follow-up Email Draft (not sent)
 
@@ -36,7 +73,7 @@ Runchu
 
 Subject: Week 7-12 HSF alignment questions and controlled-stimulus direction
 
-Hi Andrea,
+Hi Andrya,
 
 I reviewed the current project state against the Week 7-12 HSF alignment plan and wanted to confirm the research direction before making larger implementation changes.
 

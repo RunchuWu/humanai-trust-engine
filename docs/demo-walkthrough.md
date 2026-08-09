@@ -216,7 +216,7 @@ What this demo does not claim:
 
 Remaining before final HSF pilot:
 
-- Andrea confirms target format and HSF dimensions.
+- Andrya confirms target format and HSF dimensions.
 - Research team approves cue definitions and stimuli.
 - Runtime schema/debug/export add confirmed HSF metadata.
 - Manipulation checks are finalized and implemented if approved.

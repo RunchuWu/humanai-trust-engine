@@ -18,7 +18,7 @@ Current runtime events do not yet support:
 
 ## Recommended First Implementation
 
-For the first internal HSF pilot, use an end-of-task short-form block unless Andrea requests trial-level checks.
+For the first internal HSF pilot, use an end-of-task short-form block unless Andrya requests trial-level checks.
 
 Recommended short-form items from `docs/hsf-manipulation-checks.md`:
 

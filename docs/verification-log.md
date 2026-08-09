@@ -2,6 +2,39 @@
 
 This log records verification commands run during Week 7-12 work.
 
+## Final Public Work Product and Internal Walkthrough — 2026-08-10 CST
+
+Changes verified:
+
+- Prepared the public GSoC work-product report, README entry point, MIT License,
+  and three generated screenshots with no real-participant data.
+- Completed the full onboarding and ten-trial participant flow in `user_set`.
+- Completed ten main-task decisions in `control` and `industry_set` using
+  separate generated participant assignments.
+- Verified previous-trial review and two answer revisions.
+- Verified live JSON/CSV exports and latest-decision QA for the isolated
+  `gsoc-final-walkthrough` study run.
+
+Runtime walkthrough results:
+
+| Check | Result | Notes |
+| --- | --- | --- |
+| Participant onboarding | Passed | Welcome, consent, instructions, comprehension, user-set configuration, and practice |
+| Three runtime conditions | Passed | 10 latest decisions each for control, industry-set, and user-set |
+| Cue presentation | Passed | Control hid configured cues; Atlas and Nova bundles rendered in their intended conditions |
+| Trial stage navigation | Passed | Situation, Evidence, Recommendation, backward navigation, and direct stage review |
+| Answer revision | Passed | Trials 9 and 10 were revised; latest-only reduction retained one decision per trial |
+| Runtime smoke | Passed | Root, participant/debug pages, run API, preview API, and JSON/CSV exports |
+| Live JSON validation | Passed with expected review warnings | 63 events, 32 raw decisions, two intentional resubmissions |
+| Live CSV validation | Passed with expected review warnings | Same event and decision counts as JSON |
+| Pilot-data QA | Passed with review | 3 complete decision sessions, 30 latest decisions, 0 incomplete sessions |
+| Final verification chain | Passed | Lint, TypeScript, 43 Markdown files/779 references, stimulus validation, synthetic fixture QA, export summary, and production build |
+| Production build | Passed | Next.js optimized build completed and generated all application routes |
+
+This walkthrough is internal implementation QA with generated identifiers, not
+a research-participant pilot. Detailed observations are in
+`docs/internal-pilot-notes.md`.
+
 ## Direct Trial Stage Navigation - 2026-07-20 CST
 
 Change verified:

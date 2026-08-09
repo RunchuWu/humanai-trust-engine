@@ -44,7 +44,7 @@ Source reviewed: `src/lib/trials.ts`.
 
 | Gap | Why it matters | Likely next action |
 | --- | --- | --- |
-| No explicit `cue_condition_id` | Current conditions are cue-source conditions, not confirmed HSF conditions | Add after Andrea confirms the condition structure |
+| No explicit `cue_condition_id` | Current conditions are cue-source conditions, not confirmed HSF conditions | Add after Andrya confirms the condition structure |
 | No explicit HSF dimension metadata | HSF dimensions are currently inferred from cue modules | Add `hsf_dimensions` once dimensions and names are approved |
 | Confidence is not a clean factor | Values are shown only when the confidence cue is active, and all values are moderate/high | Define modest vs confident signal levels independent of correctness |
 | Humanlike presentation is bundled | Name, avatar, warmth, personality, and confidence are often active together | Decide whether to isolate dimensions or use bundled high/low humanlike presentation |
@@ -74,7 +74,7 @@ They are not yet strong enough for:
 
 ## Recommended Next Step
 
-After Andrea confirms the participant-facing format and target HSF dimensions, choose one of these paths:
+After Andrya confirms the participant-facing format and target HSF dimensions, choose one of these paths:
 
 1. Minimal pilot path: keep the 10 current trials, add HSF metadata, and add manipulation checks.
 2. Balanced HSF matrix path: expand to enough trials to fill the approved HSF matrix cells.

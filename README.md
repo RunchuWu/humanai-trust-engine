@@ -2,9 +2,17 @@
 
 Official Google Summer of Code 2026 project for ISSR / Human-AI Organization.
 
+> **GSoC 2026 final work product:**
+> [Read the public project report](docs/final-work-product.md), including the
+> completed deliverables, code evidence, verification results, limitations, and
+> continuation path.
+
 This repository contains a modular web-based experimentation platform for studying trust calibration in AI-assisted decision-making. The current task domain is transportation and drone operations: participants supervise an AI recommendation in an operations scenario, then decide whether to follow or override it. The platform is designed to support controlled manipulation of humanlike and authority-signaling AI interface cues, behavioral event logging, and reproducible export for downstream analysis.
 
-The project has moved beyond the initial screening prototype. The current codebase is the working GSoC project foundation for the Week 1-2 milestone: deliberate participant flow, stable participant/condition assignment, staged trial presentation, and researcher debug tooling.
+The project has moved beyond the initial screening prototype into a complete,
+documented GSoC work product: a controlled operations decision task with
+configurable AI cues, reproducible event export, researcher tooling,
+accessibility improvements, and deterministic data-quality checks.
 
 ## Current Capabilities
 
@@ -77,14 +85,29 @@ Completed work:
 - Centralized assignment logic in `src/lib/conditions.ts`
 - Week 1-2 planning, run, and event-schema documentation
 
-### In Progress: Weeks 3-5
+### Completed: Weeks 3-5
 
-The current phase implements Andrya's revised direction:
+The Week 3-5 phase implemented Andrya's revised direction:
 
 - migrate from job screening to transportation/drone operations
 - model condition assignment as cue source plus modular cue types
 - add a user-set agent configuration screen
 - preserve trust-calibration logging fields while adding cue metadata
+
+### Completed GSoC Scope: Weeks 7-12
+
+The final phase aligned the implementation and handoff materials with the HSF
+manuscript direction while preserving the approved controlled runtime:
+
+- map interface-level humanlike cues to HSF dimensions: Appearance, Communication, Behavior, Relationality, and Agency
+- design and validate a fixed, reviewable 16-record stimulus bank while keeping six unapproved candidates out of runtime
+- document the HSF runtime metadata, manipulation-check, and condition-design implementation path
+- add repeatable synthetic pilot-data QA, export validation, and analysis summaries
+- complete the participant UI, accessibility, researcher walkthrough, final verification, and public handoff materials
+
+Research-dependent HSF runtime metadata, manipulation checks, candidate stimulus
+approval, and a formal real-participant pilot remain clearly documented future
+work rather than completed claims.
 
 ## Condition Logic
 
@@ -186,6 +209,8 @@ Researcher preview endpoints:
 - `src/lib/schema.ts`: event typing + validation
 - `docs/week-1-2-plan.md`: Week 1-2 implementation plan and acceptance criteria
 - `docs/week-3-5-plan.md`: revised Week 3-5 implementation plan
+- `docs/week-7-12-plan.md`: midterm-to-final HSF alignment and implementation plan
+- `docs/final-work-product.md`: public GSoC 2026 final report and work-product index
 - `docs/how-to-run.md`: setup, local URLs, and debug-mode guide
 - `docs/event-schema.md`: event schema and export reference
 
@@ -249,3 +274,7 @@ curl -I 'http://localhost:3000/task?debug=1'
   "agent_avatar_label": "NV"
 }
 ```
+
+## License
+
+This project is available under the [MIT License](LICENSE).

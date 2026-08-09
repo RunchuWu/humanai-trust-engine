@@ -10,7 +10,7 @@ Status labels:
   controlled fixed-stimulus path.
 - Draft complete: the planned artifact exists as a review draft, but research
   approval or final runtime integration is still pending.
-- Deferred: intentionally not implemented until Andrea or the research team
+- Deferred: intentionally not implemented until Andrya or the research team
   confirms the research design.
 - Partial: some evidence exists, but the item is not fully satisfied.
 - Not done: no current repository evidence proves completion.
@@ -22,8 +22,8 @@ Status labels:
 | Review HSF manuscript, experimental-design note, and recentered method draft | `docs/week-7-12-progress.md` records that these standalone source materials are not present locally | Partial | Review those source documents if they are provided |
 | Map current cue modules to HSF dimensions | `docs/hsf-cue-interface-note.md`, `docs/hsf-cue-definitions.md` | Draft complete | Replace or revise definitions after research-team review |
 | Identify existing cues and missing UI/trial-data fields | `docs/hsf-cue-interface-note.md`, `docs/condition-logic.md`, `docs/stimulus-schema.md` | Complete for current-state audit | Recheck after any runtime HSF implementation |
-| Send Andrea alignment questions | `docs/andrea-alignment-email.md` | Draft complete | Send only after user approval and recipient details are available |
-| Draft short cue-to-interface note | `docs/hsf-cue-interface-note.md` | Complete as review note | Update after Andrea feedback |
+| Send Andrya alignment questions | `docs/andrea-alignment-email.md` | Draft complete | Send only after user approval and recipient details are available |
+| Draft short cue-to-interface note | `docs/hsf-cue-interface-note.md` | Complete as review note | Update after Andrya feedback |
 
 Deliverables and acceptance criteria:
 
@@ -39,7 +39,7 @@ Deliverables and acceptance criteria:
 
 | Plan item | Current evidence | Status | Remaining action |
 | --- | --- | --- | --- |
-| Confirm target participant-facing format after Andrea feedback | `docs/research-decision-tracker.md`, `docs/participant-format-options.md` | Deferred | Update tracker after Andrea/research-team response |
+| Confirm target participant-facing format after Andrya feedback | `docs/research-decision-tracker.md`, `docs/participant-format-options.md` | Deferred | Update tracker after Andrya/research-team response |
 | Draft HSF-aligned stimulus data model | `data/stimuli/operations-stimulus-bank.json`, `docs/stimulus-dataset-workflow.md`, `docs/hsf-stimulus-design.md`, `docs/stimulus-schema.md` | Structured review model complete; HSF extension draft complete | Convert approved HSF fields to runtime after matrix confirmation |
 | Specify required trial fields | `docs/stimulus-dataset-workflow.md`, `docs/stimulus-schema.md`, `docs/hsf-stimulus-design.md`, `docs/stimulus-approval-worksheet.md` | Complete for direction-independent bank; HSF fields remain draft | Add approved HSF fields to runtime only after confirmation |
 | Create initial stimulus matrix | `docs/hsf-stimulus-design.md`, `docs/hsf-stimulus-matrix-template.md` | Draft complete | Select final matrix scope and populate approved cells |
@@ -124,9 +124,9 @@ Deliverables and acceptance criteria:
 
 | Plan item | Current evidence | Status | Remaining action |
 | --- | --- | --- | --- |
-| Finalize implementation and remove stale wording | `docs/final-submission-checklist.md`, `docs/week-7-12-readiness-audit.md`, `docs/final-report-draft.md`, `docs/demo-walkthrough.md` | Current-state final packaging complete; HSF runtime deferred | Refresh after confirmed HSF runtime implementation |
+| Finalize implementation and remove stale wording | `docs/final-submission-checklist.md`, `docs/week-7-12-readiness-audit.md`, `docs/final-work-product.md`, `docs/demo-walkthrough.md` | Current-state final packaging complete; HSF runtime deferred | Refresh after confirmed HSF runtime implementation |
 | Run verification | `docs/verification-log.md`, `scripts/check-doc-references.mjs`, `npm run verify:final` | Complete for current state | Re-run after any further runtime or documentation changes |
-| Prepare final report | `docs/final-report-draft.md` | Current-state final draft complete | Refresh after confirmed HSF runtime implementation or before formal submission |
+| Prepare final report | `docs/final-work-product.md` | Current-state final draft complete | Refresh after confirmed HSF runtime implementation or before formal submission |
 | Prepare final demo walkthrough | `docs/demo-walkthrough.md` | Current-state demo script complete | Refresh after confirmed HSF runtime implementation or before formal recording |
 
 Deliverables and acceptance criteria:
@@ -134,7 +134,7 @@ Deliverables and acceptance criteria:
 | Requirement | Evidence | Status |
 | --- | --- | --- |
 | Final repo state | Current repository plus `npm run verify:final`, runtime smoke logs, and `npm run smoke:runtime` script for repeatable reruns | Current-state verified; final HSF runtime deferred |
-| Final report | `docs/final-report-draft.md` | Current-state final draft complete |
+| Final report | `docs/final-work-product.md` | Current-state final draft complete |
 | Demo walkthrough | `docs/demo-walkthrough.md` | Current-state demo script complete |
 | Project clearly supports controlled HSF cue-manipulation experiment | Current app supports cue-source experiment; HSF mapping docs exist | Partial until approved HSF metadata is runtime implemented or final scope is explicitly current-state |
 | Remaining open questions documented as future research decisions | `docs/research-decision-tracker.md`, `docs/week-7-12-readiness-audit.md`, `docs/final-submission-checklist.md` | Complete |

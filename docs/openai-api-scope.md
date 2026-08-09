@@ -4,7 +4,7 @@ This document defines the OpenAI API scope for the Week 7-12 HSF phase.
 
 ## Current Position
 
-Do not implement a live participant-facing OpenAI API path unless Andrea confirms that the study should become an interactive AI collaboration experience.
+Do not implement a live participant-facing OpenAI API path unless Andrya confirms that the study should become an interactive AI collaboration experience.
 
 For the current controlled decision-based experiment, participant-facing stimuli should remain fixed, reviewed, and committed to the repository before use.
 

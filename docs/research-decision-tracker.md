@@ -1,6 +1,6 @@
 # Research Decision Tracker
 
-This tracker captures research decisions that must be confirmed before Week 9 runtime HSF implementation. It should be updated after Andrea or the research team responds.
+This tracker captures research decisions that must be confirmed before Week 9 runtime HSF implementation. It should be updated after Andrya or the research team responds.
 
 ## Status Legend
 
@@ -118,7 +118,7 @@ Decision support:
 
 Options:
 
-- Andrea reviews final stimuli.
+- Andrya reviews final stimuli.
 - Research team jointly reviews final stimuli.
 - A designated reviewer approves each stimulus before implementation.
 

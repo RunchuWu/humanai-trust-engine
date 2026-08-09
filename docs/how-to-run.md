@@ -80,7 +80,7 @@ Use these documents for the Week 7-12 HSF review path:
 - `docs/hsf-implementation-handoff.md`
 - `docs/researcher-walkthrough.md`
 
-After Andrea confirms the participant-facing format and priority HSF dimensions,
+After Andrya confirms the participant-facing format and priority HSF dimensions,
 the runtime implementation should follow `docs/hsf-implementation-handoff.md`.
 
 ## Debug Mode

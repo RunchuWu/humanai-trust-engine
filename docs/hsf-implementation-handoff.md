@@ -2,7 +2,7 @@
 
 This document prepares the Week 9 implementation work without changing runtime behavior before the research format is confirmed.
 
-Status: implementation deferred until Andrea confirms the participant-facing format, priority HSF dimensions, and approved cue condition structure.
+Status: implementation deferred until Andrya confirms the participant-facing format, priority HSF dimensions, and approved cue condition structure.
 
 ## Decision Gates Before Code Changes
 

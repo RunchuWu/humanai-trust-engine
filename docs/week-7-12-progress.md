@@ -11,8 +11,8 @@ Status: Complete
 What was done:
 
 - Read `docs/week-7-12-plan.md`.
-- Identified the main direction: keep controlled fixed stimuli unless Andrea confirms an interactive AI collaboration study.
-- Identified Week 7 as the immediate phase: research alignment, HSF cue mapping, Andrea questions, and a cue-to-interface note.
+- Identified the main direction: keep controlled fixed stimuli unless Andrya confirms an interactive AI collaboration study.
+- Identified Week 7 as the immediate phase: research alignment, HSF cue mapping, Andrya questions, and a cue-to-interface note.
 
 Output:
 
@@ -66,7 +66,7 @@ Output:
 
 - Added implementation gap table in `docs/hsf-cue-interface-note.md`.
 
-### Task: Draft Andrea alignment email
+### Task: Draft Andrya alignment email
 
 Status: Drafted, not sent
 
@@ -80,7 +80,7 @@ Output:
 
 Reason not sent:
 
-- Andrea's email address and explicit approval to send are not available in this session.
+- Andrya's email address and explicit approval to send are not available in this session.
 
 ### Task: Draft cue-to-interface note
 
@@ -97,7 +97,7 @@ Output:
 
 ### Task: Draft Week 8 HSF stimulus design
 
-Status: Drafted, pending Andrea confirmation
+Status: Drafted, pending Andrya confirmation
 
 What was done:
 
@@ -112,7 +112,7 @@ Output:
 
 Reason still pending:
 
-- The participant-facing format and priority HSF dimensions still need Andrea's confirmation before implementation changes should begin.
+- The participant-facing format and priority HSF dimensions still need Andrya's confirmation before implementation changes should begin.
 
 ### Task: Audit current operations trials for HSF readiness
 
@@ -159,7 +159,7 @@ What was done:
 
 - Reviewed code touchpoints for cue configuration, trials, event schema, CSV export, participant flow, and debug mode.
 - Drafted a Week 9 handoff that lists decision gates, candidate HSF types, proposed condition/trial/event fields, implementation sequence, debug requirements, export requirements, and verification checks.
-- Explicitly marked runtime implementation as deferred until Andrea confirms the participant-facing format and approved HSF condition structure.
+- Explicitly marked runtime implementation as deferred until Andrya confirms the participant-facing format and approved HSF condition structure.
 
 Output:
 
@@ -191,7 +191,7 @@ What was done:
 
 Output:
 
-- Added `docs/final-report-draft.md`.
+- Added `docs/final-work-product.md`.
 - Added `docs/demo-walkthrough.md`.
 
 ### Task: Run current verification pass
@@ -328,7 +328,7 @@ Output:
 
 - Added `docs/openai-api-scope.md`.
 - Updated `docs/hsf-docs-index.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/research-decision-tracker.md`.
 
 ### Task: Prepare research-team review packet
@@ -338,7 +338,7 @@ Status: Complete as a review packet
 What was done:
 
 - Created a one-page review packet that lists the recommended review order, decisions needed before Week 9 implementation, current evidence snapshot, and recommended outcomes for the controlled fixed-stimulus path versus interactive AI collaboration path.
-- Updated the Andrea alignment email to point to the review packet, decision tracker, and implementation backlog.
+- Updated the Andrya alignment email to point to the review packet, decision tracker, and implementation backlog.
 - Linked the review packet from the HSF documentation index.
 
 Output:
@@ -396,7 +396,7 @@ Output:
 
 - Added `docs/analysis-plan.md`.
 - Updated `docs/hsf-docs-index.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 
 ### Task: Audit UI salience and reading load
 
@@ -492,7 +492,7 @@ What was done:
 Output:
 
 - Added `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/hsf-docs-index.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
@@ -526,7 +526,7 @@ What was done:
 
 Output:
 
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 
 ### Task: Run runtime smoke check
@@ -545,7 +545,7 @@ What was done:
 Output:
 
 - Updated `docs/verification-log.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 
 ### Task: Refresh research-team review materials
@@ -555,9 +555,9 @@ Status: Complete as current-state review updates
 What was done:
 
 - Updated the research-team review packet with the latest candidate expansion, UI salience, manipulation-check implementation, analysis, export QA, verification, and final submission evidence.
-- Updated the Andrea alignment email to point to the current review and QA documents.
+- Updated the Andrya alignment email to point to the current review and QA documents.
 - Added decision-support links to the research decision tracker so each open decision points to the relevant supporting docs.
-- Kept all runtime HSF implementation work gated on Andrea/research-team confirmation.
+- Kept all runtime HSF implementation work gated on Andrya/research-team confirmation.
 
 Output:
 
@@ -581,7 +581,7 @@ Output:
 
 - Updated `next.config.ts`.
 - Updated `docs/verification-log.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/final-submission-checklist.md`.
 
 ### Task: Verify dev server after Turbopack root config
@@ -624,7 +624,7 @@ What was done:
 
 - Created a dedicated stimulus schema document for the current runtime `Trial` fields in `src/lib/trials.ts`.
 - Documented participant-facing status, export/logging role, derived values, and current schema limits.
-- Added a proposed HSF metadata extension path gated on Andrea/research-team confirmation.
+- Added a proposed HSF metadata extension path gated on Andrya/research-team confirmation.
 - Linked the schema reference from the HSF docs index, operations stimulus catalog, HSF stimulus design, run instructions, and readiness audit.
 
 Output:
@@ -677,7 +677,7 @@ Output:
 - Updated `docs/export-qa-checklist.md`.
 - Updated `docs/event-schema.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/verification-log.md`.
@@ -709,7 +709,7 @@ Output:
 - Updated `docs/export-qa-checklist.md`.
 - Updated `docs/event-schema.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/verification-log.md`.
@@ -771,7 +771,7 @@ Output:
 - Updated `docs/how-to-run.md`.
 - Updated `docs/export-qa-checklist.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/verification-log.md`.
@@ -810,7 +810,7 @@ Output:
 - Updated `docs/export-qa-checklist.md`.
 - Updated `docs/event-schema.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/verification-log.md`.
@@ -847,7 +847,7 @@ Output:
 - Updated `docs/researcher-walkthrough.md`.
 - Updated `docs/how-to-run.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 
 ### Task: Refactor export parser utilities
 
@@ -898,7 +898,7 @@ Output:
 - Updated `docs/hsf-docs-index.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 
 ### Task: Add export row-count assertions
 
@@ -923,7 +923,7 @@ Output:
 - Updated `docs/how-to-run.md`.
 - Updated `docs/researcher-walkthrough.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/hsf-docs-index.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
@@ -964,7 +964,7 @@ Output:
 - Updated `docs/hsf-implementation-handoff.md`.
 - Updated `docs/how-to-run.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/week-7-12-traceability-matrix.md`.
@@ -989,7 +989,7 @@ Status: Complete as current-state final packaging
 What was done:
 
 - Replaced the final report's `Final Status Placeholder` section with a concrete current-state final status section.
-- Added the current implementation summary, verification summary, local demo path, known limitations, and future work after Andrea/research-team decisions.
+- Added the current implementation summary, verification summary, local demo path, known limitations, and future work after Andrya/research-team decisions.
 - Kept the report explicit that runtime HSF metadata and manipulation-check logging are specified but not implemented.
 - Updated the final submission checklist so it no longer describes the report's final status content as empty; it now says those sections should be refreshed if runtime HSF work or research decisions change.
 - Updated the traceability matrix so the final report is marked as a current-state final draft rather than an unfilled draft.
@@ -997,7 +997,7 @@ What was done:
 
 Output:
 
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/final-submission-checklist.md`.
 - Updated `docs/week-7-12-traceability-matrix.md`.
 - Updated `docs/verification-log.md`.
@@ -1063,7 +1063,7 @@ What was done:
 Output:
 
 - Updated `docs/verification-log.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/final-submission-checklist.md`.
 
 Result:
@@ -1093,7 +1093,7 @@ What was done:
 Output:
 
 - Updated `docs/verification-log.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 
@@ -1130,7 +1130,7 @@ Output:
 - Updated `docs/week-7-12-traceability-matrix.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/verification-log.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 
 Result:
 
@@ -1153,7 +1153,7 @@ Output:
 
 - Updated `package.json`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/how-to-run.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
@@ -1190,7 +1190,7 @@ Output:
 - Updated `package.json`.
 - Updated `docs/how-to-run.md`.
 - Updated `docs/final-submission-checklist.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/demo-walkthrough.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/week-7-12-traceability-matrix.md`.
@@ -1233,7 +1233,7 @@ Output:
 - Updated `docs/hsf-docs-index.md`.
 - Updated `docs/week-7-12-readiness-audit.md`.
 - Updated `docs/week-7-12-traceability-matrix.md`.
-- Updated `docs/final-report-draft.md`.
+- Updated `docs/final-work-product.md`.
 - Updated `docs/researcher-walkthrough.md`.
 
 Initial verification:

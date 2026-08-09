@@ -88,7 +88,7 @@ For a condition-by-stimulus view of the current runtime behavior, see
 
 ## Post-Confirmation Implementation Target
 
-After Andrea confirms the HSF condition structure, update condition logic only as needed:
+After Andrya confirms the HSF condition structure, update condition logic only as needed:
 
 1. Preserve existing `condition_id` compatibility unless migration is explicitly approved.
 2. Add approved HSF metadata to condition config.

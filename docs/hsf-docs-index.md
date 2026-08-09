@@ -16,7 +16,7 @@ Do not treat the HSF metadata fields listed in planning docs as current exported
 | `docs/week-7-12-progress.md` | Running record of completed tasks | Active log |
 | `docs/week-7-12-traceability-matrix.md` | Requirement-by-requirement evidence matrix for the Week 7-12 plan | Current-state audit |
 | `docs/andrea-alignment-email.md` | Draft email for confirming research direction | Draft, not sent |
-| `docs/research-team-review-packet.md` | One-page packet for Andrea/research-team review before implementation | Ready for review |
+| `docs/research-team-review-packet.md` | One-page packet for Andrya/research-team review before implementation | Ready for review |
 | `docs/research-decision-tracker.md` | Tracks research decisions required before Week 9 implementation | Open tracker |
 | `docs/participant-format-options.md` | Compares controlled task, survey/vignette, and interactive collaboration paths | Decision support for RD-01 |
 | `docs/openai-api-scope.md` | Defines why API use is deferred or researcher-facing for the fixed-stimulus path | Current scope note |
@@ -56,7 +56,7 @@ Do not treat the HSF metadata fields listed in planning docs as current exported
 
 | Document | Purpose | Status |
 | --- | --- | --- |
-| `docs/final-report-draft.md` | Draft final GSoC report structure | Draft pending final implementation |
+| `docs/final-work-product.md` | Public GSoC work-product report and evidence index | Final artifact prepared; refresh verification before submission |
 | `docs/demo-walkthrough.md` | Draft demo script | Draft pending final implementation |
 | `docs/final-submission-checklist.md` | Week 12 final packaging, verification, demo, and known-limitations checklist | Ready for final submission review |
 

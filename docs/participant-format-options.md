@@ -4,7 +4,7 @@ This document supports RD-01 in `docs/research-decision-tracker.md`: deciding wh
 
 ## Recommendation
 
-Keep the next version as a controlled decision-based task with fixed, reviewable stimuli unless Andrea confirms that the research question is specifically about real-time AI collaboration.
+Keep the next version as a controlled decision-based task with fixed, reviewable stimuli unless Andrya confirms that the research question is specifically about real-time AI collaboration.
 
 ## Option Comparison
 
@@ -112,4 +112,4 @@ Choose interactive AI collaboration if:
 
 ## Current Recommendation for Week 9
 
-Proceed with the controlled decision task path after Andrea confirms RD-01. This keeps the current implementation surface stable and focuses Week 9 on HSF metadata, debug visibility, export fields, and approved manipulation checks.
+Proceed with the controlled decision task path after Andrya confirms RD-01. This keeps the current implementation surface stable and focuses Week 9 on HSF metadata, debug visibility, export fields, and approved manipulation checks.

@@ -2,7 +2,7 @@
 
 This draft defines how controlled HSF-aligned stimuli can be represented if the participant-facing study remains a decision-based experiment with fixed AI recommendations.
 
-Status: draft pending Andrea's confirmation.
+Status: draft pending Andrya's confirmation.
 
 ## Working Format
 
@@ -95,7 +95,7 @@ Every candidate stimulus should include:
 
 ## Initial HSF Stimulus Matrix
 
-This matrix is a draft structure for lead HSF tests. It can be populated with specific operations trials after Andrea confirms which dimensions matter most.
+This matrix is a draft structure for lead HSF tests. It can be populated with specific operations trials after Andrya confirms which dimensions matter most.
 
 Use `docs/hsf-stimulus-matrix-template.md` when assigning candidate trials to matrix cells.
 

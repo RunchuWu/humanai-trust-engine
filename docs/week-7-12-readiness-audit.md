@@ -7,20 +7,26 @@ For the requirement-by-requirement evidence map, see
 
 ## Summary
 
-Current status: substantial planning, documentation, and verification work is complete. Runtime HSF schema/debug/export implementation is intentionally deferred until Andrea confirms the participant-facing format and priority HSF dimensions.
+Current status: the controlled fixed-stimulus GSoC work product, public report,
+documentation, deterministic QA, and final internal walkthrough are complete.
+Runtime HSF schema/debug/export implementation is intentionally deferred until
+Andrya or the research team confirms the participant-facing format and priority
+HSF dimensions.
 
-The goal is not complete yet because Week 9-12 implementation and final pilot packaging depend on research decisions that are still open.
+The current GSoC implementation scope is complete and packaged. A future HSF
+runtime and real-participant pilot remain dependent on research decisions that
+are still open.
 
 ## Week-by-Week Status
 
 | Week | Plan goal | Current status | Evidence | Remaining work |
 | --- | --- | --- | --- | --- |
-| Week 7 | Research alignment and cue mapping | Mostly complete as draft research-alignment work | `docs/week-7-12-plan.md`, `docs/hsf-cue-interface-note.md`, `docs/andrea-alignment-email.md` | Send/confirm Andrea questions; review missing HSF manuscript/design/method materials if provided |
+| Week 7 | Research alignment and cue mapping | Mostly complete as draft research-alignment work | `docs/week-7-12-plan.md`, `docs/hsf-cue-interface-note.md`, `docs/andrea-alignment-email.md` | Send/confirm Andrya questions; review missing HSF manuscript/design/method materials if provided |
 | Week 8 | Dataset and stimulus design | Structured review bank and draft design complete, pending research confirmation | `data/stimuli/operations-stimulus-bank.json`, `docs/stimulus-dataset-workflow.md`, `docs/hsf-stimulus-design.md`, `docs/hsf-current-trial-readiness.md`, `docs/hsf-manipulation-checks.md` | Select final matrix scope; approve stimuli; decide manipulation-check placement |
 | Week 9 | Implement confirmed cue structure | Pre-implementation handoff complete; runtime not changed | `docs/hsf-implementation-handoff.md` | Add confirmed HSF metadata to cue config, trials, schema, event payloads, exports, and debug panel |
 | Week 10 | Pilot readiness | Partially prepared through audits, candidate expansion bank, manipulation-check draft, and manipulation-check implementation spec | `docs/hsf-current-trial-readiness.md`, `docs/candidate-trial-expansion-bank.md`, `docs/hsf-manipulation-checks.md`, `docs/manipulation-check-implementation-spec.md`, `docs/ui-salience-reading-load-audit.md`, `docs/current-condition-stimulus-matrix.md`, `docs/researcher-walkthrough.md` | Approve final stimulus set and manipulation-check placement if required; run full participant and debug pilot after implementation |
 | Week 11 | Pilot revision and documentation | Current-state docs prepared | `docs/how-to-run.md`, `docs/event-schema.md`, `docs/stimulus-schema.md`, `docs/current-condition-stimulus-matrix.md`, `docs/operations-trial-stimuli.md`, `docs/researcher-walkthrough.md`, `docs/export-qa-checklist.md`, `docs/hsf-docs-index.md` | Revise docs after pilot feedback and confirmed runtime implementation |
-| Week 12 | Final report and demo | Current-state packaging complete; current verification and runtime smoke checks passed | `docs/final-report-draft.md`, `docs/demo-walkthrough.md`, `docs/final-submission-checklist.md`, `docs/verification-log.md` | Refresh final report/demo after confirmed HSF runtime implementation; re-run final verification after any runtime changes |
+| Week 12 | Final report and demo | Current-state packaging complete; current verification and runtime smoke checks passed | `docs/final-work-product.md`, `docs/demo-walkthrough.md`, `docs/final-submission-checklist.md`, `docs/verification-log.md` | Refresh final report/demo after confirmed HSF runtime implementation; re-run final verification after any runtime changes |
 
 ## Acceptance Criteria Audit
 
@@ -93,4 +99,4 @@ The next implementation step requires research confirmation:
 
 ## Recommended Next Action
 
-Send or review `docs/andrea-alignment-email.md` with Andrea and update `docs/research-decision-tracker.md` with the responses. After the research decisions are confirmed, proceed with `docs/hsf-implementation-handoff.md` for runtime schema/debug/export updates.
+Send or review `docs/andrea-alignment-email.md` with Andrya and update `docs/research-decision-tracker.md` with the responses. After the research decisions are confirmed, proceed with `docs/hsf-implementation-handoff.md` for runtime schema/debug/export updates.

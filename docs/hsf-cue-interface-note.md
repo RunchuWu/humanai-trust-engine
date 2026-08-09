@@ -76,7 +76,7 @@ HSF-aligned analysis would benefit from adding explicit metadata instead of infe
 
 ## Implementation Implications
 
-Do not replace the current condition system until Andrea confirms the participant-facing format and target HSF dimensions. The current architecture already separates task flow, trial content, cue configuration, and event export, so the next implementation step can be incremental:
+Do not replace the current condition system until Andrya confirms the participant-facing format and target HSF dimensions. The current architecture already separates task flow, trial content, cue configuration, and event export, so the next implementation step can be incremental:
 
 1. Keep fixed, reviewable participant-facing stimuli unless the research design changes.
 2. Add HSF metadata to cue and trial configuration after cue definitions are confirmed.

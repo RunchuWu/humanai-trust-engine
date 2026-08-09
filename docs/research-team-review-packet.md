@@ -1,12 +1,12 @@
 # Research Team Review Packet
 
-This packet summarizes what Andrea or the research team should review before Week 9 implementation begins.
+This packet summarizes what Andrya or the research team should review before Week 9 implementation begins.
 
 ## Review Goal
 
 Confirm the research design decisions needed to move from draft HSF planning to runtime implementation.
 
-The current recommendation is to keep a controlled decision-based experiment with fixed, reviewable stimuli unless Andrea confirms a shift toward interactive AI collaboration.
+The current recommendation is to keep a controlled decision-based experiment with fixed, reviewable stimuli unless Andrya confirms a shift toward interactive AI collaboration.
 
 ## Review Order
 

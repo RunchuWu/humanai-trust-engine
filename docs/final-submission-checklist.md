@@ -2,6 +2,10 @@
 
 This checklist packages the Week 12 deliverables from `docs/week-7-12-plan.md`. It separates current evidence from final updates that must happen after research confirmation or any runtime implementation changes.
 
+Planned public submission URL:
+
+`https://github.com/RunchuWu/humanai-trust-engine/blob/main/docs/final-work-product.md`
+
 ## Submission Scope
 
 The final submission should make these points clear:
@@ -17,15 +21,15 @@ The final submission should make these points clear:
 | Deliverable | Current evidence | Final action |
 | --- | --- | --- |
 | Final repo state | Current app, docs, final verification refresh, and runtime smoke refresh | Re-run verification after any further edits |
-| Final report | `docs/final-report-draft.md` has current-state implementation status, verification results, demo path, limitations, and future work | Refresh after confirmed HSF runtime changes or before formal submission |
+| Final report | `docs/final-work-product.md` is the public work-product entry page with implementation status, evidence links, verification, limitations, and future work | Refresh final verification date and tag link immediately before formal submission |
 | Demo walkthrough | `docs/demo-walkthrough.md` | Current-state script ready; refresh after runtime HSF changes |
 | Verification record | `docs/verification-log.md` includes latest final verification and runtime smoke refresh | Refresh after any further verification run |
 | HSF documentation map | `docs/hsf-docs-index.md`; `npm run check:docs` passes | Refresh if new docs are added |
 | Requirement traceability | `docs/week-7-12-traceability-matrix.md` maps current evidence and deferred HSF runtime work | Refresh after research decisions or runtime changes |
-| Research decisions | `docs/research-decision-tracker.md` records open and recommended decisions | Update with Andrea/research-team responses if received |
+| Research decisions | `docs/research-decision-tracker.md` records open and recommended decisions | Update with Andrya/research-team responses if received |
 | Export reproducibility | `docs/export-qa-checklist.md`, `scripts/validate-export.mjs`, and latest validation results | Run a fresh pilot dry run if participant-mode pilot data is required |
 | Export analysis workflow | `docs/export-analysis-workflow.md` reflects current validation, filter assertion, row-count, and summary commands | Refresh after runtime export fields change |
-| Internal pilot notes | `docs/internal-pilot-notes.md` template exists; filled pilot notes are not yet present | Fill after an internal pilot, or keep marked as not yet run |
+| Internal walkthrough notes | `docs/internal-pilot-notes.md` records the 2026-08-10 three-condition browser-assisted QA run | Keep explicitly classified as implementation QA, not a real-participant pilot |
 
 ## Current Submission Status
 
@@ -33,12 +37,12 @@ Current-state package status:
 
 - Report, demo, traceability, verification, export QA, and HSF planning docs are current-state ready.
 - Lint, TypeScript, documentation reference check, export validation, export summary, production build, and runtime smoke checks have current passing evidence. `npm run smoke:runtime` is available for scriptable reruns when Node can access localhost.
-- Explicit HSF runtime metadata, manipulation-check UI/logging, approved expanded stimuli, and filled internal pilot notes remain future work because they depend on research-team decisions or an actual pilot run.
+- Explicit HSF runtime metadata, manipulation-check UI/logging, approved expanded stimuli, and a real-participant pilot remain future work because they depend on research-team decisions or study execution.
 - The package should not be described as final HSF runtime implementation until those research decisions are confirmed and implemented.
 
 ## Final Report Checklist
 
-Before final submission, ensure `docs/final-report-draft.md` includes:
+Before final submission, ensure `docs/final-work-product.md` includes:
 
 - Project summary.
 - Completed milestones.
@@ -61,7 +65,7 @@ refreshed if runtime HSF work or research decisions change:
 - Final verification command results.
 - Final demo URL or local run instructions.
 - Known limitations after the last implementation state.
-- Future work after Andrea/research-team decisions.
+- Future work after Andrya/research-team decisions.
 
 ## Demo Checklist
 
@@ -157,3 +161,21 @@ Do not mark the Week 7-12 goal complete unless:
 4. Any completed runtime changes are documented in event schema, how-to-run, and walkthrough docs.
 5. Any unimplemented HSF/pilot items are clearly labeled as open research decisions or future work.
 6. `docs/week-7-12-traceability-matrix.md` shows no required item with missing or contradictory evidence unless it is explicitly deferred by open research decisions or out of current-state scope.
+
+## Contributor Evaluation Preparation
+
+Prepare these answers privately in the GSoC Dashboard; do not commit personal
+employment, education, or mentor-evaluation details to this public repository:
+
+- Total coding-period hours, supported by calendar and commit history.
+- Honest AI-tool disclosure: tools used, tasks assisted, and how generated work
+  was reviewed, tested, and corrected.
+- Favorite project outcome and the most difficult research/implementation
+  tradeoff.
+- Mentor responsiveness and communication experience.
+- Whether the contributor plans to continue with the organization and open
+  source after GSoC.
+- Constructive feedback for the mentor, organization, and GSoC program.
+
+Dashboard actions remain pending until the contributor submission page opens
+on August 17, 2026.
