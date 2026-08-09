@@ -4,7 +4,7 @@
 | --- | --- |
 | Contributor | Runchu (Rachel) Wu |
 | Mentoring organization | ISSR / Human-AI Organization |
-| Mentor | Andrya |
+| Mentor | Andrya Allen|
 | Program | Google Summer of Code 2026 |
 | Project repository | [RunchuWu/humanai-trust-engine](https://github.com/RunchuWu/humanai-trust-engine) |
 | Complete commit history | [All project commits](https://github.com/RunchuWu/humanai-trust-engine/commits/main/) |
