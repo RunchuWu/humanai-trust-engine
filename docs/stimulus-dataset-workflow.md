@@ -1,5 +1,10 @@
 # Stimulus Dataset Workflow
 
+> Current English prediction workflow and paired-judgment event definitions: [V3 runbook](research-prediction-v3.md). The historical schemas below remain available for existing experiments.
+
+> This document describes the legacy operations experiment. For the new English
+> five-level tool and everyday dataset, see [Research spectrum V2](research-spectrum-v2.md).
+
 This workflow defines the direction-independent stimulus dataset that can be
 reviewed while the final participant format and HSF condition structure remain
 open.
