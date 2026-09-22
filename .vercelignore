@@ -1,0 +1,11 @@
+.next
+.next-pilot-dev
+.next-research-visual
+.vercel
+.env*
+node_modules
+docs
+data/runs
+data/archive
+data/fixtures
+*.log

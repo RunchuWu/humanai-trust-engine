@@ -16,7 +16,13 @@ const ROOT_FILE_NAMES = new Set([
   "eslint.config.mjs",
 ]);
 
-const ROOT_PREFIXES = ["docs/", "src/", "scripts/", "data/", "public/"];
+const ROOT_PREFIXES = ["docs/", "src/", "scripts/", "data/", "public/", "supabase/"];
+
+// These paths are created only when a local study run actually writes data.
+// Backticked examples in the runbook are not references to checked-in files.
+function isGeneratedDataExample(target) {
+  return target.startsWith("data/runs/") || target.startsWith("data/archive/");
+}
 
 function printUsage() {
   console.log(`Usage:
@@ -143,7 +149,7 @@ function collectCodePathRefs(sourceFile, text) {
 
   for (const match of text.matchAll(codeRegex)) {
     const target = cleanCodePath(match[1]);
-    if (!looksLikeLocalPath(target)) {
+    if (!looksLikeLocalPath(target) || isGeneratedDataExample(target)) {
       continue;
     }
 
