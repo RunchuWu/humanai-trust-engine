@@ -1,0 +1,1154 @@
+{
+  "schemaVersion": 4,
+  "version": "everyday-two-part-en-v1",
+  "workflow": "two-part-v1",
+  "status": "review_required",
+  "catalog": {
+    "names": [
+      "Assistant",
+      "AI Assistant",
+      "Alex",
+      "Sarah",
+      "Your Companion"
+    ],
+    "tones": [
+      "An estimate based on the available observations follows.",
+      "Please consider this estimate alongside the observations.",
+      "Here is an estimate based on what we know.",
+      "Let’s take a look at what these clues suggest.",
+      "Hey, here’s my take on what these clues suggest."
+    ],
+    "personalities": [
+      "Consider the estimate alongside the available observations.",
+      "Weigh the recent observations and current context in turn.",
+      "Take a moment to think through your estimate.",
+      "You can use these observations to guide your own estimate.",
+      "You can weigh these clues and settle on your own estimate."
+    ],
+    "confidence": [
+      "This estimate is tentative.",
+      "This estimate is a leaning judgment.",
+      "This is the estimate based on the available observations.",
+      "This estimate is made with confidence.",
+      "This is a firm estimate."
+    ],
+    "framings": [
+      {
+        "role": "Information tool",
+        "welcome": "This interface displays information for prediction review.",
+        "situation": "Task context is available for review.",
+        "evidence": "The stated observations are listed below.",
+        "recommendation": "This tool provides information for your independent judgment.",
+        "closing": "The prediction task is complete."
+      },
+      {
+        "role": "Task assistant",
+        "welcome": "This assistant provides task information for your review.",
+        "situation": "Please review the context for this task.",
+        "evidence": "Please check the stated observations below.",
+        "recommendation": "As a task assistant, I provide an estimate for review.",
+        "closing": "You have completed the prediction task. Thank you."
+      },
+      {
+        "role": "Decision assistant",
+        "welcome": "I provide assessments to help you review everyday predictions.",
+        "situation": "Here is the context for your next prediction.",
+        "evidence": "Here are the observations to consider in your prediction.",
+        "recommendation": "As a decision assistant, I offer an estimate to consider.",
+        "closing": "You have finished the predictions. Thank you for taking part."
+      },
+      {
+        "role": "Collaborative partner",
+        "welcome": "I’ll work alongside you as you review these everyday predictions.",
+        "situation": "Let’s get oriented to the next prediction.",
+        "evidence": "Let’s review the observations before you decide.",
+        "recommendation": "As your collaborative partner, I’ll work through this prediction with you.",
+        "closing": "We’ve reached the end of the predictions. Thank you for working through them."
+      },
+      {
+        "role": "Companion",
+        "welcome": "I’m your AI companion for these everyday predictions. We can take them one at a time.",
+        "situation": "Let’s take a look at what’s coming up next.",
+        "evidence": "Let’s look through these observations together, at your pace.",
+        "recommendation": "As your AI companion, I’m here with you for this prediction.",
+        "closing": "That’s our last prediction. Thanks for spending this time going through them with me."
+      }
+    ]
+  },
+  "trials": [
+    {
+      "taskType": "open_judgment",
+      "id": "judgment_01",
+      "category": "fairness",
+      "title": "Contribution and caring responsibilities",
+      "situation": "Four students are finishing a group project. One member unexpectedly had to care for a family member during the final week. They told the group as soon as they could and completed an earlier research section, but did not finish their agreed final section. The other three members completed that section before the deadline. The course allows an individual contribution adjustment but does not require one. The group must now recommend whether this member should receive a lower mark.",
+      "question": "What should the group recommend, and why? Describe the considerations that matter most to you. You may propose conditions or an alternative approach.",
+      "proposition": "The group should recommend a lower mark for this member.",
+      "coreReason": "",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "viewpoints": [
+        {
+          "id": "A",
+          "direction": "support",
+          "summary": "Recommend a limited mark adjustment",
+          "reason": "I would recommend a limited contribution adjustment. The unexpected caring responsibility deserves consideration, and the earlier research contribution should still count. However, the other members took on unfinished work to meet the deadline. A modest adjustment could recognise that additional contribution without treating the absence as misconduct. The group should explain its reasoning and give the member a chance to respond."
+        },
+        {
+          "id": "B",
+          "direction": "oppose",
+          "summary": "Keep the shared mark",
+          "reason": "I would recommend no contribution adjustment in this case. The member contributed earlier, communicated the unexpected caring responsibility, and did not simply abandon the project. The extra work carried by the others should still be acknowledged. Maintaining the shared mark could recognise that a group sometimes absorbs an exceptional disruption. The group should explain its reasoning and discuss how to handle similar situations in future."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "No objectively correct stance; retain conditional answers and third alternatives.",
+          "Pilot reading burden, initial stance distribution and plausibility of both perspectives.",
+          "Keep core arguments identical across interface conditions."
+        ]
+      }
+    },
+    {
+      "taskType": "open_judgment",
+      "id": "judgment_02",
+      "category": "privacy",
+      "title": "A camera in the shared lobby",
+      "situation": "Several parcels have gone missing from an apartment building's shared lobby. Residents are considering a camera aimed only at the parcel shelf, away from apartment doors. Under the proposal, recordings would be deleted after seven days and could be viewed by two resident representatives after a reported loss. The camera's effect on parcel losses is unknown. Some residents support the proposal; others do not want their collections recorded. A locked parcel cabinet is another option, but it would leave less space in the lobby.",
+      "question": "What should the residents do, and why? Explain which trade-offs or conditions matter to you. You may suggest another approach.",
+      "proposition": "The residents should install the camera under the proposed rules.",
+      "coreReason": "",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "viewpoints": [
+        {
+          "id": "A",
+          "direction": "support",
+          "summary": "Try the camera with safeguards",
+          "reason": "I would support installing the camera under the proposed rules, with residents reviewing the arrangement after a trial period. Its narrow view, short retention period and restricted access place limits on recording. The privacy concerns still matter, and fewer parcel losses are not guaranteed. A review would let residents reconsider the arrangement if its practical value does not justify its privacy cost."
+        },
+        {
+          "id": "B",
+          "direction": "oppose",
+          "summary": "Try the parcel cabinet first",
+          "reason": "I would try the locked parcel cabinet before installing the camera. The proposed recording limits address some concerns, but people collecting parcels would still be recorded even if they object. The cabinet uses shared space, so that cost needs discussion as well. Starting with an approach that does not record residents could address the problem while leaving the camera proposal open for reconsideration."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "No objectively correct stance; retain conditional answers and third alternatives.",
+          "Pilot reading burden, initial stance distribution and plausibility of both perspectives.",
+          "Keep core arguments identical across interface conditions."
+        ]
+      }
+    },
+    {
+      "taskType": "open_judgment",
+      "id": "judgment_03",
+      "category": "responsibility",
+      "title": "A borrowed camera is damaged",
+      "situation": "You borrowed a friend's camera for a day trip and used it as agreed. Rain was heavier than forecast, and water entered the bag despite the usual precautions. The camera now needs repair. Neither of you believes the damage was deliberate or that you ignored an agreed precaution. You did not discuss how accidental damage would be handled before the trip. Either of you could afford the repair, although it would be an unwelcome expense for both.",
+      "question": "How should you and your friend handle the repair cost, and why? Explain what responsibility each person has. You may suggest a shared or conditional solution.",
+      "proposition": "The borrower should offer to cover the full repair cost.",
+      "coreReason": "",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "viewpoints": [
+        {
+          "id": "A",
+          "direction": "support",
+          "summary": "Offer to cover the full repair cost",
+          "reason": "I would offer to cover the repair cost as the borrower. The damage was accidental, and taking the usual precautions matters. Still, the camera was being used for the borrower's trip when it was damaged. Offering to restore it could recognise the owner's generosity and avoid leaving them with the expense of lending it. The friends could still agree on a different arrangement after discussing it."
+        },
+        {
+          "id": "B",
+          "direction": "oppose",
+          "summary": "Propose sharing the repair cost",
+          "reason": "I would propose sharing the repair cost. The borrower used the camera as agreed and took the usual precautions, so treating them as fully responsible may give too little weight to an unforeseen accident. The owner should not simply be left with the expense either. Sharing the cost could recognise both the borrower's use and the uncertainty both friends left unresolved before the trip."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "No objectively correct stance; retain conditional answers and third alternatives.",
+          "Pilot reading burden, initial stance distribution and plausibility of both perspectives.",
+          "Keep core arguments identical across interface conditions."
+        ]
+      }
+    },
+    {
+      "taskType": "open_judgment",
+      "id": "judgment_04",
+      "category": "allocation",
+      "title": "One popular evening slot",
+      "situation": "A community centre has one popular evening slot available next month. An established club has regularly filled its sessions and has used that slot before. A newly formed club has not used the centre yet and wants the same slot for an introductory session. Both clubs can use a less convenient weekend morning slot, but neither knows how attendance would change. There is no existing rule giving either club priority. The centre must decide how to allocate the evening slot.",
+      "question": "How should the centre allocate the evening slot, and why? Explain the principles you would use. You may propose a process rather than choosing a club directly.",
+      "proposition": "The centre should give the evening slot to the new club this time.",
+      "coreReason": "",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "viewpoints": [
+        {
+          "id": "A",
+          "direction": "support",
+          "summary": "Give the new club the slot",
+          "reason": "I would give the new club the evening slot this time. The established club has already had access to it, while the new club has not had a chance to build an audience at the centre. Lower attendance is possible, and regular users would lose a preferred slot. Still, offering one opportunity could recognise access for new groups alongside the interests of existing ones."
+        },
+        {
+          "id": "B",
+          "direction": "oppose",
+          "summary": "Give the established club the slot",
+          "reason": "I would give the established club the evening slot this time. Its history of filled sessions provides a concrete basis for expecting the space to be used. This may make it harder for a new group to build an audience, so future access should also be discussed. For this allocation, continuity for existing users is a reasonable consideration alongside opportunities for new groups."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "No objectively correct stance; retain conditional answers and third alternatives.",
+          "Pilot reading burden, initial stance distribution and plausibility of both perspectives.",
+          "Keep core arguments identical across interface conditions."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "price_01",
+      "category": "price",
+      "title": "A second-hand desk chair",
+      "situation": "A seller will complete a local sale of a used desk chair. Estimate the agreed sale price, before any transport costs.",
+      "question": "How much will the chair sell for, in USD?",
+      "unit": "USD",
+      "estimateRange": {
+        "min": 0,
+        "max": 200,
+        "step": 1
+      },
+      "history": [
+        45,
+        60,
+        75,
+        85,
+        55
+      ],
+      "historyLabel": "Five recent comparable sale prices (USD)",
+      "evidence": [
+        "The chair is two years old, with a small mark on the seat.",
+        "The height adjustment and wheels work normally.",
+        "The buyer must collect it; several similar chairs are listed nearby."
+      ],
+      "aiEstimate": 65,
+      "coreReason": "Working adjustments support a price above worn basic chairs. The seat mark and collection requirement suggest a price below the cleanest comparable sales.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "cards",
+      "historyDetails": [
+        "Basic chair, visible wear",
+        "Similar chair, minor scuffs",
+        "Similar chair, very clean",
+        "Similar chair, nearly new",
+        "Basic chair, good condition"
+      ],
+      "outcome": 58,
+      "outcomeExplanation": "The held-out constructed outcome is 58 USD. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "attendance_01",
+      "category": "attendance",
+      "title": "A campus workshop",
+      "situation": "An optional campus workshop has 80 registrations and enough seats for everyone. Estimate how many registered people will actually attend.",
+      "question": "How many registered people will attend?",
+      "unit": "people",
+      "estimateRange": {
+        "min": 0,
+        "max": 80,
+        "step": 1
+      },
+      "history": [
+        49,
+        61,
+        56,
+        68,
+        53
+      ],
+      "historyLabel": "Actual attendance at five similar events (people)",
+      "evidence": [
+        "Past optional workshops also had 80 registrations; the numbers show actual attendance.",
+        "A reminder was sent the day before this workshop.",
+        "The workshop is outdoors if dry, and light rain is forecast."
+      ],
+      "aiEstimate": 60,
+      "coreReason": "Attendance at similar workshops was usually below registrations. The reminder supports a turnout near the upper middle, with rain possibly discouraging some people.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "bars",
+      "outcome": 54,
+      "outcomeExplanation": "The held-out constructed outcome is 54 people. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "consumption_01",
+      "category": "consumption",
+      "title": "Drinks at an outdoor games afternoon",
+      "situation": "Thirty people will attend a two-hour outdoor games afternoon. Estimate the total litres of the supplied cold drinks they will consume.",
+      "question": "How many litres of the supplied drinks will be consumed?",
+      "unit": "litres",
+      "estimateRange": {
+        "min": 0,
+        "max": 60,
+        "step": 0.5
+      },
+      "history": [
+        18,
+        24,
+        21.5,
+        29,
+        26
+      ],
+      "historyLabel": "Total drinks consumed at five similar events (litres)",
+      "evidence": [
+        "The recent totals are from two-hour games afternoons with 30 people.",
+        "Today is warmer than most of those afternoons, with some shade available.",
+        "The supplied drinks are the only drinks available, and there is enough for everyone."
+      ],
+      "aiEstimate": 27.5,
+      "coreReason": "Warmer weather and active games suggest consumption above the recent middle. Available shade may moderate the increase.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "outcome": 31,
+      "outcomeExplanation": "The held-out constructed outcome is 31 litres. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "time_01",
+      "category": "time",
+      "title": "An afternoon parcel",
+      "situation": "Estimate the time from dispatch to delivery for a parcel travelling across town.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        28,
+        35,
+        44,
+        39,
+        51
+      ],
+      "historyLabel": "Five recent deliveries on similar routes (minutes)",
+      "evidence": [
+        "It is a weekday afternoon with moderate traffic.",
+        "The driver has two stops before this address.",
+        "This building has a staffed reception desk."
+      ],
+      "aiEstimate": 42,
+      "coreReason": "The recent trips often took around forty minutes. Moderate traffic and two earlier stops suggest a similar duration.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 45,
+      "outcomeExplanation": "The held-out simulated case took 45 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Stop lengths and traffic changes are not observed."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      },
+      "allowRationale": true
+    },
+    {
+      "taskType": "prediction",
+      "id": "price_02",
+      "category": "price",
+      "title": "A used commuter bicycle",
+      "situation": "A used commuter bicycle will be sold locally. Estimate its agreed sale price, excluding transport costs.",
+      "question": "How much will the bicycle sell for, in USD?",
+      "unit": "USD",
+      "estimateRange": {
+        "min": 0,
+        "max": 400,
+        "step": 1
+      },
+      "history": [
+        90,
+        130,
+        170,
+        145,
+        115
+      ],
+      "historyLabel": "Five recent comparable sale prices (USD)",
+      "evidence": [
+        "The gears and brakes work, and the tyres were recently replaced.",
+        "There are visible scratches on the frame.",
+        "Several nearby listings offer similar bicycles."
+      ],
+      "aiEstimate": 150,
+      "coreReason": "The replaced tyres and working components support the higher part of the comparable range, though scratches and competing listings may reduce the price.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "cards",
+      "historyDetails": [
+        "Older bike, needs adjustment",
+        "Similar bike, normal wear",
+        "Similar bike, recently serviced",
+        "Similar bike, good condition",
+        "Older bike, working well"
+      ],
+      "outcome": 125,
+      "outcomeExplanation": "The held-out constructed outcome is 125 USD. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "attendance_02",
+      "category": "attendance",
+      "title": "A community film night",
+      "situation": "A community film night has 60 free reservations. Only reservation holders can enter, and there are enough seats. Estimate the actual attendance.",
+      "question": "How many reservation holders will attend?",
+      "unit": "people",
+      "estimateRange": {
+        "min": 0,
+        "max": 60,
+        "step": 1
+      },
+      "history": [
+        31,
+        44,
+        38,
+        49,
+        42
+      ],
+      "historyLabel": "Actual attendance at five similar events (people)",
+      "evidence": [
+        "Past film nights also had 60 reservations; the numbers show actual attendance.",
+        "The film received enthusiastic comments on the event page.",
+        "A popular local sports match overlaps with the screening."
+      ],
+      "aiEstimate": 46,
+      "coreReason": "Positive interest in the film suggests attendance toward the upper part of recent results. The overlapping match could still draw some reservation holders away.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "bars",
+      "outcome": 35,
+      "outcomeExplanation": "The held-out constructed outcome is 35 people. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "consumption_02",
+      "category": "consumption",
+      "title": "Refreshments for a reading club",
+      "situation": "Twenty people will attend a two-hour indoor reading club. Estimate the total litres of supplied tea, coffee and water they will consume.",
+      "question": "How many litres of the supplied drinks will be consumed?",
+      "unit": "litres",
+      "estimateRange": {
+        "min": 0,
+        "max": 50,
+        "step": 0.5
+      },
+      "history": [
+        10,
+        14.5,
+        12,
+        18,
+        15
+      ],
+      "historyLabel": "Total drinks consumed at five similar events (litres)",
+      "evidence": [
+        "The recent totals are from two-hour reading clubs with 20 people.",
+        "The room will be comfortably cool and most people will remain seated.",
+        "The supplied drinks are the only drinks available, with no supply limit."
+      ],
+      "aiEstimate": 16.5,
+      "coreReason": "Ready access to hot and cold drinks suggests consumption in the upper part of recent totals, although a cool room and seated activity may reduce thirst.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "outcome": 12.5,
+      "outcomeExplanation": "The held-out constructed outcome is 12.5 litres. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "time_02",
+      "category": "time",
+      "title": "A bus trip across town",
+      "situation": "Estimate the total time from reaching the bus stop to arriving at the destination.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        26,
+        33,
+        29,
+        41,
+        35
+      ],
+      "historyLabel": "Five recent trips at roughly this time (minutes)",
+      "evidence": [
+        "The next bus is expected in about five minutes.",
+        "Traffic is currently moving but slowing near the centre.",
+        "There is a short walk from the final stop."
+      ],
+      "aiEstimate": 36,
+      "coreReason": "The recent trips and expected wait suggest a duration in the mid-thirties, allowing for the walk at the end.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 32,
+      "outcomeExplanation": "The held-out simulated case took 32 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Actual bus arrival and traffic queues remain uncertain."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      },
+      "allowRationale": true
+    }
+  ],
+  "practice": {
+    "taskType": "open_judgment",
+    "id": "judgment_practice",
+    "category": "practice",
+    "title": "Music in a shared kitchen",
+    "situation": "Two housemates share a kitchen. One enjoys playing quiet music while cooking; the other prefers silence. They often cook at the same time and have no existing rule about music. Both want to use the kitchen comfortably.",
+    "question": "What arrangement would you suggest, and why? You can propose a compromise.",
+    "proposition": "Music should be allowed in the shared kitchen when both housemates are cooking.",
+    "coreReason": "",
+    "expressionRefs": {
+      "tone": [
+        "tone:0",
+        "tone:1",
+        "tone:2",
+        "tone:3",
+        "tone:4"
+      ],
+      "personality": [
+        "personality:0",
+        "personality:1",
+        "personality:2",
+        "personality:3",
+        "personality:4"
+      ],
+      "framing": [
+        "framing:0",
+        "framing:1",
+        "framing:2",
+        "framing:3",
+        "framing:4"
+      ],
+      "confidence": [
+        "confidence:0",
+        "confidence:1",
+        "confidence:2",
+        "confidence:3",
+        "confidence:4"
+      ]
+    },
+    "viewpoints": [
+      {
+        "id": "A",
+        "direction": "support",
+        "summary": "Allow music under an agreed arrangement",
+        "reason": "I would allow quiet music during agreed periods. Enjoying the kitchen matters to both housemates, and a predictable arrangement could leave room for music as well as quiet. They should discuss which periods would work and revise the arrangement if either person remains uncomfortable."
+      },
+      {
+        "id": "B",
+        "direction": "oppose",
+        "summary": "Keep shared cooking time quiet",
+        "reason": "I would keep the kitchen quiet when both housemates are cooking. Music affects both people, while the person who enjoys it could listen at another time. They could still agree on music for particular occasions, but a quiet default would make shared use more predictable."
+      }
+    ],
+    "review": {
+      "status": "pending",
+      "notes": [
+        "Practice accepts any valid view and explanation; never require agreement with AI."
+      ]
+    }
+  },
+  "numericPractice": {
+    "taskType": "prediction",
+    "id": "mixed_practice",
+    "category": "attendance",
+    "title": "A practice club meetup",
+    "situation": "A free club meetup has 50 registrations and enough seats. Estimate how many registered members will actually attend.",
+    "question": "How many registered members will attend?",
+    "unit": "people",
+    "estimateRange": {
+      "min": 0,
+      "max": 50,
+      "step": 1
+    },
+    "history": [
+      25,
+      34,
+      29,
+      38,
+      32
+    ],
+    "historyLabel": "Attendance at five previous meetups with 50 registrations (people)",
+    "evidence": [
+      "These are attendance counts, not registration counts.",
+      "A reminder was sent yesterday.",
+      "Another optional club activity is taking place at the same time."
+    ],
+    "aiEstimate": 33,
+    "coreReason": "Recent meetups usually drew around thirty members. The reminder may help, while the competing activity could reduce attendance.",
+    "expressionRefs": {
+      "tone": [
+        "tone:0",
+        "tone:1",
+        "tone:2",
+        "tone:3",
+        "tone:4"
+      ],
+      "personality": [
+        "personality:0",
+        "personality:1",
+        "personality:2",
+        "personality:3",
+        "personality:4"
+      ],
+      "framing": [
+        "framing:0",
+        "framing:1",
+        "framing:2",
+        "framing:3",
+        "framing:4"
+      ],
+      "confidence": [
+        "confidence:0",
+        "confidence:1",
+        "confidence:2",
+        "confidence:3",
+        "confidence:4"
+      ]
+    },
+    "allowRationale": true,
+    "historyStyle": "bars",
+    "outcome": 30,
+    "outcomeExplanation": "The held-out constructed outcome is 30 people. It is one possible realization, not an answer uniquely determined by the visible information.",
+    "provenance": {
+      "kind": "synthetic",
+      "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+      "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+    },
+    "review": {
+      "status": "pending",
+      "notes": [
+        "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+        "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+        "Review cue perceptions independently; numeric checks do not establish research validity."
+      ]
+    }
+  },
+  "openCatalog": {
+    "names": [
+      "Assistant",
+      "AI Assistant",
+      "Alex",
+      "Sarah",
+      "Your Companion"
+    ],
+    "tones": [
+      "An assessment of the trade-off follows.",
+      "Please consider this perspective on the situation.",
+      "Here is one way to think about this situation.",
+      "Let’s consider one way of looking at this.",
+      "Hey, here’s my take on this situation."
+    ],
+    "personalities": [
+      "Review the position and its stated reasons.",
+      "Weigh the competing considerations in this position.",
+      "Take a moment to consider your own judgment.",
+      "You can consider this perspective alongside your own priorities.",
+      "You can weigh these ideas and decide what makes sense to you."
+    ],
+    "confidence": [
+      "This is a tentative perspective.",
+      "I lean toward this perspective.",
+      "This is my assessment of the trade-off.",
+      "I am confident in this assessment.",
+      "This is a firm position on the trade-off."
+    ],
+    "framings": [
+      {
+        "role": "Information tool",
+        "welcome": "This interface displays information for judgment review.",
+        "situation": "Task context is available for review.",
+        "evidence": "The stated observations are listed below.",
+        "recommendation": "This tool provides information for your independent judgment.",
+        "closing": "The judgment task is complete."
+      },
+      {
+        "role": "Task assistant",
+        "welcome": "This assistant provides task information for your review.",
+        "situation": "Please review the context for this task.",
+        "evidence": "Please check the stated observations below.",
+        "recommendation": "As a task assistant, I provide a perspective for review.",
+        "closing": "You have completed the judgment task. Thank you."
+      },
+      {
+        "role": "Decision assistant",
+        "welcome": "I provide assessments to help you review everyday judgments.",
+        "situation": "Here is the context for your next judgment.",
+        "evidence": "Here are the observations to consider in your judgment.",
+        "recommendation": "As a decision assistant, I offer a perspective to consider.",
+        "closing": "You have finished the judgments. Thank you for taking part."
+      },
+      {
+        "role": "Collaborative partner",
+        "welcome": "I’ll work alongside you as you review these everyday judgments.",
+        "situation": "Let’s get oriented to the next judgment.",
+        "evidence": "Let’s review the observations before you decide.",
+        "recommendation": "As your collaborative partner, I’ll work through this judgment with you.",
+        "closing": "We’ve reached the end of the judgments. Thank you for working through them."
+      },
+      {
+        "role": "Companion",
+        "welcome": "I’m your AI companion for these everyday judgments. We can take them one at a time.",
+        "situation": "Let’s take a look at what’s coming up next.",
+        "evidence": "Let’s look through these observations together, at your pace.",
+        "recommendation": "As your AI companion, I’m here with you for this judgment.",
+        "closing": "That’s our last judgment. Thanks for spending this time going through them with me."
+      }
+    ]
+  }
+}

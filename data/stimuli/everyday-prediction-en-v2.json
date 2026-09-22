@@ -1,0 +1,1400 @@
+{
+  "schemaVersion": 3,
+  "version": "everyday-prediction-en-v2",
+  "workflow": "prediction-v1",
+  "status": "review_required",
+  "pilotIds": [
+    "price_01",
+    "attendance_01",
+    "consumption_01",
+    "time_01",
+    "price_02",
+    "attendance_02"
+  ],
+  "catalog": {
+    "names": [
+      "Assistant",
+      "AI Assistant",
+      "Alex",
+      "Sarah",
+      "Your Companion"
+    ],
+    "tones": [
+      "An estimate based on the available observations follows.",
+      "Please consider this estimate alongside the observations.",
+      "Here is an estimate based on what we know.",
+      "Let’s take a look at what these clues suggest.",
+      "Hey, here’s my take on what these clues suggest."
+    ],
+    "personalities": [
+      "Consider the estimate alongside the available observations.",
+      "Weigh the recent observations and current context in turn.",
+      "Take a moment to think through your estimate.",
+      "You can use these observations to guide your own estimate.",
+      "You can weigh these clues and settle on your own estimate."
+    ],
+    "confidence": [
+      "This estimate is tentative.",
+      "This estimate is a leaning judgment.",
+      "This is the estimate based on the available observations.",
+      "This estimate is made with confidence.",
+      "This is a firm estimate."
+    ],
+    "framings": [
+      {
+        "role": "Information tool",
+        "welcome": "This interface displays information for prediction review.",
+        "situation": "Task context is available for review.",
+        "evidence": "The stated observations are listed below.",
+        "recommendation": "This tool provides information for your independent judgment.",
+        "closing": "The prediction task is complete."
+      },
+      {
+        "role": "Task assistant",
+        "welcome": "This assistant provides task information for your review.",
+        "situation": "Please review the context for this task.",
+        "evidence": "Please check the stated observations below.",
+        "recommendation": "As a task assistant, I provide an estimate for review.",
+        "closing": "You have completed the prediction task. Thank you."
+      },
+      {
+        "role": "Decision assistant",
+        "welcome": "I provide assessments to help you review everyday predictions.",
+        "situation": "Here is the context for your next prediction.",
+        "evidence": "Here are the observations to consider in your prediction.",
+        "recommendation": "As a decision assistant, I offer an estimate to consider.",
+        "closing": "You have finished the predictions. Thank you for taking part."
+      },
+      {
+        "role": "Collaborative partner",
+        "welcome": "I’ll work alongside you as you review these everyday predictions.",
+        "situation": "Let’s get oriented to the next prediction.",
+        "evidence": "Let’s review the observations before you decide.",
+        "recommendation": "As your collaborative partner, I’ll work through this prediction with you.",
+        "closing": "We’ve reached the end of the predictions. Thank you for working through them."
+      },
+      {
+        "role": "Companion",
+        "welcome": "I’m your AI companion for these everyday predictions. We can take them one at a time.",
+        "situation": "Let’s take a look at what’s coming up next.",
+        "evidence": "Let’s look through these observations together, at your pace.",
+        "recommendation": "As your AI companion, I’m here with you for this prediction.",
+        "closing": "That’s our last prediction. Thanks for spending this time going through them with me."
+      }
+    ]
+  },
+  "trials": [
+    {
+      "taskType": "prediction",
+      "id": "price_01",
+      "category": "price",
+      "title": "A second-hand desk chair",
+      "situation": "A seller will complete a local sale of a used desk chair. Estimate the agreed sale price, before any transport costs.",
+      "question": "How much will the chair sell for, in USD?",
+      "unit": "USD",
+      "estimateRange": {
+        "min": 0,
+        "max": 200,
+        "step": 1
+      },
+      "history": [
+        45,
+        60,
+        75,
+        85,
+        55
+      ],
+      "historyLabel": "Five recent comparable sale prices (USD)",
+      "evidence": [
+        "The chair is two years old, with a small mark on the seat.",
+        "The height adjustment and wheels work normally.",
+        "The buyer must collect it; several similar chairs are listed nearby."
+      ],
+      "aiEstimate": 65,
+      "coreReason": "Working adjustments support a price above worn basic chairs. The seat mark and collection requirement suggest a price below the cleanest comparable sales.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "cards",
+      "historyDetails": [
+        "Basic chair, visible wear",
+        "Similar chair, minor scuffs",
+        "Similar chair, very clean",
+        "Similar chair, nearly new",
+        "Basic chair, good condition"
+      ],
+      "outcome": 58,
+      "outcomeExplanation": "The held-out constructed outcome is 58 USD. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "attendance_01",
+      "category": "attendance",
+      "title": "A campus workshop",
+      "situation": "An optional campus workshop has 80 registrations and enough seats for everyone. Estimate how many registered people will actually attend.",
+      "question": "How many registered people will attend?",
+      "unit": "people",
+      "estimateRange": {
+        "min": 0,
+        "max": 80,
+        "step": 1
+      },
+      "history": [
+        49,
+        61,
+        56,
+        68,
+        53
+      ],
+      "historyLabel": "Actual attendance at five similar events (people)",
+      "evidence": [
+        "Past optional workshops also had 80 registrations; the numbers show actual attendance.",
+        "A reminder was sent the day before this workshop.",
+        "The workshop is outdoors if dry, and light rain is forecast."
+      ],
+      "aiEstimate": 60,
+      "coreReason": "Attendance at similar workshops was usually below registrations. The reminder supports a turnout near the upper middle, with rain possibly discouraging some people.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "bars",
+      "outcome": 54,
+      "outcomeExplanation": "The held-out constructed outcome is 54 people. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "consumption_01",
+      "category": "consumption",
+      "title": "Drinks at an outdoor games afternoon",
+      "situation": "Thirty people will attend a two-hour outdoor games afternoon. Estimate the total litres of the supplied cold drinks they will consume.",
+      "question": "How many litres of the supplied drinks will be consumed?",
+      "unit": "litres",
+      "estimateRange": {
+        "min": 0,
+        "max": 60,
+        "step": 0.5
+      },
+      "history": [
+        18,
+        24,
+        21.5,
+        29,
+        26
+      ],
+      "historyLabel": "Total drinks consumed at five similar events (litres)",
+      "evidence": [
+        "The recent totals are from two-hour games afternoons with 30 people.",
+        "Today is warmer than most of those afternoons, with some shade available.",
+        "The supplied drinks are the only drinks available, and there is enough for everyone."
+      ],
+      "aiEstimate": 27.5,
+      "coreReason": "Warmer weather and active games suggest consumption above the recent middle. Available shade may moderate the increase.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "outcome": 31,
+      "outcomeExplanation": "The held-out constructed outcome is 31 litres. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "time_01",
+      "category": "time",
+      "title": "An afternoon parcel",
+      "situation": "Estimate the time from dispatch to delivery for a parcel travelling across town.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        28,
+        35,
+        44,
+        39,
+        51
+      ],
+      "historyLabel": "Five recent deliveries on similar routes (minutes)",
+      "evidence": [
+        "It is a weekday afternoon with moderate traffic.",
+        "The driver has two stops before this address.",
+        "This building has a staffed reception desk."
+      ],
+      "aiEstimate": 42,
+      "coreReason": "The recent trips often took around forty minutes. Moderate traffic and two earlier stops suggest a similar duration.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 45,
+      "outcomeExplanation": "The held-out simulated case took 45 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Stop lengths and traffic changes are not observed."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      },
+      "allowRationale": true
+    },
+    {
+      "taskType": "prediction",
+      "id": "price_02",
+      "category": "price",
+      "title": "A used commuter bicycle",
+      "situation": "A used commuter bicycle will be sold locally. Estimate its agreed sale price, excluding transport costs.",
+      "question": "How much will the bicycle sell for, in USD?",
+      "unit": "USD",
+      "estimateRange": {
+        "min": 0,
+        "max": 400,
+        "step": 1
+      },
+      "history": [
+        90,
+        130,
+        170,
+        145,
+        115
+      ],
+      "historyLabel": "Five recent comparable sale prices (USD)",
+      "evidence": [
+        "The gears and brakes work, and the tyres were recently replaced.",
+        "There are visible scratches on the frame.",
+        "Several nearby listings offer similar bicycles."
+      ],
+      "aiEstimate": 150,
+      "coreReason": "The replaced tyres and working components support the higher part of the comparable range, though scratches and competing listings may reduce the price.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "cards",
+      "historyDetails": [
+        "Older bike, needs adjustment",
+        "Similar bike, normal wear",
+        "Similar bike, recently serviced",
+        "Similar bike, good condition",
+        "Older bike, working well"
+      ],
+      "outcome": 125,
+      "outcomeExplanation": "The held-out constructed outcome is 125 USD. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "attendance_02",
+      "category": "attendance",
+      "title": "A community film night",
+      "situation": "A community film night has 60 free reservations. Only reservation holders can enter, and there are enough seats. Estimate the actual attendance.",
+      "question": "How many reservation holders will attend?",
+      "unit": "people",
+      "estimateRange": {
+        "min": 0,
+        "max": 60,
+        "step": 1
+      },
+      "history": [
+        31,
+        44,
+        38,
+        49,
+        42
+      ],
+      "historyLabel": "Actual attendance at five similar events (people)",
+      "evidence": [
+        "Past film nights also had 60 reservations; the numbers show actual attendance.",
+        "The film received enthusiastic comments on the event page.",
+        "A popular local sports match overlaps with the screening."
+      ],
+      "aiEstimate": 46,
+      "coreReason": "Positive interest in the film suggests attendance toward the upper part of recent results. The overlapping match could still draw some reservation holders away.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "bars",
+      "outcome": 35,
+      "outcomeExplanation": "The held-out constructed outcome is 35 people. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "consumption_02",
+      "category": "consumption",
+      "title": "Refreshments for a reading club",
+      "situation": "Twenty people will attend a two-hour indoor reading club. Estimate the total litres of supplied tea, coffee and water they will consume.",
+      "question": "How many litres of the supplied drinks will be consumed?",
+      "unit": "litres",
+      "estimateRange": {
+        "min": 0,
+        "max": 50,
+        "step": 0.5
+      },
+      "history": [
+        10,
+        14.5,
+        12,
+        18,
+        15
+      ],
+      "historyLabel": "Total drinks consumed at five similar events (litres)",
+      "evidence": [
+        "The recent totals are from two-hour reading clubs with 20 people.",
+        "The room will be comfortably cool and most people will remain seated.",
+        "The supplied drinks are the only drinks available, with no supply limit."
+      ],
+      "aiEstimate": 16.5,
+      "coreReason": "Ready access to hot and cold drinks suggests consumption in the upper part of recent totals, although a cool room and seated activity may reduce thirst.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "outcome": 12.5,
+      "outcomeExplanation": "The held-out constructed outcome is 12.5 litres. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "time_02",
+      "category": "time",
+      "title": "A bus trip across town",
+      "situation": "Estimate the total time from reaching the bus stop to arriving at the destination.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        26,
+        33,
+        29,
+        41,
+        35
+      ],
+      "historyLabel": "Five recent trips at roughly this time (minutes)",
+      "evidence": [
+        "The next bus is expected in about five minutes.",
+        "Traffic is currently moving but slowing near the centre.",
+        "There is a short walk from the final stop."
+      ],
+      "aiEstimate": 36,
+      "coreReason": "The recent trips and expected wait suggest a duration in the mid-thirties, allowing for the walk at the end.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 32,
+      "outcomeExplanation": "The held-out simulated case took 32 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Actual bus arrival and traffic queues remain uncertain."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      },
+      "allowRationale": true
+    },
+    {
+      "taskType": "prediction",
+      "id": "price_03",
+      "category": "price",
+      "title": "A compact bookshelf",
+      "situation": "A seller is arranging a local sale of a compact bookshelf. Estimate the amount the buyer will pay for the shelf itself.",
+      "question": "How much will the bookshelf sell for, in USD?",
+      "unit": "USD",
+      "estimateRange": {
+        "min": 0,
+        "max": 150,
+        "step": 1
+      },
+      "history": [
+        25,
+        40,
+        55,
+        45,
+        35
+      ],
+      "historyLabel": "Five recent comparable sale prices (USD)",
+      "evidence": [
+        "The shelf is sturdy with minor surface marks.",
+        "The buyer must carry it down one flight of stairs.",
+        "The seller would like it collected this weekend."
+      ],
+      "aiEstimate": 35,
+      "coreReason": "Minor marks and the collection effort suggest a price below the cleanest examples. The preferred collection date may also encourage a modest discount.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "cards",
+      "historyDetails": [
+        "Small shelf, visible wear",
+        "Similar shelf, minor marks",
+        "Similar shelf, very clean",
+        "Similar shelf, good condition",
+        "Small shelf, good condition"
+      ],
+      "outcome": 42,
+      "outcomeExplanation": "The held-out constructed outcome is 42 USD. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "attendance_03",
+      "category": "attendance",
+      "title": "A neighbourhood repair café",
+      "situation": "A free repair café has 50 registered visitors, with space for all of them. Estimate how many will come.",
+      "question": "How many registered visitors will attend?",
+      "unit": "people",
+      "estimateRange": {
+        "min": 0,
+        "max": 50,
+        "step": 1
+      },
+      "history": [
+        28,
+        36,
+        32,
+        41,
+        34
+      ],
+      "historyLabel": "Actual attendance at five similar events (people)",
+      "evidence": [
+        "Past repair cafés also had 50 registered visitors; the numbers show actual attendance.",
+        "Visitors received a reminder to bring their broken items.",
+        "Roadworks mean a longer walk from the nearest bus stop."
+      ],
+      "aiEstimate": 33,
+      "coreReason": "The reminder may help people prepare, while the longer walk may discourage some visits. Together these suggest attendance near the recent middle.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "bars",
+      "outcome": 38,
+      "outcomeExplanation": "The held-out constructed outcome is 38 people. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "consumption_03",
+      "category": "consumption",
+      "title": "Water for a volunteer cleanup",
+      "situation": "Forty volunteers will join a three-hour park cleanup. Estimate the total litres of supplied drinking water consumed during the activity.",
+      "question": "How many litres of supplied water will be consumed?",
+      "unit": "litres",
+      "estimateRange": {
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "history": [
+        26,
+        34,
+        30.5,
+        43,
+        37
+      ],
+      "historyLabel": "Total drinks consumed at five similar events (litres)",
+      "evidence": [
+        "The recent totals are from three-hour cleanups with 40 volunteers.",
+        "The work includes carrying light bags in mild, breezy weather.",
+        "Supplied water is the only drink available, with enough for everyone."
+      ],
+      "aiEstimate": 32.5,
+      "coreReason": "Mild weather suggests less consumption than the largest recent total, while carrying bags should keep demand above the least active examples.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "outcome": 36,
+      "outcomeExplanation": "The held-out constructed outcome is 36 litres. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "time_03",
+      "category": "time",
+      "title": "Putting together a small shelf",
+      "situation": "Estimate how long it will take one person to assemble a small flat-pack shelf.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        35,
+        48,
+        62,
+        41,
+        55
+      ],
+      "historyLabel": "Five recent assembly times for similar shelves (minutes)",
+      "evidence": [
+        "The person has assembled simple furniture before.",
+        "The required tools are already available.",
+        "The shelf includes several similar-looking fittings."
+      ],
+      "aiEstimate": 47,
+      "coreReason": "Prior experience and ready tools should help, so a duration near the middle of the recent examples seems plausible.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 58,
+      "outcomeExplanation": "The held-out simulated case took 58 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Fitting identification and rework may add time."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      },
+      "allowRationale": true
+    },
+    {
+      "taskType": "prediction",
+      "id": "price_04",
+      "category": "price",
+      "title": "A portable speaker",
+      "situation": "A used portable speaker will be sold through a local listing. Estimate its agreed sale price.",
+      "question": "How much will the speaker sell for, in USD?",
+      "unit": "USD",
+      "estimateRange": {
+        "min": 0,
+        "max": 200,
+        "step": 1
+      },
+      "history": [
+        35,
+        50,
+        70,
+        60,
+        45
+      ],
+      "historyLabel": "Five recent comparable sale prices (USD)",
+      "evidence": [
+        "The speaker works and includes its charging cable.",
+        "The battery lasts about five hours, shorter than when new.",
+        "The casing is clean, but the original box is missing."
+      ],
+      "aiEstimate": 55,
+      "coreReason": "A clean casing and included cable suggest a price near the comparable middle. Reduced battery life makes the boxed, higher-priced example less relevant.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "cards",
+      "historyDetails": [
+        "Older model, working",
+        "Similar model, normal wear",
+        "Similar model, boxed",
+        "Similar model, very clean",
+        "Older model, good condition"
+      ],
+      "outcome": 47,
+      "outcomeExplanation": "The held-out constructed outcome is 47 USD. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "attendance_04",
+      "category": "attendance",
+      "title": "A weekend walking group",
+      "situation": "A free walking-group outing has 100 registrations. Estimate how many registered walkers will arrive at the meeting point.",
+      "question": "How many registered walkers will arrive?",
+      "unit": "people",
+      "estimateRange": {
+        "min": 0,
+        "max": 100,
+        "step": 1
+      },
+      "history": [
+        58,
+        74,
+        66,
+        81,
+        69
+      ],
+      "historyLabel": "Actual attendance at five similar events (people)",
+      "evidence": [
+        "Past outings also had 100 registrations; the numbers show actual arrivals.",
+        "The forecast is dry and cooler than recent weekends.",
+        "The meeting point is convenient for public transport."
+      ],
+      "aiEstimate": 76,
+      "coreReason": "Comfortable weather and an accessible meeting point support attendance above the middle of the recent outings, though some registrations may still become no-shows.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "historyStyle": "bars",
+      "outcome": 82,
+      "outcomeExplanation": "The held-out constructed outcome is 82 people. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "consumption_04",
+      "category": "consumption",
+      "title": "Drinks at an evening board-game gathering",
+      "situation": "Thirty-six people will attend a three-hour indoor board-game gathering. Estimate the total litres of supplied non-alcoholic drinks consumed.",
+      "question": "How many litres of supplied drinks will be consumed?",
+      "unit": "litres",
+      "estimateRange": {
+        "min": 0,
+        "max": 80,
+        "step": 0.5
+      },
+      "history": [
+        22,
+        30,
+        26.5,
+        37,
+        33
+      ],
+      "historyLabel": "Total drinks consumed at five similar events (litres)",
+      "evidence": [
+        "The recent totals are from three-hour gatherings with 36 people.",
+        "The room will be warm and salty snacks will be served.",
+        "Supplied drinks are the only drinks available, with no supply limit."
+      ],
+      "aiEstimate": 32.5,
+      "coreReason": "Warm conditions and salty snacks suggest consumption above the recent middle, even though the gathering involves little physical activity.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "allowRationale": true,
+      "outcome": 39,
+      "outcomeExplanation": "The held-out constructed outcome is 39 litres. It is one possible realization, not an answer uniquely determined by the visible information.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+        "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+          "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+          "Review cue perceptions independently; numeric checks do not establish research validity."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "time_04",
+      "category": "time",
+      "title": "A weekend taxi ride",
+      "situation": "Estimate the time from getting into a taxi to arriving at a sports venue.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 90,
+        "step": 1
+      },
+      "history": [
+        18,
+        27,
+        23,
+        39,
+        32
+      ],
+      "historyLabel": "Five recent rides to the venue area (minutes)",
+      "evidence": [
+        "It is the weekend shortly before an event.",
+        "The main road is flowing steadily.",
+        "Traffic near the venue entrance is not visible."
+      ],
+      "aiEstimate": 30,
+      "coreReason": "Steady traffic on the main road suggests a duration around the recent middle, with a little allowance near the venue.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 43,
+      "outcomeExplanation": "The held-out simulated case took 43 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "The unobserved final approach can create delays."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      },
+      "allowRationale": true
+    }
+  ],
+  "practice": {
+    "taskType": "prediction",
+    "id": "mixed_practice",
+    "category": "attendance",
+    "title": "A practice club meetup",
+    "situation": "A free club meetup has 50 registrations and enough seats. Estimate how many registered members will actually attend.",
+    "question": "How many registered members will attend?",
+    "unit": "people",
+    "estimateRange": {
+      "min": 0,
+      "max": 50,
+      "step": 1
+    },
+    "history": [
+      25,
+      34,
+      29,
+      38,
+      32
+    ],
+    "historyLabel": "Attendance at five previous meetups with 50 registrations (people)",
+    "evidence": [
+      "These are attendance counts, not registration counts.",
+      "A reminder was sent yesterday.",
+      "Another optional club activity is taking place at the same time."
+    ],
+    "aiEstimate": 33,
+    "coreReason": "Recent meetups usually drew around thirty members. The reminder may help, while the competing activity could reduce attendance.",
+    "expressionRefs": {
+      "tone": [
+        "tone:0",
+        "tone:1",
+        "tone:2",
+        "tone:3",
+        "tone:4"
+      ],
+      "personality": [
+        "personality:0",
+        "personality:1",
+        "personality:2",
+        "personality:3",
+        "personality:4"
+      ],
+      "framing": [
+        "framing:0",
+        "framing:1",
+        "framing:2",
+        "framing:3",
+        "framing:4"
+      ],
+      "confidence": [
+        "confidence:0",
+        "confidence:1",
+        "confidence:2",
+        "confidence:3",
+        "confidence:4"
+      ]
+    },
+    "allowRationale": true,
+    "historyStyle": "bars",
+    "outcome": 30,
+    "outcomeExplanation": "The held-out constructed outcome is 30 people. It is one possible realization, not an answer uniquely determined by the visible information.",
+    "provenance": {
+      "kind": "synthetic",
+      "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and comparison outcome. All monetary values are fictional USD amounts; no live data or calibrated probability model is used.",
+      "uncertaintyNote": "The visible information supports a range of plausible estimates. Realized error in one case is not a measure of the quality of a forecasting strategy."
+    },
+    "review": {
+      "status": "pending",
+      "notes": [
+        "Check the plausibility of observations, contextual clues, AI reasoning and outcome together.",
+        "Pilot initial-estimate spread, self-confidence, AI disagreement and reading burden.",
+        "Review cue perceptions independently; numeric checks do not establish research validity."
+      ]
+    }
+  }
+}
