@@ -1,0 +1,1303 @@
+{
+  "schemaVersion": 2,
+  "version": "everyday-en-v1",
+  "status": "review_required",
+  "catalog": {
+    "names": [
+      "Assistant",
+      "AI Assistant",
+      "Alex",
+      "Sarah",
+      "Your Companion"
+    ],
+    "tones": [
+      "Assessment of this option is prepared for review.",
+      "Please review the assessment below.",
+      "Here is the assessment for this option.",
+      "Let’s take a look at this option.",
+      "Hey, let’s look through this one together."
+    ],
+    "personalities": [
+      "Compare the proposed option with each of the listed requirements.",
+      "Check each listed requirement in a systematic order.",
+      "Take a moment to compare the option with the requirements.",
+      "You can use the listed requirements to guide your choice.",
+      "You can work through this one requirement at a time."
+    ],
+    "confidence": [
+      "This recommendation is tentative.",
+      "This recommendation is a leaning judgment.",
+      "This is the recommendation based on the assessment.",
+      "This recommendation is made with confidence.",
+      "This is a firm recommendation."
+    ],
+    "framings": [
+      {
+        "role": "Information tool",
+        "welcome": "This interface displays information for decision review.",
+        "situation": "Task context is available for review.",
+        "evidence": "The stated requirements are listed below.",
+        "recommendation": "A recommendation for this option is available for your review.",
+        "closing": "The decision task is complete."
+      },
+      {
+        "role": "Task assistant",
+        "welcome": "This assistant provides task information for your review.",
+        "situation": "Please review the context for this task.",
+        "evidence": "Please check the stated requirements below.",
+        "recommendation": "The task recommendation is ready for your review.",
+        "closing": "You have completed the decision task. Thank you."
+      },
+      {
+        "role": "Decision assistant",
+        "welcome": "I provide assessments to help you review everyday decisions.",
+        "situation": "Here is the context for your next decision.",
+        "evidence": "Here are the requirements to consider in your decision.",
+        "recommendation": "Here is my assessment for you to consider.",
+        "closing": "You have finished the decisions. Thank you for taking part."
+      },
+      {
+        "role": "Collaborative partner",
+        "welcome": "I’ll work alongside you as you review these everyday decisions.",
+        "situation": "Let’s get oriented to the next decision.",
+        "evidence": "Let’s review the requirements before you decide.",
+        "recommendation": "Here is my assessment as we work through this decision.",
+        "closing": "We’ve reached the end of the decisions. Thank you for working through them."
+      },
+      {
+        "role": "Companion",
+        "welcome": "I’m your AI companion for these everyday choices. We can take them one at a time.",
+        "situation": "Let’s take a look at what’s coming up next.",
+        "evidence": "Let’s look through these requirements together, at your pace.",
+        "recommendation": "Here’s my take as we go through this together.",
+        "closing": "That’s our last decision. Thanks for spending this time going through them with me."
+      }
+    ]
+  },
+  "trials": [
+    {
+      "id": "day_01",
+      "category": "scheduling",
+      "title": "A short planning session",
+      "situation": "Choose whether this planning session meets every requirement.",
+      "evidence": [
+        "You are available from 10:00 to 11:00.",
+        "The session must last at least 30 minutes.",
+        "The session must finish by 10:50."
+      ],
+      "proposal": "Meet from 10:15 to 10:45.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "proceed",
+      "coreReason": "The session lasts 30 minutes, fits the available hour, and ends before 10:50.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "proceed",
+      "answerExplanation": "10:15–10:45 is inside 10:00–11:00. The session lasts 30 minutes. 10:45 is before 10:50.",
+      "constraintChecks": [
+        {
+          "label": "Availability",
+          "satisfied": true,
+          "explanation": "10:15–10:45 is inside 10:00–11:00."
+        },
+        {
+          "label": "Duration",
+          "satisfied": true,
+          "explanation": "The session lasts 30 minutes."
+        },
+        {
+          "label": "Deadline",
+          "satisfied": true,
+          "explanation": "10:45 is before 10:50."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_02",
+      "category": "scheduling",
+      "title": "An afternoon review",
+      "situation": "Choose whether this review session meets every requirement.",
+      "evidence": [
+        "You are available from 14:00 to 15:00.",
+        "The review must last at least 45 minutes.",
+        "The review must finish by 14:40."
+      ],
+      "proposal": "Meet from 14:00 to 14:45.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "reject",
+      "coreReason": "The review lasts long enough but ends five minutes after the required finish time.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "reject",
+      "answerExplanation": "14:00–14:45 is inside 14:00–15:00. The session lasts 45 minutes. 14:45 is later than 14:40.",
+      "constraintChecks": [
+        {
+          "label": "Availability",
+          "satisfied": true,
+          "explanation": "14:00–14:45 is inside 14:00–15:00."
+        },
+        {
+          "label": "Duration",
+          "satisfied": true,
+          "explanation": "The session lasts 45 minutes."
+        },
+        {
+          "label": "Deadline",
+          "satisfied": false,
+          "explanation": "14:45 is later than 14:40."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_03",
+      "category": "scheduling",
+      "title": "A morning work block",
+      "situation": "Choose whether this work block meets every requirement.",
+      "evidence": [
+        "You are available from 09:00 to 10:00.",
+        "The work block must last at least 40 minutes.",
+        "The work must finish by 09:50."
+      ],
+      "proposal": "Work from 09:20 to 10:00.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "proceed",
+      "coreReason": "The 40-minute work block fits within the available 09:00–10:00 window.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "reject",
+      "answerExplanation": "09:20–10:00 is inside the available hour. The work block lasts 40 minutes. 10:00 is later than the 09:50 deadline.",
+      "constraintChecks": [
+        {
+          "label": "Availability",
+          "satisfied": true,
+          "explanation": "09:20–10:00 is inside the available hour."
+        },
+        {
+          "label": "Duration",
+          "satisfied": true,
+          "explanation": "The work block lasts 40 minutes."
+        },
+        {
+          "label": "Deadline",
+          "satisfied": false,
+          "explanation": "10:00 is later than the 09:50 deadline."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_04",
+      "category": "scheduling",
+      "title": "A call before a deadline",
+      "situation": "Choose whether this call meets every requirement. Starting at the beginning of the available period is not required.",
+      "evidence": [
+        "You are available from 13:00 to 14:00.",
+        "The call must last at least 20 minutes.",
+        "The call must finish by 13:50."
+      ],
+      "proposal": "Call from 13:10 to 13:30.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "reject",
+      "coreReason": "The call starts ten minutes after availability begins, leaving less of the available hour for adjustments.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "proceed",
+      "answerExplanation": "13:10–13:30 is inside the available hour. The call lasts 20 minutes. 13:30 is before 13:50; no requirement calls for a 13:00 start.",
+      "constraintChecks": [
+        {
+          "label": "Availability",
+          "satisfied": true,
+          "explanation": "13:10–13:30 is inside the available hour."
+        },
+        {
+          "label": "Duration",
+          "satisfied": true,
+          "explanation": "The call lasts 20 minutes."
+        },
+        {
+          "label": "Deadline",
+          "satisfied": true,
+          "explanation": "13:30 is before 13:50; no requirement calls for a 13:00 start."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_05",
+      "category": "shopping",
+      "title": "Choosing a desk lamp",
+      "situation": "Choose whether this lamp meets every requirement. All prices and delivery dates are fictional and fixed for this task.",
+      "evidence": [
+        "Total spending, including delivery, must be at most $40.",
+        "The lamp must include adjustable brightness.",
+        "Delivery must arrive by Friday."
+      ],
+      "proposal": "Buy a $32 dimmable lamp with $5 delivery arriving Thursday.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "proceed",
+      "coreReason": "The $37 delivered total is within budget, brightness is adjustable, and Thursday is before the delivery deadline.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "proceed",
+      "answerExplanation": "$32 + $5 = $37, within $40. Dimmable means brightness is adjustable. Thursday is before Friday.",
+      "constraintChecks": [
+        {
+          "label": "Budget",
+          "satisfied": true,
+          "explanation": "$32 + $5 = $37, within $40."
+        },
+        {
+          "label": "Feature",
+          "satisfied": true,
+          "explanation": "Dimmable means brightness is adjustable."
+        },
+        {
+          "label": "Delivery",
+          "satisfied": true,
+          "explanation": "Thursday is before Friday."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_06",
+      "category": "shopping",
+      "title": "Choosing a backpack",
+      "situation": "Choose whether this backpack meets every requirement. Dates and prices are fixed for this task.",
+      "evidence": [
+        "Total spending, including delivery, must be at most $50.",
+        "The backpack must have a padded laptop compartment.",
+        "Delivery must arrive by Wednesday."
+      ],
+      "proposal": "Buy a $42 backpack with a padded laptop compartment and $4 delivery arriving Thursday.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "reject",
+      "coreReason": "The backpack fits the budget and feature requirements, but Thursday delivery misses the Wednesday deadline.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "reject",
+      "answerExplanation": "$42 + $4 = $46, within $50. The padded laptop compartment is included. Thursday is after Wednesday.",
+      "constraintChecks": [
+        {
+          "label": "Budget",
+          "satisfied": true,
+          "explanation": "$42 + $4 = $46, within $50."
+        },
+        {
+          "label": "Feature",
+          "satisfied": true,
+          "explanation": "The padded laptop compartment is included."
+        },
+        {
+          "label": "Delivery",
+          "satisfied": false,
+          "explanation": "Thursday is after Wednesday."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_07",
+      "category": "shopping",
+      "title": "Choosing headphones",
+      "situation": "Choose whether these headphones meet every requirement. There are no discounts or unlisted charges.",
+      "evidence": [
+        "Total spending, including delivery, must be at most $60.",
+        "The headphones must have a microphone.",
+        "Delivery must arrive by Saturday."
+      ],
+      "proposal": "Buy $56 headphones with a microphone and $8 delivery arriving Friday.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "proceed",
+      "coreReason": "The headphones cost $56, have the required microphone, and arrive before Saturday.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "reject",
+      "answerExplanation": "$56 + $8 = $64, above the $60 delivered budget. A microphone is included. Friday is before Saturday.",
+      "constraintChecks": [
+        {
+          "label": "Budget",
+          "satisfied": false,
+          "explanation": "$56 + $8 = $64, above the $60 delivered budget."
+        },
+        {
+          "label": "Feature",
+          "satisfied": true,
+          "explanation": "A microphone is included."
+        },
+        {
+          "label": "Delivery",
+          "satisfied": true,
+          "explanation": "Friday is before Saturday."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_08",
+      "category": "shopping",
+      "title": "Choosing a keyboard",
+      "situation": "Choose whether this keyboard meets every requirement. A wired or wireless connection is acceptable.",
+      "evidence": [
+        "Total spending, including delivery, must be at most $35.",
+        "The keyboard must include a numeric keypad.",
+        "Delivery must arrive by Tuesday."
+      ],
+      "proposal": "Buy a $28 wired keyboard with a numeric keypad and $3 delivery arriving Monday.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "reject",
+      "coreReason": "The keyboard uses a cable, which offers less freedom of placement than a wireless keyboard.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "proceed",
+      "answerExplanation": "$28 + $3 = $31, within $35. A numeric keypad is included; a cable is explicitly acceptable. Monday is before Tuesday.",
+      "constraintChecks": [
+        {
+          "label": "Budget",
+          "satisfied": true,
+          "explanation": "$28 + $3 = $31, within $35."
+        },
+        {
+          "label": "Feature",
+          "satisfied": true,
+          "explanation": "A numeric keypad is included; a cable is explicitly acceptable."
+        },
+        {
+          "label": "Delivery",
+          "satisfied": true,
+          "explanation": "Monday is before Tuesday."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_09",
+      "category": "travel",
+      "title": "Getting to an appointment",
+      "situation": "Choose whether this route meets every requirement. Use only the fixed journey details given here.",
+      "evidence": [
+        "You must arrive by 09:00.",
+        "The fare must be at most $8.",
+        "The route must involve no more than one transfer."
+      ],
+      "proposal": "Take a route arriving at 08:50, costing $6, with one transfer.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "proceed",
+      "coreReason": "The route arrives before 09:00, costs less than $8, and has one transfer.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "proceed",
+      "answerExplanation": "08:50 is before 09:00. $6 is within $8. One transfer meets the maximum of one.",
+      "constraintChecks": [
+        {
+          "label": "Arrival",
+          "satisfied": true,
+          "explanation": "08:50 is before 09:00."
+        },
+        {
+          "label": "Fare",
+          "satisfied": true,
+          "explanation": "$6 is within $8."
+        },
+        {
+          "label": "Transfers",
+          "satisfied": true,
+          "explanation": "One transfer meets the maximum of one."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_10",
+      "category": "travel",
+      "title": "Getting to a workshop",
+      "situation": "Choose whether this route meets every requirement. Journey details are fixed.",
+      "evidence": [
+        "You must arrive by 10:00.",
+        "The fare must be at most $10.",
+        "The route must involve no more than one transfer."
+      ],
+      "proposal": "Take a route arriving at 10:10, costing $7, with no transfers.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "reject",
+      "coreReason": "The route is affordable and direct, but arrives ten minutes after the deadline.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "reject",
+      "answerExplanation": "10:10 is later than 10:00. $7 is within $10. No transfers meets the maximum of one.",
+      "constraintChecks": [
+        {
+          "label": "Arrival",
+          "satisfied": false,
+          "explanation": "10:10 is later than 10:00."
+        },
+        {
+          "label": "Fare",
+          "satisfied": true,
+          "explanation": "$7 is within $10."
+        },
+        {
+          "label": "Transfers",
+          "satisfied": true,
+          "explanation": "No transfers meets the maximum of one."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_11",
+      "category": "travel",
+      "title": "Getting to a gathering",
+      "situation": "Choose whether this route meets every requirement. Journey details are fixed.",
+      "evidence": [
+        "You must arrive by 18:00.",
+        "The fare must be at most $5.",
+        "The route must involve no more than one transfer."
+      ],
+      "proposal": "Take a route arriving at 17:45, costing $4, with two transfers.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "proceed",
+      "coreReason": "The route arrives fifteen minutes early and the $4 fare stays within budget.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "reject",
+      "answerExplanation": "17:45 is before 18:00. $4 is within $5. Two transfers exceeds the maximum of one.",
+      "constraintChecks": [
+        {
+          "label": "Arrival",
+          "satisfied": true,
+          "explanation": "17:45 is before 18:00."
+        },
+        {
+          "label": "Fare",
+          "satisfied": true,
+          "explanation": "$4 is within $5."
+        },
+        {
+          "label": "Transfers",
+          "satisfied": false,
+          "explanation": "Two transfers exceeds the maximum of one."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_12",
+      "category": "travel",
+      "title": "Getting to a morning event",
+      "situation": "Choose whether this route meets every requirement. Walking is acceptable up to the stated limit, and the arrival time includes it.",
+      "evidence": [
+        "You must arrive by 11:00.",
+        "The fare must be at most $7.",
+        "Walking must total no more than 10 minutes."
+      ],
+      "proposal": "Take a route arriving at 10:50, costing $5, with 8 minutes of walking.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "reject",
+      "coreReason": "The route includes a walking segment, which requires additional effort compared with a route without walking.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "proceed",
+      "answerExplanation": "10:50 includes walking and is before 11:00. $5 is within $7. 8 minutes is within 10; walking is explicitly acceptable.",
+      "constraintChecks": [
+        {
+          "label": "Arrival",
+          "satisfied": true,
+          "explanation": "10:50 includes walking and is before 11:00."
+        },
+        {
+          "label": "Fare",
+          "satisfied": true,
+          "explanation": "$5 is within $7."
+        },
+        {
+          "label": "Walking",
+          "satisfied": true,
+          "explanation": "8 minutes is within 10; walking is explicitly acceptable."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_13",
+      "category": "activities",
+      "title": "Booking a discussion room",
+      "situation": "Choose whether this room booking meets every requirement.",
+      "evidence": [
+        "The room must seat all 8 participants.",
+        "The booking must cover 18:00 to 19:00 in full.",
+        "The booking must cost at most $30."
+      ],
+      "proposal": "Book a 10-seat room from 18:00 to 19:00 for $25.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "proceed",
+      "coreReason": "The room seats all participants, covers the full hour, and costs less than $30.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "proceed",
+      "answerExplanation": "10 seats accommodate 8 people. The booking covers 18:00–19:00 in full. $25 is within $30.",
+      "constraintChecks": [
+        {
+          "label": "Capacity",
+          "satisfied": true,
+          "explanation": "10 seats accommodate 8 people."
+        },
+        {
+          "label": "Time",
+          "satisfied": true,
+          "explanation": "The booking covers 18:00–19:00 in full."
+        },
+        {
+          "label": "Cost",
+          "satisfied": true,
+          "explanation": "$25 is within $30."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_14",
+      "category": "activities",
+      "title": "Booking a game table",
+      "situation": "Choose whether this booking meets every requirement.",
+      "evidence": [
+        "The table must seat all 6 participants.",
+        "The booking must cover 15:00 to 16:00 in full.",
+        "The booking must cost at most $20."
+      ],
+      "proposal": "Book a 4-seat table from 15:00 to 16:00 for $15.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "reject",
+      "coreReason": "The booking fits the time and budget, but the table is two seats short.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "reject",
+      "answerExplanation": "4 seats cannot accommodate 6 people. The booking covers 15:00–16:00 in full. $15 is within $20.",
+      "constraintChecks": [
+        {
+          "label": "Capacity",
+          "satisfied": false,
+          "explanation": "4 seats cannot accommodate 6 people."
+        },
+        {
+          "label": "Time",
+          "satisfied": true,
+          "explanation": "The booking covers 15:00–16:00 in full."
+        },
+        {
+          "label": "Cost",
+          "satisfied": true,
+          "explanation": "$15 is within $20."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_15",
+      "category": "activities",
+      "title": "Booking a craft session",
+      "situation": "Choose whether this session meets every requirement. The listed fee is per person and there are no group discounts.",
+      "evidence": [
+        "The session must have places for all 5 participants.",
+        "The session must run from 14:00 to 15:00.",
+        "Total spending for all participants must be at most $50."
+      ],
+      "proposal": "Reserve 5 available places in the 14:00–15:00 session at $12 per person.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "proceed",
+      "coreReason": "There are enough places at the required time, and the listed fee is $12 per person.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "reject",
+      "answerExplanation": "5 available places accommodate 5 participants. The session runs from 14:00 to 15:00. 5 × $12 = $60, above the total $50 limit.",
+      "constraintChecks": [
+        {
+          "label": "Capacity",
+          "satisfied": true,
+          "explanation": "5 available places accommodate 5 participants."
+        },
+        {
+          "label": "Time",
+          "satisfied": true,
+          "explanation": "The session runs from 14:00 to 15:00."
+        },
+        {
+          "label": "Cost",
+          "satisfied": false,
+          "explanation": "5 × $12 = $60, above the total $50 limit."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    },
+    {
+      "id": "day_16",
+      "category": "activities",
+      "title": "Booking an indoor activity",
+      "situation": "Choose whether this booking meets every requirement. No outdoor setting or particular venue type is required.",
+      "evidence": [
+        "The activity must accommodate all 4 participants.",
+        "The booking must cover 16:00 to 17:00 in full.",
+        "Total spending must be at most $40."
+      ],
+      "proposal": "Book an indoor activity for 4 people from 16:00 to 17:00 for a total of $32.",
+      "actionLabel": "Use this option",
+      "alternativeLabel": "Do not use this option",
+      "aiRecommendation": "reject",
+      "coreReason": "The activity is indoors, so it does not offer the open-air setting of an outdoor activity.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "groundTruth": "proceed",
+      "answerExplanation": "The booking accommodates all 4 participants. The booking covers 16:00–17:00 in full. $32 is within $40; an outdoor setting is not required.",
+      "constraintChecks": [
+        {
+          "label": "Capacity",
+          "satisfied": true,
+          "explanation": "The booking accommodates all 4 participants."
+        },
+        {
+          "label": "Time",
+          "satisfied": true,
+          "explanation": "The booking covers 16:00–17:00 in full."
+        },
+        {
+          "label": "Cost",
+          "satisfied": true,
+          "explanation": "$32 is within $40; an outdoor setting is not required."
+        }
+      ],
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Constructed scenario; all decision rules are stated in the item.",
+          "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+        ]
+      }
+    }
+  ],
+  "practice": {
+    "id": "practice_01",
+    "category": "practice",
+    "title": "A practice room booking",
+    "situation": "Practice checking a proposal against every requirement.",
+    "evidence": [
+      "The room must seat 3 people.",
+      "The booking must cover 12:00 to 12:30.",
+      "The booking must cost at most $15."
+    ],
+    "proposal": "Book a 4-seat room from 12:00 to 12:30 for $10.",
+    "actionLabel": "Use this option",
+    "alternativeLabel": "Do not use this option",
+    "aiRecommendation": "proceed",
+    "coreReason": "The room has enough seats, covers the required time, and costs less than $15.",
+    "expressionRefs": {
+      "tone": [
+        "tone:0",
+        "tone:1",
+        "tone:2",
+        "tone:3",
+        "tone:4"
+      ],
+      "personality": [
+        "personality:0",
+        "personality:1",
+        "personality:2",
+        "personality:3",
+        "personality:4"
+      ],
+      "framing": [
+        "framing:0",
+        "framing:1",
+        "framing:2",
+        "framing:3",
+        "framing:4"
+      ],
+      "confidence": [
+        "confidence:0",
+        "confidence:1",
+        "confidence:2",
+        "confidence:3",
+        "confidence:4"
+      ]
+    },
+    "groundTruth": "proceed",
+    "answerExplanation": "4 seats accommodate 3 people. The booking covers 12:00–12:30. $10 is within $15.",
+    "constraintChecks": [
+      {
+        "label": "Capacity",
+        "satisfied": true,
+        "explanation": "4 seats accommodate 3 people."
+      },
+      {
+        "label": "Time",
+        "satisfied": true,
+        "explanation": "The booking covers 12:00–12:30."
+      },
+      {
+        "label": "Cost",
+        "satisfied": true,
+        "explanation": "$10 is within $15."
+      }
+    ],
+    "review": {
+      "status": "pending",
+      "notes": [
+        "Constructed scenario; all decision rules are stated in the item.",
+        "Answer logic checked against explicit constraints; independent research review and perceived cue-level validation remain pending."
+      ]
+    }
+  }
+}

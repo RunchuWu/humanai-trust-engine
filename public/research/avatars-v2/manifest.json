@@ -1,0 +1,34 @@
+{
+  "version": "avatars-v2",
+  "method": "Built-in image_gen",
+  "created": "2026-09-21",
+  "assets": [
+    {
+      "level": 0,
+      "file": "/research/avatars-v2/0.png",
+      "prompt": "Use case: stylized-concept. Asset type: a single square avatar for an impersonal AI information tool used at 56px. A refined solid dark graphite cube with three precise planar faces, subtly beveled edges, isometric view, centered on a very pale cool grey background. Cube occupies 60 percent of canvas, clear bold silhouette. Minimal architectural product illustration, soft matte material and restrained studio lighting, no reflections, no face, no eyes, no text, no logo, no badge, no frame, no extra objects. Quiet precision and machine identity."
+    },
+    {
+      "level": 25,
+      "file": "/research/avatars-v2/25.png",
+      "prompt": "Use case: stylized-concept. Asset type: single square avatar for an abstract AI task assistant at 56px. A sculptural four-lobed knot of smooth folded matte sage grey material, a continuous rounded clover-like form with a small center opening. Centered bold simple silhouette occupying 65 percent of canvas, pale sage white background. Refined minimal product illustration, soft directional light and delicate shadow. Nonhuman, no face, no eyes, no text or logo, no badge, no frame, no other objects. Restrained calm editorial design."
+    },
+    {
+      "level": 50,
+      "file": "/research/avatars-v2/50.png",
+      "prompt": "Use case: stylized-concept. Asset type: a single square avatar for a neutral AI assistant at 56px. Create a refined tactile editorial illustration of an anonymous human head-and-shoulders silhouette, simple balanced front facing bust, sage grey matte paper silhouette with subtle dimensional shading, completely featureless face, no eyes nose mouth or hair detail. Calm pale sage background, centered silhouette filling 70 percent of the frame with breathing room. Sophisticated cut-paper design, clear recognizable human contour and rounded shoulders, professional, quiet, neither cute nor cold robotic. No text, icons, badges, borders or watermark. Square full-bleed background."
+    },
+    {
+      "level": 75,
+      "file": "/research/avatars-v2/75.png",
+      "prompt": "Use case: identity-preserve. Edit the referenced avatar image. Preserve the EXACT same illustrated woman, identity, facial proportions, hairstyle, sage shirt, peach background, head angle, crop, lighting, paint texture and all colors. Change ONLY her mouth and cheek expression from a friendly smile to a calm neutral resting closed mouth, gently attentive but not smiling and not sad. The result is the same person's neutral-expression version for a controlled avatar spectrum. No other change. Square image, no text or watermark.",
+      "reference": "100.png",
+      "edit": "Expression-only identity-preserving edit"
+    },
+    {
+      "level": 100,
+      "file": "/research/avatars-v2/100.png",
+      "prompt": "Use case: stylized-concept. Asset type: a single square avatar image for a warm AI research assistant UI, used at 56 px and 80 px. Create a beautiful editorial gouache illustration of a fictional adult woman, shoulders and head, centered front-facing with very slightly tilted head, dark chestnut chin-length soft bob, warm medium skin, calm brown eyes, a gentle authentic closed-mouth smile, wearing a simple sage green crewneck. Sophisticated friendly book illustration with hand-painted subtle texture and clean silhouette, rounded natural features, restrained detail, no photorealism, no 3D plastic, no anime, no corporate clipart. Flat warm pale peach background filling the square. Head occupies 65% of frame with generous breathing space at top; shoulders fill bottom. Warm welcoming daylight. No props, text, logos, hearts, badges, frame or watermark. The person is an illustrated AI identity, not a real photograph."
+    }
+  ]
+}

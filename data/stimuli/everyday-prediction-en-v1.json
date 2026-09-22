@@ -1,0 +1,1346 @@
+{
+  "schemaVersion": 3,
+  "version": "everyday-prediction-en-v1",
+  "workflow": "prediction-v1",
+  "status": "review_required",
+  "pilotIds": [
+    "forecast_01",
+    "forecast_02",
+    "forecast_03",
+    "forecast_04",
+    "forecast_05",
+    "forecast_10"
+  ],
+  "catalog": {
+    "names": [
+      "Assistant",
+      "AI Assistant",
+      "Alex",
+      "Sarah",
+      "Your Companion"
+    ],
+    "tones": [
+      "An estimate of this duration is available for review.",
+      "Please consider this estimate of the duration.",
+      "Here is an estimate of how long it may take.",
+      "Let’s look at how long this might take.",
+      "Hey, here’s my take on how long this could take."
+    ],
+    "personalities": [
+      "Consider the estimate alongside the available observations.",
+      "Weigh the recent observations and current context in turn.",
+      "Take a moment to think through your estimate.",
+      "You can use these observations to guide your own estimate.",
+      "You can weigh these clues and settle on your own estimate."
+    ],
+    "confidence": [
+      "This estimate is tentative.",
+      "This estimate is a leaning judgment.",
+      "This is the estimate based on the available observations.",
+      "This estimate is made with confidence.",
+      "This is a firm estimate."
+    ],
+    "framings": [
+      {
+        "role": "Information tool",
+        "welcome": "This interface displays information for prediction review.",
+        "situation": "Task context is available for review.",
+        "evidence": "The stated observations are listed below.",
+        "recommendation": "This tool provides information for your independent judgment.",
+        "closing": "The prediction task is complete."
+      },
+      {
+        "role": "Task assistant",
+        "welcome": "This assistant provides task information for your review.",
+        "situation": "Please review the context for this task.",
+        "evidence": "Please check the stated observations below.",
+        "recommendation": "As a task assistant, I provide an estimate for review.",
+        "closing": "You have completed the prediction task. Thank you."
+      },
+      {
+        "role": "Decision assistant",
+        "welcome": "I provide assessments to help you review everyday predictions.",
+        "situation": "Here is the context for your next prediction.",
+        "evidence": "Here are the observations to consider in your prediction.",
+        "recommendation": "As a decision assistant, I offer an estimate to consider.",
+        "closing": "You have finished the predictions. Thank you for taking part."
+      },
+      {
+        "role": "Collaborative partner",
+        "welcome": "I’ll work alongside you as you review these everyday predictions.",
+        "situation": "Let’s get oriented to the next prediction.",
+        "evidence": "Let’s review the observations before you decide.",
+        "recommendation": "As your collaborative partner, I’ll work through this prediction with you.",
+        "closing": "We’ve reached the end of the predictions. Thank you for working through them."
+      },
+      {
+        "role": "Companion",
+        "welcome": "I’m your AI companion for these everyday predictions. We can take them one at a time.",
+        "situation": "Let’s take a look at what’s coming up next.",
+        "evidence": "Let’s look through these observations together, at your pace.",
+        "recommendation": "As your AI companion, I’m here with you for this prediction.",
+        "closing": "That’s our last prediction. Thanks for spending this time going through them with me."
+      }
+    ]
+  },
+  "trials": [
+    {
+      "taskType": "prediction",
+      "id": "forecast_01",
+      "category": "delivery",
+      "title": "An afternoon parcel",
+      "situation": "Estimate the time from dispatch to delivery for a parcel travelling across town.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        28,
+        35,
+        44,
+        39,
+        51
+      ],
+      "historyLabel": "Five recent deliveries on similar routes (minutes)",
+      "evidence": [
+        "It is a weekday afternoon with moderate traffic.",
+        "The driver has two stops before this address.",
+        "This building has a staffed reception desk."
+      ],
+      "aiEstimate": 42,
+      "coreReason": "The recent trips often took around forty minutes. Moderate traffic and two earlier stops suggest a similar duration.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 45,
+      "outcomeExplanation": "The held-out simulated case took 45 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Stop lengths and traffic changes are not observed."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_02",
+      "category": "travel",
+      "title": "A bus trip across town",
+      "situation": "Estimate the total time from reaching the bus stop to arriving at the destination.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        26,
+        33,
+        29,
+        41,
+        35
+      ],
+      "historyLabel": "Five recent trips at roughly this time (minutes)",
+      "evidence": [
+        "The next bus is expected in about five minutes.",
+        "Traffic is currently moving but slowing near the centre.",
+        "There is a short walk from the final stop."
+      ],
+      "aiEstimate": 36,
+      "coreReason": "The recent trips and expected wait suggest a duration in the mid-thirties, allowing for the walk at the end.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 32,
+      "outcomeExplanation": "The held-out simulated case took 32 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Actual bus arrival and traffic queues remain uncertain."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_03",
+      "category": "waiting",
+      "title": "A café queue",
+      "situation": "Estimate the time from joining the queue to receiving a takeaway drink.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 60,
+        "step": 1
+      },
+      "history": [
+        8,
+        17,
+        12,
+        26,
+        19
+      ],
+      "historyLabel": "Five recent orders during similar busy periods (minutes)",
+      "evidence": [
+        "There are six customers ahead of you.",
+        "Two staff members are preparing drinks.",
+        "Some earlier orders contain several drinks."
+      ],
+      "aiEstimate": 21,
+      "coreReason": "The queue and multi-drink orders suggest a wait above the shorter recent examples, even with two staff preparing orders.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 24,
+      "outcomeExplanation": "The held-out simulated case took 24 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Drink complexity and unfinished orders vary."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_04",
+      "category": "activities",
+      "title": "Putting together a small shelf",
+      "situation": "Estimate how long it will take one person to assemble a small flat-pack shelf.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        35,
+        48,
+        62,
+        41,
+        55
+      ],
+      "historyLabel": "Five recent assembly times for similar shelves (minutes)",
+      "evidence": [
+        "The person has assembled simple furniture before.",
+        "The required tools are already available.",
+        "The shelf includes several similar-looking fittings."
+      ],
+      "aiEstimate": 47,
+      "coreReason": "Prior experience and ready tools should help, so a duration near the middle of the recent examples seems plausible.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 58,
+      "outcomeExplanation": "The held-out simulated case took 58 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Fitting identification and rework may add time."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_05",
+      "category": "delivery",
+      "title": "A grocery delivery",
+      "situation": "Estimate the time from the driver leaving the store to groceries reaching an apartment.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        32,
+        46,
+        39,
+        58,
+        43
+      ],
+      "historyLabel": "Five recent grocery deliveries in this area (minutes)",
+      "evidence": [
+        "The driver is leaving near the evening rush.",
+        "Several deliveries share this route.",
+        "The destination is in a large apartment complex."
+      ],
+      "aiEstimate": 49,
+      "coreReason": "Evening traffic and shared deliveries suggest a duration longer than most of the shorter recent trips.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 67,
+      "outcomeExplanation": "The held-out simulated case took 67 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Traffic and access delays in the complex are uncertain."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_06",
+      "category": "travel",
+      "title": "A tram journey",
+      "situation": "Estimate the time from arriving at the tram stop to reaching a museum entrance.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 90,
+        "step": 1
+      },
+      "history": [
+        19,
+        28,
+        24,
+        36,
+        31
+      ],
+      "historyLabel": "Five recent stop-to-entrance trips (minutes)",
+      "evidence": [
+        "Trams are running at their usual frequency.",
+        "The destination stop is close to the entrance.",
+        "Passenger demand is heavier than earlier in the day."
+      ],
+      "aiEstimate": 29,
+      "coreReason": "Usual service and a short final walk suggest a duration near the recent middle, with some allowance for heavier boarding.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 27,
+      "outcomeExplanation": "The held-out simulated case took 27 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Boarding delays and signal timing vary."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_07",
+      "category": "waiting",
+      "title": "Collecting an order at a bakery",
+      "situation": "Estimate the time from joining the collection queue to receiving an order.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 60,
+        "step": 1
+      },
+      "history": [
+        5,
+        12,
+        9,
+        18,
+        14
+      ],
+      "historyLabel": "Five recent collection waits (minutes)",
+      "evidence": [
+        "Four people are ahead in the collection queue.",
+        "Most orders are already packed.",
+        "One staff member handles both payment and collection."
+      ],
+      "aiEstimate": 12,
+      "coreReason": "Prepacked orders should keep service fairly quick, though a single staff member may create some delay.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 10,
+      "outcomeExplanation": "The held-out simulated case took 10 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Payment interruptions and order checks vary."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_08",
+      "category": "activities",
+      "title": "Preparing a shared lunch",
+      "situation": "Estimate the time needed to prepare lunch from the ingredients laid out on the counter.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 90,
+        "step": 1
+      },
+      "history": [
+        24,
+        38,
+        31,
+        47,
+        35
+      ],
+      "historyLabel": "Five previous preparations of similar lunches (minutes)",
+      "evidence": [
+        "The person knows the recipe.",
+        "Some vegetables still need chopping.",
+        "Only one large pan is available."
+      ],
+      "aiEstimate": 34,
+      "coreReason": "Knowing the recipe should help with preparation, suggesting a duration close to the recent middle despite some chopping still needed.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 45,
+      "outcomeExplanation": "The held-out simulated case took 45 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Chopping speed and shared pan usage vary."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_09",
+      "category": "delivery",
+      "title": "An evening takeaway",
+      "situation": "Estimate the time from a restaurant confirming an order to it arriving at home.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        38,
+        52,
+        45,
+        68,
+        57
+      ],
+      "historyLabel": "Five recent confirmation-to-delivery times (minutes)",
+      "evidence": [
+        "The restaurant is busier than usual.",
+        "A courier is nearby but not yet assigned.",
+        "The home is a moderate distance from the restaurant."
+      ],
+      "aiEstimate": 60,
+      "coreReason": "A busier kitchen and an unassigned courier suggest allowing more time than the faster recent deliveries.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 54,
+      "outcomeExplanation": "The held-out simulated case took 54 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Kitchen completion and courier assignment are uncertain."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_10",
+      "category": "travel",
+      "title": "A weekend taxi ride",
+      "situation": "Estimate the time from getting into a taxi to arriving at a sports venue.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 90,
+        "step": 1
+      },
+      "history": [
+        18,
+        27,
+        23,
+        39,
+        32
+      ],
+      "historyLabel": "Five recent rides to the venue area (minutes)",
+      "evidence": [
+        "It is the weekend shortly before an event.",
+        "The main road is flowing steadily.",
+        "Traffic near the venue entrance is not visible."
+      ],
+      "aiEstimate": 30,
+      "coreReason": "Steady traffic on the main road suggests a duration around the recent middle, with a little allowance near the venue.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 43,
+      "outcomeExplanation": "The held-out simulated case took 43 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "The unobserved final approach can create delays."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_11",
+      "category": "waiting",
+      "title": "A repair-shop collection",
+      "situation": "Estimate the wait from joining a shop queue to collecting an already repaired item.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 60,
+        "step": 1
+      },
+      "history": [
+        7,
+        15,
+        11,
+        23,
+        18
+      ],
+      "historyLabel": "Five recent collection waits at this shop (minutes)",
+      "evidence": [
+        "Three customers are ahead.",
+        "One person is serving at the counter.",
+        "Collection requires checking the repair paperwork."
+      ],
+      "aiEstimate": 16,
+      "coreReason": "The queue and paperwork suggest a wait near the middle of the recent examples rather than an immediate collection.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 19,
+      "outcomeExplanation": "The held-out simulated case took 19 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Earlier customers may need additional explanations."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_12",
+      "category": "activities",
+      "title": "Tidying a shared room",
+      "situation": "Estimate how long two people will take to tidy a shared room for visitors.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 90,
+        "step": 1
+      },
+      "history": [
+        20,
+        34,
+        29,
+        45,
+        38
+      ],
+      "historyLabel": "Five previous two-person room tidying times (minutes)",
+      "evidence": [
+        "The room has been used for a group activity.",
+        "Storage boxes are available nearby.",
+        "Some items need to be sorted before being put away."
+      ],
+      "aiEstimate": 37,
+      "coreReason": "The recent times and the need to sort items suggest a duration above the quicker cleanups, helped by nearby storage.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 34,
+      "outcomeExplanation": "The held-out simulated case took 34 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Sorting decisions and pace vary."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_13",
+      "category": "delivery",
+      "title": "A library transfer",
+      "situation": "Estimate the time from a courier collecting a box at one branch to it reaching another branch.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 120,
+        "step": 1
+      },
+      "history": [
+        25,
+        39,
+        33,
+        49,
+        42
+      ],
+      "historyLabel": "Five recent branch-to-branch transfers (minutes)",
+      "evidence": [
+        "The courier uses the usual route.",
+        "Traffic is moderate today.",
+        "A brief stop at another branch is planned."
+      ],
+      "aiEstimate": 41,
+      "coreReason": "The usual route and moderate traffic suggest a duration near the recent middle, with time for the extra stop.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 38,
+      "outcomeExplanation": "The held-out simulated case took 38 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "The extra stop duration and traffic changes are uncertain."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_14",
+      "category": "travel",
+      "title": "A cycle route to a park",
+      "situation": "Estimate the time from setting off by bicycle to reaching the park gate.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 90,
+        "step": 1
+      },
+      "history": [
+        16,
+        25,
+        21,
+        34,
+        28
+      ],
+      "historyLabel": "Five recent trips along similar routes (minutes)",
+      "evidence": [
+        "The rider is familiar with the route.",
+        "There is a light headwind.",
+        "Several junctions use traffic signals."
+      ],
+      "aiEstimate": 27,
+      "coreReason": "Route familiarity should help, but a headwind and signals suggest allowing more than the shortest recent trips.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 29,
+      "outcomeExplanation": "The held-out simulated case took 29 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Signal waits and cycling pace vary."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_15",
+      "category": "waiting",
+      "title": "A lunch counter",
+      "situation": "Estimate the wait from joining a counter queue to collecting a lunch order.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 60,
+        "step": 1
+      },
+      "history": [
+        9,
+        18,
+        14,
+        29,
+        22
+      ],
+      "historyLabel": "Five recent lunchtime waits (minutes)",
+      "evidence": [
+        "The queue is longer than earlier today.",
+        "Two staff members are serving.",
+        "One popular dish is being replenished."
+      ],
+      "aiEstimate": 20,
+      "coreReason": "Two staff members should help move the queue, so a wait around the recent middle seems plausible.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 31,
+      "outcomeExplanation": "The held-out simulated case took 31 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Replenishment duration and order mix are uncertain."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    },
+    {
+      "taskType": "prediction",
+      "id": "forecast_16",
+      "category": "activities",
+      "title": "Packing for a short trip",
+      "situation": "Estimate how long one person will take to pack a bag for a short trip.",
+      "question": "How many minutes will this take?",
+      "unit": "minutes",
+      "estimateRange": {
+        "min": 0,
+        "max": 90,
+        "step": 1
+      },
+      "history": [
+        18,
+        29,
+        24,
+        42,
+        33
+      ],
+      "historyLabel": "Five previous short-trip packing times (minutes)",
+      "evidence": [
+        "A packing list is already written.",
+        "Some clothing needs to be located.",
+        "Travel documents are ready in one place."
+      ],
+      "aiEstimate": 30,
+      "coreReason": "A prepared list and ready documents should help, while locating clothing may bring the duration near the recent middle.",
+      "expressionRefs": {
+        "tone": [
+          "tone:0",
+          "tone:1",
+          "tone:2",
+          "tone:3",
+          "tone:4"
+        ],
+        "personality": [
+          "personality:0",
+          "personality:1",
+          "personality:2",
+          "personality:3",
+          "personality:4"
+        ],
+        "framing": [
+          "framing:0",
+          "framing:1",
+          "framing:2",
+          "framing:3",
+          "framing:4"
+        ],
+        "confidence": [
+          "confidence:0",
+          "confidence:1",
+          "confidence:2",
+          "confidence:3",
+          "confidence:4"
+        ]
+      },
+      "outcome": 27,
+      "outcomeExplanation": "The held-out simulated case took 27 minutes. It is one possible realization, not an answer deducible from the observations.",
+      "provenance": {
+        "kind": "synthetic",
+        "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+        "uncertaintyNote": "Time spent finding clothing varies."
+      },
+      "review": {
+        "status": "pending",
+        "notes": [
+          "Pilot candidate: plausible estimates and reasoning require independent review.",
+          "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+          "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+        ]
+      }
+    }
+  ],
+  "practice": {
+    "taskType": "prediction",
+    "id": "forecast_practice",
+    "category": "practice",
+    "title": "A practice delivery forecast",
+    "situation": "Estimate the dispatch-to-arrival time of a small delivery.",
+    "question": "How many minutes will this take?",
+    "unit": "minutes",
+    "estimateRange": {
+      "min": 0,
+      "max": 90,
+      "step": 1
+    },
+    "history": [
+      20,
+      28,
+      35,
+      24,
+      41
+    ],
+    "historyLabel": "Five recent similar deliveries (minutes)",
+    "evidence": [
+      "The route is familiar to the driver.",
+      "Traffic is moderate.",
+      "There is one stop before this address."
+    ],
+    "aiEstimate": 31,
+    "coreReason": "Moderate traffic and one earlier stop suggest a duration around thirty minutes.",
+    "expressionRefs": {
+      "tone": [
+        "tone:0",
+        "tone:1",
+        "tone:2",
+        "tone:3",
+        "tone:4"
+      ],
+      "personality": [
+        "personality:0",
+        "personality:1",
+        "personality:2",
+        "personality:3",
+        "personality:4"
+      ],
+      "framing": [
+        "framing:0",
+        "framing:1",
+        "framing:2",
+        "framing:3",
+        "framing:4"
+      ],
+      "confidence": [
+        "confidence:0",
+        "confidence:1",
+        "confidence:2",
+        "confidence:3",
+        "confidence:4"
+      ]
+    },
+    "outcome": 34,
+    "outcomeExplanation": "The held-out simulated case took 34 minutes. It is one possible realization, not an answer deducible from the observations.",
+    "provenance": {
+      "kind": "synthetic",
+      "generationRule": "Author-constructed recent observations, contextual clues, fixed AI estimate and held-out realization; no trained or live model is claimed.",
+      "uncertaintyNote": "Stop time and traffic changes are uncertain."
+    },
+    "review": {
+      "status": "pending",
+      "notes": [
+        "Pilot candidate: plausible estimates and reasoning require independent review.",
+        "Assess unaided error, initial confidence, ceiling/floor effects and AI usefulness in a small pilot before full use.",
+        "Do not interpret one realized outcome as proof that a forecast was rational or irrational."
+      ]
+    }
+  }
+}

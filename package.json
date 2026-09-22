@@ -14,7 +14,15 @@
     "validate:stimuli": "node scripts/validate-stimuli.mjs",
     "validate:export": "node scripts/validate-export.mjs",
     "summarize:export": "node scripts/summarize-export.mjs",
-    "verify:final": "npm run lint && tsc --noEmit && npm run check:docs && npm run validate:stimuli && npm run qa:pilot && npm run summarize:export -- --file data/fixtures/synthetic-pilot.json --latest-only && npm run build"
+    "verify:final": "npm run lint && tsc --noEmit && npm run check:docs && npm run validate:stimuli && npm run test:research:materials && npm run qa:pilot && npm run summarize:export -- --file data/fixtures/synthetic-pilot.json --latest-only && npm run build",
+    "test:research:materials": "node scripts/test-research-materials.mjs && node scripts/test-two-part-materials.mjs",
+    "test:research:e2e": "node scripts/test-two-part-e2e.mjs",
+    "test:research:browser": "node scripts/test-research-browser.mjs",
+    "test:research:demo-sync": "node scripts/test-demo-sync-browser.mjs",
+    "validate:research-export": "node scripts/validate-research-export.mjs",
+    "test:constraint:materials": "node scripts/test-constraint-materials.mjs",
+    "test:constraint:e2e": "node scripts/test-constraint-e2e.mjs",
+    "test:prediction:e2e": "node scripts/test-research-e2e.mjs"
   },
   "dependencies": {
     "next": "16.1.6",
