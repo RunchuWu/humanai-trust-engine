@@ -1,280 +1,122 @@
 # HumanAI Trust Calibration Engine
 
-Official Google Summer of Code 2026 project for ISSR / Human-AI Organization.
+A research prototype for studying AI interface presentation, advice-taking,
+trust-related judgments, and decision-making. Originally developed for Google
+Summer of Code 2026 with ISSR / Human-AI Organization.
 
-> **GSoC 2026 final work product:**
-> [Read the public project report](docs/final-work-product.md), including the
-> completed deliverables, code evidence, verification results, limitations, and
-> continuation path.
+**Current status (September 2026): runnable research prototype, pending independent
+material review and human piloting.** Software checks verify implementation and
+record integrity; they do not establish manipulation validity or readiness for a
+confirmatory participant study.
 
-This repository contains a modular web-based experimentation platform for studying trust calibration in AI-assisted decision-making. The current task domain is transportation and drone operations: participants supervise an AI recommendation in an operations scenario, then decide whether to follow or override it. The platform is designed to support controlled manipulation of humanlike and authority-signaling AI interface cues, behavioral event logging, and reproducible export for downstream analysis.
+See the [September update and verification notes](docs/research-update-2026-09.md)
+and the [experiment redesign proposals (中文)](docs/experiment-redesign-proposals-zh.md).
+The redesign proposals are planning documents, not implemented experimental conditions.
 
-The project has moved beyond the initial screening prototype into a complete,
-documented GSoC work product: a controlled operations decision task with
-configurable AI cues, reproducible event export, researcher tooling,
-accessibility improvements, and deterministic data-quality checks.
+## Current workflows
 
-## Current Capabilities
+| Workflow | Entry point | Materials | Storage |
+| --- | --- | --- | --- |
+| English two-part research | `/task?debug=1` researcher workspace; frozen study links for collection | Four open judgments + eight numerical forecasts + two practices | Persistent local file store; configure `RESEARCH_DATA_DIR` |
+| English participant demo | `/task` | Current two-part materials | No responses saved |
+| Chinese three-interface pilot | `/pilot/admin`; individual invitation links for collection | 12 common simulated decision tasks + practice and questionnaire | Supabase in production; local fallback for development only |
+| Legacy operations experiment | `/task?legacy=1` | Original 10 transportation/drone tasks | Independent legacy JSONL logs |
 
-- Runs a 10-trial AI-assisted transportation/drone operations task at `/task`
-- Guides participants through welcome, consent, instructions, comprehension check, optional user-set agent setup, practice, main task, and debrief
-- Uses staged trial reveal so participants see the operational situation, sensor/context evidence, and AI recommendation in sequence
-- Randomly assigns participants to `control`, `industry_set`, or `user_set` and persists assignment identity
-- Renders modular cue-source/cue-type conditions for agent name, tone/warmth, avatar, personality, and confidence/explanation style
-- Logs behavioral events (`task_shown`, `decision`) to study-run JSONL files
-- Exports filtered event-level data as JSON or CSV
-- Separates participant-facing UI from researcher/debug utilities
-- Provides debug tools for condition forcing, screen jumping, reset, and export
+中文 pilot、英文两部分实验与旧版运营任务是三套独立流程，材料、数据与分析口径不能混用。
 
-## Interface Modes
+## English two-part research
 
-### Participant-Facing Interface (`/task`)
+The researcher workspace configures Cold, Neutral and Warm presentation profiles,
+previews the actual participant renderer, freezes immutable study versions, and
+exports paired responses with the displayed AI material.
 
-Default participant mode is clean and task-focused:
+- **Part 1:** four open judgments about fairness, privacy, responsibility and
+  resource allocation. Participants provide initial and final written judgments,
+  reasons, stance and self-confidence; a separate reflection is optional.
+- **Part 2:** eight numerical forecasts, two each for price, attendance, drink
+  consumption and time. Participants estimate before and after fixed AI advice.
+- **12 formal tasks + two practices = 14 task scenarios**, followed by eight
+  experience ratings. Open judgments precede numerical forecasts.
+- Frozen versions preserve materials, configuration, assignments and display
+  snapshots. Initial responses are saved before participant advice is released.
+- Current material version: `everyday-two-part-en-v1`; workflow: `two-part-v1`.
+  Existing frozen constraint and prediction studies retain their archived versions.
 
-- Deliberate screen sequence:
-  - Welcome
-  - Consent
-  - Instructions
-  - Comprehension check
-  - Agent setup for `user_set` participants
-  - Practice trial
-  - Main task
-  - Debrief
-- Staged trial reveal:
-  - `Operational Situation`
-  - `Sensor / Context Evidence`
-  - enlarged AI recommendation
-  - equal-weight decision actions: `Follow AI` / `Choose Opposite`
-- Completion screen without researcher tooling
+See the [two-part runbook](docs/research-two-part.md),
+[visual design and linked demo](docs/research-visual-design-v3.md), and
+[open-judgment design rationale](docs/open-judgment-study-proposal.md).
 
-Participant-specific UX rules:
+## Research interpretation and readiness
 
-- Participants can go back to previous trials and revise answers
-- After completing all 10 trials, they can choose **Review Last Trial** to revise
-- Researcher export controls are **hidden** in participant mode
+- The three presets vary **bundled interface cues**. Their comparison does not
+  identify the independent effect of an avatar, name, tone or layout.
+- Movement toward AI advice is a behavioral measure, not automatically greater
+  trust or better judgment. Open judgments have no objective answer key.
+- Numerical outcomes are synthetic comparison values, not uniquely deducible
+  answers. Advice weight and error measures are reported separately.
+- Fixed module order does not isolate task-type effects; before/after changes
+  without a no-AI comparison do not isolate AI's effect from reconsideration.
+- The eight experience items are individual research items, not a validated
+  composite trust scale. Text coding, the current primary outcomes, sampling and
+  confirmatory analysis plan still require finalization.
+- Independent semantic review, manipulation checks with people and completion-
+  burden assessment remain pending. Automated or synthetic QA is not a human pilot.
 
-### Researcher Debug Mode (`/task?debug=1`)
+The existing [analysis plan](docs/analysis-plan.md) describes the **legacy operations
+workflow**. Do not apply its follow/override summaries to the new two-part exports.
+The [redesign proposal](docs/experiment-redesign-proposals-zh.md) describes possible
+next studies; the current release does not implement them.
 
-Debug mode shows researcher utilities without changing experiment logic:
+## Local setup
 
-- Debug panel with `participantId`, `conditionId`, cue source/modules, `sessionId`, `current screen`, `current trial_index`
-- `Reset` action
-- Force `control`, `industry_set`, or `user_set` for researcher review
-- Jump to any experiment screen
-- Researcher data preview with study-run summaries, filters, and export links
-
-This supports quick exploratory checks and mentor review without forcing a full run each time.
-
-## GSoC Timeline Status
-
-### Completed: Weeks 1-2
-
-The Week 1-2 milestone was to rebuild the experiment shell with deliberate screen sequencing and implement participant ID assignment plus randomized condition assignment.
-
-Completed work:
-
-- Explicit experiment flow: `welcome -> consent -> instructions -> comprehension_check -> practice_trial -> main_task -> debrief`
-- Practice trial before the main task
-- Staged reveal inside trials: role requirements first, candidate summary second, AI recommendation last
-- Enlarged AI recommendation display
-- Equal-weight decision controls that explicitly accept or override the AI recommendation
-- Persistent participant ID and randomized condition assignment
-- Debug tools for forcing condition A/B and jumping to any experiment screen
-- Centralized experiment configuration in `src/lib/experiment-config.ts`
-- Centralized assignment logic in `src/lib/conditions.ts`
-- Week 1-2 planning, run, and event-schema documentation
-
-### Completed: Weeks 3-5
-
-The Week 3-5 phase implemented Andrya's revised direction:
-
-- migrate from job screening to transportation/drone operations
-- model condition assignment as cue source plus modular cue types
-- add a user-set agent configuration screen
-- preserve trust-calibration logging fields while adding cue metadata
-
-### Completed GSoC Scope: Weeks 7-12
-
-The final phase aligned the implementation and handoff materials with the HSF
-manuscript direction while preserving the approved controlled runtime:
-
-- map interface-level humanlike cues to HSF dimensions: Appearance, Communication, Behavior, Relationality, and Agency
-- design and validate a fixed, reviewable 16-record stimulus bank while keeping six unapproved candidates out of runtime
-- document the HSF runtime metadata, manipulation-check, and condition-design implementation path
-- add repeatable synthetic pilot-data QA, export validation, and analysis summaries
-- complete the participant UI, accessibility, researcher walkthrough, final verification, and public handoff materials
-
-Research-dependent HSF runtime metadata, manipulation checks, candidate stimulus
-approval, and a formal real-participant pilot remain clearly documented future
-work rather than completed claims.
-
-## Condition Logic
-
-Runtime assignment includes:
-
-- `participant_id` (UUID)
-- `condition_id` (`"control" | "industry_set" | "user_set"`)
-- `session_id` (UUID)
-
-Persistence strategy:
-
-- `participant_id`: cookie first, fallback `localStorage`
-- `condition_id`: random across the three cue-source conditions, cookie first, fallback `localStorage`
-- `session_id`: generated per page-entry session (`sessionStorage`)
-
-Behavioral implication:
-
-- Refresh keeps `participant_id` + `condition_id` stable
-- New private/incognito window may receive a different condition
-
-## Logging Implementation
-
-### Event Types
-
-- `task_shown`
-- `decision`
-
-### Storage
-
-Append-only JSON Lines files grouped by study run:
-
-- `data/runs/<study_run_id>/events.jsonl`
-- `data/runs/<study_run_id>/manifest.json`
-- one event per line (`JSON.stringify(event) + "\n"`)
-
-`study_run_id` is resolved from `STUDY_RUN_ID`. If the environment variable is not set, the app uses `local-dev`.
-
-Legacy local test data from the old single-file workflow should be archived under:
-
-- `data/archive/events-legacy-<date>.jsonl`
-
-### Core Fields (minimum)
-
-- `participant_id`
-- `condition_id`
-- `decision` (for `decision` events)
-- `timestamp_ms`
-- `latency_ms` (for `decision` events)
-
-Common envelope also includes:
-
-- `event_id`, `session_id`, `study_run_id`, `event_type`, `trial_id`, `trial_index`
-
-Decision events also include cue metadata when available:
-
-- `cue_source`, `cue_modules`
-- `agent_name`, `agent_tone`, `agent_personality`, `agent_avatar_label`
-
-## Export
-
-Event-level export endpoints:
-
-- `GET /api/export?format=json`
-- `GET /api/export?format=csv`
-
-Exports default to the current study run and are sorted by `timestamp_ms` ascending.
-
-Useful filters:
-
-- `study_run_id=all`
-- `event_type=decision`
-- `condition_id=user_set`
-- `participant_id=<uuid>`
-- `session_id=<uuid>`
-- `trial_id=ops_01`
-- `cue_source=industry_set`
-- `from_timestamp_ms=<number>`
-- `to_timestamp_ms=<number>`
-
-Researcher preview endpoints:
-
-- `GET /api/runs`
-- `GET /api/events/preview?limit=100`
-
-## Repository Navigation
-
-- `src/app/task/page.tsx`: main experiment flow and participant UI
-- `src/app/task/task.module.css`: task UI styles
-- `src/app/task/components/DebugPanel.tsx`: researcher debug panel
-- `src/app/api/log/route.ts`: event ingestion API
-- `src/app/api/export/route.ts`: event export API
-- `src/app/api/runs/route.ts`: study-run summary API
-- `src/app/api/events/preview/route.ts`: filtered event preview API
-- `src/lib/conditions.ts`: assignment/persistence logic
-- `src/lib/cue-config.ts`: cue source/module configuration and rendering helpers
-- `src/lib/event-store.ts`: study-run storage, filtering, and CSV helpers
-- `src/lib/experiment-config.ts`: screen sequence, practice trial, recommendation helpers
-- `src/lib/trials.ts`: 10-trial operations dataset
-- `src/lib/schema.ts`: event typing + validation
-- `docs/week-1-2-plan.md`: Week 1-2 implementation plan and acceptance criteria
-- `docs/week-3-5-plan.md`: revised Week 3-5 implementation plan
-- `docs/week-7-12-plan.md`: midterm-to-final HSF alignment and implementation plan
-- `docs/final-work-product.md`: public GSoC 2026 final report and work-product index
-- `docs/how-to-run.md`: setup, local URLs, and debug-mode guide
-- `docs/event-schema.md`: event schema and export reference
-
-## Run Locally
-
-```bash
+```sh
 npm install
-npm run dev
+RESEARCH_ADMIN_KEY='replace-with-a-long-random-key' npm run dev
 ```
 
-Optional study-run label:
+Open `http://localhost:3000/task?debug=1` to configure and preview. Freeze a study
+version to create a recording participant link; `/task` alone is a demo.
 
-```bash
-STUDY_RUN_ID=pilot-week3 npm run dev
-```
+English collection requires a persistent writable disk. Set `RESEARCH_DATA_DIR`
+to the collection directory; a temporary serverless filesystem does not provide
+durable storage. The Chinese Supabase backend does not store English study data.
 
-Open:
-
-- Participant mode: `http://localhost:3000/task`
-- Researcher mode: `http://localhost:3000/task?debug=1`
+For the independent Chinese workflow, see the
+[中文 Pilot 交付手册](docs/chinese-pilot-delivery.md), including production configuration
+and collection prerequisites. Neither a public preview nor a GitHub update certifies
+that an online collection deployment has been configured and verified.
 
 ## Verification
 
-```bash
+```sh
 npm run lint
 npx tsc --noEmit
 npm run build
+npm run test:research:materials
+npm run test:constraint:materials
+npm run check:docs -- --include-readme
 ```
 
-Local route smoke checks:
+The [two-part runbook](docs/research-two-part.md) documents API, browser and export
+checks. Run tests with an isolated `RESEARCH_DATA_DIR` and test-only credentials;
+keep synthetic events separate from participant records. The Chinese isolated
+regression and pagination checks use a local mock backend, not real Supabase.
+See [this update's verification record](docs/research-update-2026-09.md) for checks
+actually run during publication.
 
-```bash
-curl -I http://localhost:3000/task
-curl -I 'http://localhost:3000/task?debug=1'
-```
+Environment files, local research runs, exports and build output are excluded from
+version control. Committed fixtures are explicitly synthetic; committed materials
+are experimental stimuli, not participant data.
 
-## Sample Decision Event
+## Project history
 
-```json
-{
-  "event_id": "6f3f0a67-5e83-4b7f-9f2a-8d1c2a77f401",
-  "participant_id": "2df44c3c-6f43-4eef-8f16-e0d1609ca60b",
-  "condition_id": "user_set",
-  "session_id": "9f9f71ce-53c0-4f29-8b8b-c83f9557f2d0",
-  "study_run_id": "pilot-week3",
-  "event_type": "decision",
-  "timestamp_ms": 1762056654789,
-  "trial_id": "ops_03",
-  "trial_index": 2,
-  "decision": "override",
-  "latency_ms": 1842,
-  "ai_reco": "reject",
-  "ground_truth": "proceed",
-  "follow_ai": false,
-  "ai_correct": false,
-  "cue_source": "user_set",
-  "cue_modules": ["agent_name", "tone_warmth", "avatar", "personality", "confidence_explanation"],
-  "agent_name": "Nova",
-  "agent_tone": "warm",
-  "agent_personality": "supportive",
-  "agent_avatar_label": "NV"
-}
-```
+- [GSoC final work product](docs/final-work-product.md)
+- [Archived operations README and milestones](docs/legacy-project-overview.md)
+- [Archived spectrum workflow](docs/research-spectrum-v2.md)
+- [Archived time predictions](docs/research-prediction-v3.md)
+- [Archived mixed predictions](docs/research-mixed-predictions.md)
 
 ## License
 
-This project is available under the [MIT License](LICENSE).
+[MIT](LICENSE). The generated avatar set includes its
+[provenance and prompts](public/research/avatars-v2/manifest.json).

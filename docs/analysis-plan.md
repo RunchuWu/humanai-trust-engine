@@ -1,5 +1,11 @@
 # Analysis Plan Draft
 
+> **Historical scope:** this plan applies to the original operations experiment at
+> `/task?legacy=1`. Its follow/override metrics and summary commands do not apply to
+> current two-part exports. See the [current workflow](research-two-part.md) and
+> [redesign proposal](experiment-redesign-proposals-zh.md) for the new study's
+> measures and pending analysis decisions.
+
 This draft describes how exported data can support trust calibration, delegation, manipulation-check, and blame analyses. It separates current export support from future HSF metadata that has not yet been implemented.
 
 For the ordered local workflow that validates exports, asserts filters, and
